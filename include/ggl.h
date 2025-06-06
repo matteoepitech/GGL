@@ -9,19 +9,13 @@
     #define _GGL_H_
 
     #include "modules/ggl_core.h"
+    #include "modules/ggl_window.h"
+    #include "modules/ggl_math.h"
     
     #include "misc/ggl_types.h"
     #include "misc/ggl_defines.h"
     #include "misc/ggl_macros.h"
 
     #include <GLFW/glfw3.h>
-    
-    #include <assert.h>
-    #include <errno.h>
-    #include <stdbool.h>
-    #include <stddef.h>
-    #include <stdint.h>
-    #include <stdio.h>
-    #include <stdlib.h>
 
 #endif /* ifndef _GGL_H_ */

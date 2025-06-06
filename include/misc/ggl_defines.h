@@ -20,5 +20,13 @@
     #ifndef GGL_KO
         #define GGL_KO 1
     #endif /* ifndef GGL_KO */
+    
+    #ifndef GGL_TRUE
+        #define GGL_TRUE 1
+    #endif /* ifndef GGL_TRUE */
+    
+    #ifndef GGL_FALSE
+        #define GGL_FALSE 0
+    #endif /* ifndef GGL_FALSE */
 
 #endif /* ifndef _GGL_DEFINES_H_ */

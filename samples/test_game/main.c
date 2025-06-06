@@ -13,9 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../include/modules/ggl_core.h"
+#include "../../include/ggl.h"
 
 int main()
 {
-    return ggl_init();
+    ggl_init();
+    ggl_create_window("My window!", (ggl_size_t) {500, 500});
+    while (ggl_window_should_close(NULL) == GGL_FALSE) {
+        printf("Window is running!\n");
+    }
+    return 0;
 }

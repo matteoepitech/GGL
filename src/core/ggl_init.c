@@ -38,6 +38,9 @@ ggl_init(void)
 ggl_status
 ggl_terminate(void)
 {
+    ggl_context_t *ctx = ggl_get_context();
+
+    glfwDestroyWindow(ctx->_ggl_window._win_glfw);
     glfwTerminate();
     return GGL_OK;
 }

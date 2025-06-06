@@ -8,8 +8,6 @@
 #ifndef _GGL_MACROS_H_
     #define _GGL_MACROS_H_
 
-    #include "misc/ggl_defines.h"
-
     #ifndef PERROR
         #define GGL_PERROR(...) \
             fprintf(stderr, "[\x1b[31mGGL ERROR\x1b[0m] (%s:%d:%s) ", \

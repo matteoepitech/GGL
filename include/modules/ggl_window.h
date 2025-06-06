@@ -8,13 +8,15 @@
 #ifndef _GGL_MODULE_WINDOW_H_
     #define _GGL_MODULE_WINDOW_H_
     
+    #include "../misc/ggl_types.h"
+    #include "../misc/ggl_defines.h"
+    
     #include <GLFW/glfw3.h>
 
-/**
- * @brief GGL window structure containing all informations about windows.
+/*
+ * Location : src/window/ggl_window_manager.c
  */
-typedef struct ggl_window_s {
-    GLFWwindow *_win_glfw;
-} ggl_window_t;
+ggl_status ggl_create_window(const char *title, ggl_size_t size);
+ggl_bool ggl_window_should_close(ggl_context_t *ctx);
 
 #endif /* ifndef _GGL_MODULE_WINDOW_H_ */

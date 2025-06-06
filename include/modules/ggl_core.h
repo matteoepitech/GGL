@@ -11,15 +11,6 @@
     #include "../misc/ggl_types.h"
     #include "../misc/ggl_defines.h"
 
-    #include "ggl_window.h"
-
-/**
- * @brief A context contains all informations about a program entirely.
- */
-typedef struct ggl_context_s {
-    ggl_window_t *_ggl_window;
-} ggl_context_t;
-
 /*
  * Location : src/core/ggl_init.c
  */
