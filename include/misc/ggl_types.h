@@ -48,7 +48,7 @@ typedef struct ggl_coords_s {
 typedef struct ggl_size_s {
     int64_t _width;
     int64_t _height;
-} ggl_size_t;
+} ggl_vector2i_t;
 
 /**
  * @brief Type for color. RGBA

@@ -24,7 +24,7 @@ int main()
     int speed = 2;
 
     ggl_init();
-    ggl_create_window("Valentino's Window", (ggl_size_t){1280, 720});
+    ggl_create_window("Valentino's Window", (ggl_vector2i_t){1280, 720});
     ggl_setup_debug_close(NULL);
 
     while (ggl_window_should_close(NULL) == GGL_FALSE) {
