@@ -10,14 +10,12 @@
     
     #include "../misc/ggl_types.h"
     #include "../misc/ggl_defines.h"
-    
-    #include <GLFW/glfw3.h>
 
 /*
  * Location : src/window/ggl_window_manager.c
  */
-ggl_status ggl_create_window(const char *title, ggl_vector2i_t size);
-ggl_bool ggl_window_should_close(ggl_context_t *ctx);
-ggl_status ggl_clear_window(ggl_color_t background_color);
+ggl_status ggl_create_window(const char *title, ggl_vector2i size);
+ggl_bool ggl_window_should_close(ggl_context *ctx);
+ggl_status ggl_clear_window(ggl_color background_color);
 
 #endif /* ifndef _GGL_MODULE_WINDOW_H_ */

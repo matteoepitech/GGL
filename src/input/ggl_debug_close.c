@@ -38,7 +38,7 @@ ggl_debug_close_callback(GLFWwindow* window, int key, int scancode,
  * @return GGL_OK if worked, GGL_KO if not.
  */
 ggl_status
-ggl_setup_debug_close(ggl_context_t *ctx)
+ggl_setup_debug_close(ggl_context *ctx)
 {
     if (ctx == NULL)
         ctx = ggl_get_context();

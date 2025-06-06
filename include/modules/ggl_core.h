@@ -20,7 +20,7 @@ ggl_status ggl_terminate(void);
 /*
  * Location : src/core/ggl_context.c
  */
-extern ggl_context_t *__ggl_context__;
-ggl_context_t *ggl_get_context(void);
+extern ggl_context *__ggl_context__;
+ggl_context *ggl_get_context(void);
 
 #endif /* ifndef _GGL_MODULE_CORE_H */

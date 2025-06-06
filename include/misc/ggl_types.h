@@ -15,8 +15,8 @@
     #include <stdint.h>
     #include <stdio.h>
     #include <stdlib.h>
-    #include <GLFW/glfw3.h>
     
+    #include <OpenGL/gl3.h>
     #include <GLFW/glfw3.h>
 
 /**
@@ -35,44 +35,63 @@ typedef int8_t ggl_bool;
 typedef int32_t ggl_key;
 
 /**
- * @brief Type for coordinates in a 2D plan.
+ * @brief Used for ressource like createShader, program VAO, VBO, EBO..
  */
-typedef struct ggl_coords_s {
-    int64_t _x;
-    int64_t _y;
-} ggl_coords_t;
+typedef uint32_t ggl_ressource_id;
+
+
+// =====================================
 
 /**
- * @brief Type for size.
+ * @brief Type for vector 2 int.
  */
-typedef struct ggl_size_s {
-    int64_t _width;
-    int64_t _height;
-} ggl_vector2i_t;
+typedef struct {
+    int64_t _x;
+    int64_t _y;
+} ggl_vector2i;
+
+/**
+ * @brief Type for vector 2 float.
+ */
+typedef struct {
+    float _x;
+    float _y;
+} ggl_vector2f;
 
 /**
  * @brief Type for color. RGBA
  */
-typedef struct ggl_color_s {
+typedef struct {
     int32_t _r;
     int32_t _g;
     int32_t _b;
     int32_t _a;
-} ggl_color_t;
+} ggl_color;
+
+
+// =====================================
 
 /**
  * @brief GGL window structure containing all informations about windows.
  */
-typedef struct ggl_window_s {
+typedef struct {
     GLFWwindow *_win_glfw;
-} ggl_window_t;
+} ggl_window;
 
 /**
  * @brief A context contains all informations about a program entirely.
  */
-typedef struct ggl_context_s {
-    ggl_window_t _ggl_window;
-} ggl_context_t;
+typedef struct {
+    ggl_window _ggl_window;
+} ggl_context;
 
+
+// =====================================
+
+typedef struct {
+    ggl_vector2f _position;
+    ggl_vector2f _size;
+    ggl_color _color;
+} ggl_triangle;
 
 #endif /* ifndef _GGL_TYPES_H_ */

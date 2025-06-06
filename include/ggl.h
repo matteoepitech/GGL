@@ -14,11 +14,11 @@
     #include "modules/ggl_window.h"
     #include "modules/ggl_math.h"
     #include "modules/ggl_input.h"
+    #include "modules/ggl_renderer.h"
+    #include "modules/ggl_shader.h"
     
     #include "misc/ggl_types.h"
     #include "misc/ggl_defines.h"
     #include "misc/ggl_macros.h"
-
-    #include <GLFW/glfw3.h>
 
 #endif /* ifndef _GGL_H_ */

@@ -16,7 +16,7 @@
  * @return GGL_TRUE or GGL_FALSE.
  */
 ggl_bool
-ggl_is_key_down(ggl_context_t *ctx, ggl_key key)
+ggl_is_key_down(ggl_context *ctx, ggl_key key)
 {
     if (ctx == NULL)
         ctx = ggl_get_context();

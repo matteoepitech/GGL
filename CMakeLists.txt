@@ -13,7 +13,7 @@ target_include_directories(ggl PUBLIC
 )
 
 add_library(glad STATIC
-    lib/glad/src/gl.c
+    lib/glad/src/glad.c
 )
 target_include_directories(glad PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/glad/include

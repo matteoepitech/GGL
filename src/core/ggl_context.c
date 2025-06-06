@@ -8,14 +8,14 @@
 #include "ggl.h"
 
 // @brief context global variable.
-ggl_context_t *__ggl_context__;
+ggl_context *__ggl_context__;
 
 /**
  * @brief Get the context using this function.
  *
  * @return The context structure.
  */
-ggl_context_t *
+ggl_context *
 ggl_get_context(void)
 {
     if (__ggl_context__ == NULL)

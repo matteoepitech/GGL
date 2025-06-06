@@ -20,7 +20,7 @@ ggl_init(void)
         return GGL_KO;
     }
     GGL_DEBUG("GLFW got initialized.");
-    __ggl_context__ = malloc(sizeof(ggl_context_t));
+    __ggl_context__ = malloc(sizeof(ggl_context));
     if (__ggl_context__ == NULL) {
         GGL_PERROR("GGL Context cannot be created.");
         return GGL_KO;
@@ -38,7 +38,7 @@ ggl_init(void)
 ggl_status
 ggl_terminate(void)
 {
-    ggl_context_t *ctx = ggl_get_context();
+    ggl_context *ctx = ggl_get_context();
 
     glfwDestroyWindow(ctx->_ggl_window._win_glfw);
     glfwTerminate();
