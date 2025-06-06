@@ -11,6 +11,7 @@
     #include "modules/ggl_core.h"
     #include "modules/ggl_window.h"
     #include "modules/ggl_math.h"
+    #include "modules/ggl_input.h"
     
     #include "misc/ggl_types.h"
     #include "misc/ggl_defines.h"

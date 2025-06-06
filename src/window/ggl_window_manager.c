@@ -49,6 +49,8 @@ ggl_window_should_close(ggl_context_t *ctx)
         ctx = ggl_get_context();
     if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL)
         return GGL_TRUE;
+    if (glfwWindowShouldClose(ctx->_ggl_window._win_glfw) == GLFW_TRUE)
+        return GGL_TRUE;
     glfwSwapBuffers(ctx->_ggl_window._win_glfw);
     glfwPollEvents();
     return GGL_FALSE;

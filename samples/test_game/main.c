@@ -18,9 +18,11 @@
 int main()
 {
     ggl_init();
-    ggl_create_window("My window!", (ggl_size_t) {500, 500});
+    ggl_create_window("Valentino's Window", (ggl_size_t) {1280, 720});
+    ggl_setup_debug_close(NULL);
+
     while (ggl_window_should_close(NULL) == GGL_FALSE) {
-        printf("Window is running!\n");
+        //printf("Window is running!\n");
     }
     return 0;
 }
