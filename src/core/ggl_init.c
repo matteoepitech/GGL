@@ -15,5 +15,10 @@
 ggl_status
 ggl_init(void)
 {
+    if (glfwInit() == GLFW_FALSE) {
+        GGL_PERROR("GLFW cannot be initialized.");
+        return GGL_KO;
+    }
+    GGL_DEBUG("GLFW got initialized.");
     return GGL_OK;
 }

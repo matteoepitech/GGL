@@ -7,6 +7,11 @@
 
 #ifndef _GGL_DEFINES_H_
     #define _GGL_DEFINES_H_
+    
+    // @brief GGL_DEBUG_MODE can be used to print a lot of debug infos.
+    #ifndef GGL_DEBUG_MODE
+        #define GGL_DEBUG_MODE 1
+    #endif /* ifndef GGL_DEBUG_MODE */
 
     #ifndef GGL_OK
         #define GGL_OK 0
