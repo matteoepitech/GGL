@@ -8,6 +8,8 @@
 #ifndef _GGL_H_
     #define _GGL_H_
 
+    #define GL_SILENCE_DEPRECATION
+
     #include "modules/ggl_core.h"
     #include "modules/ggl_window.h"
     #include "modules/ggl_math.h"

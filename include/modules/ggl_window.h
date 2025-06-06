@@ -18,5 +18,6 @@
  */
 ggl_status ggl_create_window(const char *title, ggl_size_t size);
 ggl_bool ggl_window_should_close(ggl_context_t *ctx);
+ggl_status ggl_clear_window(ggl_color_t background_color);
 
 #endif /* ifndef _GGL_MODULE_WINDOW_H_ */

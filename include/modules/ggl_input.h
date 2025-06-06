@@ -18,4 +18,9 @@
  */
 ggl_status ggl_setup_debug_close(ggl_context_t *ctx);
 
+/*
+ * Location : src/input/ggl_input_manager.c
+ */
+ggl_bool ggl_is_key_down(ggl_context_t *ctx, ggl_key key);
+
 #endif /* ifndef _GGL_MODULE_INPUT_H_ */

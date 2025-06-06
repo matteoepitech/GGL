@@ -22,12 +22,17 @@
 /**
  * @brief Used for status of functions.
  */
-typedef char ggl_status;
+typedef int8_t ggl_status;
 
 /**
  * @brief Used for bool.
  */
-typedef char ggl_bool;
+typedef int8_t ggl_bool;
+
+/**
+ * @brief Used for inputs.
+ */
+typedef int32_t ggl_key;
 
 /**
  * @brief Type for coordinates in a 2D plan.
@@ -44,6 +49,16 @@ typedef struct ggl_size_s {
     int64_t _width;
     int64_t _height;
 } ggl_size_t;
+
+/**
+ * @brief Type for color. RGBA
+ */
+typedef struct ggl_color_s {
+    int32_t _r;
+    int32_t _g;
+    int32_t _b;
+    int32_t _a;
+} ggl_color_t;
 
 /**
  * @brief GGL window structure containing all informations about windows.
