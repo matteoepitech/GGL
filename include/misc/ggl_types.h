@@ -14,10 +14,13 @@
     #include <stddef.h>
     #include <stdint.h>
     #include <stdio.h>
+    #include <time.h>
     #include <stdlib.h>
     
     #include <OpenGL/gl3.h>
     #include <GLFW/glfw3.h>
+
+    #include "ggl_defines.h"
 
 /**
  * @brief Used for status of functions.
@@ -87,6 +90,7 @@ typedef struct {
  */
 typedef struct {
     ggl_window _ggl_window;
+    double _current_fps;
 } ggl_context;
 
 

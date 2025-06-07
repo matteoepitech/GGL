@@ -7,7 +7,6 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
-#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -90,15 +89,17 @@ ggl_status
 ggl_triangle_render(ggl_context *ctx, const ggl_triangle *triangle)
 {
     ggl_vector2f final_pos = {0};
+    ggl_vector2f final_size = {0};
 
     if (triangle == NULL || ctx == NULL) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc(ctx, triangle->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, triangle->_position);
+    final_size = ggl_coords_normalize_to_ndc_size(ctx, triangle->_size);
     glBindVertexArray(g_triangle_renderer._vao);
     glUseProgram(g_triangle_renderer._shader_program);
     glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
-    glUniform2f(g_triangle_renderer._size_location, triangle->_size._x, triangle->_size._y);
+    glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_triangle_renderer._color_location, 
         triangle->_color._r / 255.0f,
         triangle->_color._g / 255.0f,

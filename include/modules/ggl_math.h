@@ -13,7 +13,9 @@
 /*
  * Location : src/math/ggl_coords_helper.c
  */
-ggl_vector2f ggl_coords_normalize_to_ndc(ggl_context *ctx,
+ggl_vector2f ggl_coords_normalize_to_ndc_pos(ggl_context *ctx,
+    ggl_vector2f ref_coords);
+ggl_vector2f ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
     ggl_vector2f ref_coords);
 ggl_vector2f ggl_coords_adapt_to_current_size(ggl_context *ctx,
     ggl_vector2f ref_coords);

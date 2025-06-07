@@ -8,6 +8,7 @@ if [[ "$OS" == "Darwin" ]]; then
     cmake ..
     cmake --build . -- -j$(sysctl -n hw.ncpu)
     cp libggl.dylib ../samples/test_game/
+    cp libggl.dylib ../samples/checkerboard/
     printf "\033[32;1mBuild done for MacOS!\033[0m\n"
 
 # Linux

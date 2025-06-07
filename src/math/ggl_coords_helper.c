@@ -40,14 +40,36 @@ ggl_coords_adapt_to_current_size(ggl_context *ctx, ggl_vector2f ref_coords)
  * @return The final normalized coordinates.
  */
 ggl_vector2f
-ggl_coords_normalize_to_ndc(ggl_context *ctx, ggl_vector2f ref_coords)
+ggl_coords_normalize_to_ndc_pos(ggl_context *ctx, ggl_vector2f ref_coords)
 {
     ggl_vector2f normalized = {0};
     ggl_vector2f adapted = ggl_coords_adapt_to_current_size(ctx, ref_coords);
     float current_width = (float)ctx->_ggl_window._fb_width;
     float current_height = (float)ctx->_ggl_window._fb_height;
 
-    normalized._x = (adapted._x / (current_width * 0.5f)) - 1.0f;
-    normalized._y = 1.0f - (adapted._y / (current_height * 0.5f));    
+    normalized._x = (adapted._x / current_width * 2.0f) - 1.0f;
+    normalized._y = 1.0f - (adapted._y / current_height * 2.0f);    
+    return normalized;
+}
+
+/**
+ * @brief Normalizes reference coordinates to screen coordinates in the
+ *        range [O;1] taking the current aspect ratio into account.
+ *
+ * @param ctx           The program context
+ * @param ref_coords    Coordinates based on 1280x720 resolution
+ *
+ * @return The final normalized coordinates.
+ */
+ggl_vector2f
+ggl_coords_normalize_to_ndc_size(ggl_context *ctx, ggl_vector2f ref_coords)
+{
+    ggl_vector2f normalized = {0};
+    ggl_vector2f adapted = ggl_coords_adapt_to_current_size(ctx, ref_coords);
+    float current_width = (float)ctx->_ggl_window._fb_width;
+    float current_height = (float)ctx->_ggl_window._fb_height;
+
+    normalized._x = adapted._x / (current_width / 2.0f);
+    normalized._y = adapted._y / (current_height / 2.0f);
     return normalized;
 }

@@ -7,6 +7,20 @@
 
 #include "ggl.h"
 
+#define MAX_SAMPLES 100
+double fps_samples[MAX_SAMPLES] = {0};
+int fps_index = 0;
+
+void smooth_fps(ggl_context *ctx, double new_fps) {
+    fps_samples[fps_index] = new_fps;
+    fps_index = (fps_index + 1) % MAX_SAMPLES;
+
+    double sum = 0;
+    for (int i = 0; i < MAX_SAMPLES; i++)
+        sum += fps_samples[i];
+    ctx->_current_fps = sum / MAX_SAMPLES;
+}
+
 /**
  * @brief Set the size of the viewport of OpenGL.
  *        This is an OpenGL default callback.
@@ -62,19 +76,28 @@ ggl_create_window(ggl_context *ctx, const char *title, ggl_vector2i size)
 
 /**
  * @brief Is the window need to be closed ?
- *        It does the swap buffers and poll events as well.
+ *        It does the swap buffers and poll events as well, and FPS.
  *
  * @param ctx           The context of the program
  *
  * @return GGL_TRUE if yes GGL_FALSE if no.
  */
-ggl_bool
-ggl_window_should_close(ggl_context *ctx)
+ggl_bool ggl_window_should_close(ggl_context *ctx)
 {
+    static double prev_time = 0.0;
+    double current_time;
+    double delta_time;
+
     if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL)
         return GGL_TRUE;
     if (glfwWindowShouldClose(ctx->_ggl_window._win_glfw) == GLFW_TRUE)
         return GGL_TRUE;
+    current_time = glfwGetTime();
+    if (prev_time != 0.0) {
+        delta_time = current_time - prev_time;
+        smooth_fps(ctx, 1.0 / delta_time);
+    }
+    prev_time = current_time;
     glfwGetFramebufferSize(ctx->_ggl_window._win_glfw,
         &ctx->_ggl_window._fb_width, &ctx->_ggl_window._fb_height);
     glfwSwapBuffers(ctx->_ggl_window._win_glfw);

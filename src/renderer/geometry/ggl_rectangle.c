@@ -78,15 +78,17 @@ ggl_status
 ggl_rectangle_render(ggl_context *ctx, const ggl_rectangle *rectangle)
 {
     ggl_vector2f final_pos = {0};
+    ggl_vector2f final_size = {0};
 
     if (rectangle == NULL || ctx == NULL) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc(ctx, rectangle->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, rectangle->_position);
+    final_size = ggl_coords_normalize_to_ndc_size(ctx, rectangle->_size);
     glBindVertexArray(g_rectangle_renderer._vao);
     glUseProgram(g_rectangle_renderer._shader_program);
     glUniform2f(g_rectangle_renderer._pos_location, final_pos._x, final_pos._y);
-    glUniform2f(g_rectangle_renderer._size_location, rectangle->_size._x, rectangle->_size._y);
+    glUniform2f(g_rectangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_rectangle_renderer._color_location, 
         rectangle->_color._r / 255.0f,
         rectangle->_color._g / 255.0f,
@@ -111,10 +113,10 @@ ggl_rectangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 {
     ggl_rectangle *rectangle = malloc(sizeof(ggl_rectangle));
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+         1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,
+         0.0f, -1.0f, 0.0f,
+         0.0f,  0.0f, 0.0f // Anchor left up
     };
 
     if (rectangle == NULL) {
