@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2025
-** src/utils/shader/ggl_shader_compiler
+** src/shader/ggl_shader_compiler
 ** File description:
-** GGL utils file for shader compiling
+** GGL file for shader compiling
 */
 
 #include "ggl.h"

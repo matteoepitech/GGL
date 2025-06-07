@@ -10,8 +10,11 @@
 
     #include "../misc/ggl_types.h"
 
+extern const char *GGL_TRIANGLE_VERTEX_SHADER;
+extern const char *GGL_TRIANGLE_FRAGMENT_SHADER;
+
 /*
- * Location : src/utils/shader/ggl_shader_compiler.c
+ * Location : src/shader/ggl_shader_compiler.c
  */
 ggl_ressource_id compile_shader(unsigned int type, const char* source_str);
 
