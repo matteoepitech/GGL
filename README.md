@@ -1,10 +1,10 @@
 # GGL | GenesisGL
 
-<img src="./media/ggl-logo.svg" alt="GGL Logo" width="450" />
+<img src="./media/ggl-logo.svg" alt="GGL Logo" width="175" />
 
-![Library](https://img.shields.io/badge/Lib-GenesisGL-blueviolet)  
-![Status](https://img.shields.io/badge/Status-WIP-yellow)  
-![Made with](https://img.shields.io/badge/Made%20with-C%20%2B%20OpenGL-lightblue)  
+![Library](https://img.shields.io/badge/Lib-GenesisGL-blueviolet)
+![Status](https://img.shields.io/badge/Status-WIP-yellow)
+![Made with](https://img.shields.io/badge/Made%20with-C%20%2B%20OpenGL-lightblue)
 [![MIT license](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 GGL (GenesisGL) is an easy-to-use 2D graphics library written in C using OpenGL and GLFW.  
