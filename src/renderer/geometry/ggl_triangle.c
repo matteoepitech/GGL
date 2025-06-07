@@ -6,6 +6,7 @@
 */
 
 #include "ggl.h"
+#include "ggl_internal.h"
 
 /**
  * @brief Content of the geometry triangle.
@@ -95,14 +96,12 @@ ggl_triangle_render(const ggl_triangle *triangle)
     ggl_ressource_id size_location = 0;
     ggl_ressource_id color_location = 0;
 
-    if (g_triangle_renderer._is_initialized == GGL_FALSE) {
-        GGL_PERROR("Triangle renderer not initialized."
-                    "Call __ggl_triangle_init() first.");
-        return GGL_KO;
-    } 
     if (triangle == NULL) {
         return GGL_KO;
     }
+    if (g_triangle_renderer._is_initialized == GGL_FALSE) {
+        __ggl_triangle_init();
+    } 
     glUseProgram(g_triangle_renderer._shader_program);
     pos_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_position");
     size_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_size");

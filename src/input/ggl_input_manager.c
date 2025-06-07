@@ -18,9 +18,9 @@
 ggl_bool
 ggl_is_key_down(ggl_context *ctx, ggl_key key)
 {
-    if (ctx == NULL)
-        ctx = ggl_get_context();
-    if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL)
+    if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL) {
+        GGL_PERROR("You are trying to get input without context.");
         return GGL_FALSE;
+    }
     return glfwGetKey(ctx->_ggl_window._win_glfw, key) == GLFW_PRESS;
 }

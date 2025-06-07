@@ -13,8 +13,8 @@
 /*
  * Location : src/renderer/geometry/ggl_triangle.c
  */
-ggl_status __ggl_triangle_init(void); // @INTERNAL
+ggl_triangle *ggl_triangle_create(ggl_vector2f position, ggl_vector2f size,
+    ggl_color color);
 ggl_status ggl_triangle_render(const ggl_triangle *triangle);
-ggl_triangle *ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color);
 
 #endif /* ifndef _GGL_MODULE_RENDERER_H_ */

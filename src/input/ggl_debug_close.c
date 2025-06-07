@@ -40,8 +40,6 @@ ggl_debug_close_callback(GLFWwindow* window, int key, int scancode,
 ggl_status
 ggl_setup_debug_close(ggl_context *ctx)
 {
-    if (ctx == NULL)
-        ctx = ggl_get_context();
     if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL)
         return GGL_KO;
     glfwSetKeyCallback(ctx->_ggl_window._win_glfw, ggl_debug_close_callback);

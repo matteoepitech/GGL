@@ -29,13 +29,14 @@ ggl_set_viewport_size(GLFWwindow* window, int width, int height)
  * @return GGL_OK if everything worked. GGL_KO if not.
  */
 ggl_status
-ggl_create_window(const char *title, ggl_vector2i size)
+ggl_create_window(ggl_context *ctx, const char *title, ggl_vector2i size)
 {
     GLFWwindow* window = NULL;
-    ggl_context *ctx = ggl_get_context();
     int framebuffer_width = 0;
     int framebuffer_height = 0;
 
+    if (ctx == NULL)
+        return GGL_KO;
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -67,8 +68,6 @@ ggl_create_window(const char *title, ggl_vector2i size)
 ggl_bool
 ggl_window_should_close(ggl_context *ctx)
 {
-    if (ctx == NULL)
-        ctx = ggl_get_context();
     if (ctx == NULL || ctx->_ggl_window._win_glfw == NULL)
         return GGL_TRUE;
     if (glfwWindowShouldClose(ctx->_ggl_window._win_glfw) == GLFW_TRUE)

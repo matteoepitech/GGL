@@ -7,7 +7,7 @@ mkdir -p build && cd build
 if [[ "$OS" == "Darwin" ]]; then
     cmake ..
     cmake --build . -- -j$(sysctl -n hw.ncpu)
-    cp libggl.a ../samples/test_game/
+    cp libggl.dylib ../samples/test_game/
     printf "\033[32;1mBuild done for MacOS!\033[0m\n"
 
 # Linux

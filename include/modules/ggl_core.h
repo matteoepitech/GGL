@@ -9,18 +9,11 @@
     #define _GGL_MODULE_CORE_H_
 
     #include "../misc/ggl_types.h"
-    #include "../misc/ggl_defines.h"
 
 /*
  * Location : src/core/ggl_init.c
  */
-ggl_status ggl_init(void);
-ggl_status ggl_terminate(void);
-
-/*
- * Location : src/core/ggl_context.c
- */
-extern ggl_context *__ggl_context__;
-ggl_context *ggl_get_context(void);
+ggl_context *ggl_init(void);
+ggl_status ggl_terminate(ggl_context *ctx);
 
 #endif /* ifndef _GGL_MODULE_CORE_H */

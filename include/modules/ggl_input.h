@@ -9,7 +9,6 @@
     #define _GGL_MODULE_INPUT_H_
     
     #include "../misc/ggl_types.h"
-    #include "../misc/ggl_defines.h"
 
 /*
  * Location : src/input/ggl_debug_close.c

@@ -8,6 +8,4 @@
 #ifndef _GGL_MODULE_MATH_H_
     #define _GGL_MODULE_MATH_H_
 
-    #include "../misc/ggl_types.h"
-
 #endif /* ifndef _GGL_MODULE_MATH_H_ */

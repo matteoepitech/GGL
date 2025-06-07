@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE GGL_SRC src/*.c)
-add_library(ggl STATIC ${GGL_SRC})
+add_library(ggl SHARED ${GGL_SRC})
 
 target_include_directories(ggl PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
