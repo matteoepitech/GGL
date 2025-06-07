@@ -24,7 +24,9 @@ typedef ggl_status (*ggl_terminate_t)(ggl_context *);
 typedef ggl_bool (*ggl_window_should_close_t)(ggl_context *);
 typedef ggl_bool (*ggl_is_key_down_t)(ggl_context *, ggl_key);
 typedef ggl_triangle *(*ggl_triangle_create_t)(ggl_vector2f, ggl_vector2f, ggl_color);
-typedef ggl_status (*ggl_triangle_render_t)(const ggl_triangle *);
+typedef ggl_rectangle *(*ggl_rectangle_create_t)(ggl_vector2f, ggl_vector2f, ggl_color);
+typedef ggl_status (*ggl_triangle_render_t)(ggl_context *, const ggl_triangle *);
+typedef ggl_status (*ggl_rectangle_render_t)(ggl_context *, const ggl_rectangle *);
 
 ggl_init_t ggl_init;
 ggl_create_window_t ggl_create_window;
@@ -35,6 +37,8 @@ ggl_window_should_close_t ggl_window_should_close;
 ggl_is_key_down_t ggl_is_key_down;
 ggl_triangle_create_t ggl_triangle_create;
 ggl_triangle_render_t ggl_triangle_render;
+ggl_rectangle_create_t ggl_rectangle_create;
+ggl_rectangle_render_t ggl_rectangle_render;
 
 // =====================================================
 
@@ -49,11 +53,18 @@ static void load_ggl_symbols(void)
     ggl_is_key_down = dlsym(lib_ggl_ptr, "ggl_is_key_down");
     ggl_triangle_create = dlsym(lib_ggl_ptr, "ggl_triangle_create");
     ggl_triangle_render = dlsym(lib_ggl_ptr, "ggl_triangle_render");
+    ggl_rectangle_create = dlsym(lib_ggl_ptr, "ggl_rectangle_create");
+    ggl_rectangle_render = dlsym(lib_ggl_ptr, "ggl_rectangle_render");
 }
 
-static ggl_context *reload_ggl_and_reinit(ggl_context *old_ctx,
-    ggl_color bg_c, ggl_color t_color, ggl_color t2_color,
-    ggl_triangle **t1, ggl_triangle **t2)
+static ggl_context *reload_ggl_and_reinit(
+    ggl_context *old_ctx,
+    ggl_color bg_c,
+    ggl_color t_color,
+    ggl_color t2_color,
+    ggl_triangle **t1,
+    ggl_triangle **t2,
+    ggl_rectangle **r1)
 {
     if (lib_ggl_ptr) {
         if (ggl_terminate && old_ctx)
@@ -74,23 +85,21 @@ static ggl_context *reload_ggl_and_reinit(ggl_context *old_ctx,
     ggl_create_window(ctx, "Valentino's Window", (ggl_vector2i){1280, 720});
     ggl_setup_debug_close(ctx);
 
-    *t1 = ggl_triangle_create(
-        (ggl_vector2f){0.0f, 0.0f},
-        (ggl_vector2f){0.5f, 0.5f},
-        t_color
-    );
-    *t2 = ggl_triangle_create(
-        (ggl_vector2f){0.0f, 0.3f},
-        (ggl_vector2f){1.5f, 1.5f},
-        t2_color
-    );
+    *t1 = ggl_triangle_create((ggl_vector2f){500.0f, 200.0f}, (ggl_vector2f){0.5f, 0.5f}, t_color);
+    *t2 = ggl_triangle_create((ggl_vector2f){400.0f, 700.0f}, (ggl_vector2f){1.5f, 1.5f}, t2_color);
+    *r1 = ggl_rectangle_create((ggl_vector2f) {640.0f, 360.0f}, (ggl_vector2f) {1.0f, 1.0f}, (ggl_color) {60, 10, 55, 255});
 
     return ctx;
 }
 
-static void process_inputs(ggl_context **ctx, ggl_color *bg_c,
-    ggl_color t_color, ggl_color t2_color,
-    ggl_triangle **t1, ggl_triangle **t2)
+static void process_inputs(
+    ggl_context **ctx,
+    ggl_color *bg_c,
+    ggl_color t_color,
+    ggl_color t2_color,
+    ggl_triangle **t1,
+    ggl_triangle **t2,
+    ggl_rectangle **r1)
 {
     if (ggl_is_key_down(*ctx, GLFW_KEY_V)) {
         printf("V is down!\n");
@@ -104,7 +113,7 @@ static void process_inputs(ggl_context **ctx, ggl_color *bg_c,
     if (ggl_is_key_down(*ctx, GLFW_KEY_R)) {
         printf("[HR] Reloading GGL...\n");
         system("cd ../../ && ./build.sh");
-        *ctx = reload_ggl_and_reinit(*ctx, *bg_c, t_color, t2_color, t1, t2);
+        *ctx = reload_ggl_and_reinit(*ctx, *bg_c, t_color, t2_color, t1, t2, r1);
         usleep(2000);
         printf("[HR] Reloaded GGL!\n");
     }
@@ -117,14 +126,16 @@ int main(void)
     ggl_color t2_color = {10, 255, 10, 155};
     ggl_triangle *t1 = NULL;
     ggl_triangle *t2 = NULL;
+    ggl_rectangle *r1 = NULL;
 
-    ggl_context *ctx = reload_ggl_and_reinit(NULL, bg_c, t_color, t2_color, &t1, &t2);
+    ggl_context *ctx = reload_ggl_and_reinit(NULL, bg_c, t_color, t2_color, &t1, &t2, &r1);
 
     while (!ggl_window_should_close(ctx)) {
-        process_inputs(&ctx, &bg_c, t_color, t2_color, &t1, &t2);
+        process_inputs(&ctx, &bg_c, t_color, t2_color, &t1, &t2, &r1);
         ggl_clear_window(bg_c);
-        ggl_triangle_render(t2);
-        ggl_triangle_render(t1);
+        ggl_triangle_render(ctx, t2);
+        ggl_triangle_render(ctx, t1);
+        ggl_rectangle_render(ctx, r1);
     }
 
     ggl_terminate(ctx);

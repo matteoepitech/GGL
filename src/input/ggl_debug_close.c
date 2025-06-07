@@ -9,6 +9,7 @@
 
 /**
  * @brief GGL Debug close callback.
+ *        This is an GLFW prototype callback.
  *
  * @param window         The window
  * @param key            The key

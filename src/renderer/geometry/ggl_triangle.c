@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** GGL PROJECT, 2025
 ** src/renderer/geometry/ggl_triangle
 ** File description:
 ** GGL render triangle geometry
@@ -7,6 +7,7 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
+#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -17,6 +18,9 @@
 typedef struct {
     ggl_ressource_id _vao;
     ggl_ressource_id _shader_program;
+    ggl_ressource_id _pos_location;
+    ggl_ressource_id _size_location;
+    ggl_ressource_id _color_location;
     ggl_bool _is_initialized;
 } ggl_triangle_renderer;
 static ggl_triangle_renderer g_triangle_renderer = {0};
@@ -42,7 +46,8 @@ const char *GGL_TRIANGLE_FRAGMENT_SHADER =
 // ==============================================================
 
 /**
- * @brief Triangle init. DO NOT CALL THIS FUNCTION only if you know what to do.
+ * @brief Triangle init.
+ *        DO NOT CALL THIS FUNCTION only if you know what to do.
  *
  * @return GGL_OK if the init was fine.
  */
@@ -68,6 +73,9 @@ __ggl_triangle_init(void)
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
     g_triangle_renderer._is_initialized = GGL_TRUE;
+    g_triangle_renderer._pos_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_position");
+    g_triangle_renderer._size_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_size");
+    g_triangle_renderer._color_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_color");
     return GGL_OK;
 }
 
@@ -79,26 +87,19 @@ __ggl_triangle_init(void)
  * @return GGL_OK if worked. GGL_KO if not.
  */
 ggl_status
-ggl_triangle_render(const ggl_triangle *triangle)
+ggl_triangle_render(ggl_context *ctx, const ggl_triangle *triangle)
 {
-    ggl_ressource_id pos_location = 0;
-    ggl_ressource_id size_location = 0;
-    ggl_ressource_id color_location = 0;
+    ggl_vector2f final_pos = {0};
 
-    if (triangle == NULL) {
+    if (triangle == NULL || ctx == NULL) {
         return GGL_KO;
     }
+    final_pos = ggl_coords_normalize_to_ndc(ctx, triangle->_position);
     glBindVertexArray(g_triangle_renderer._vao);
-    glBindBuffer(GL_ARRAY_BUFFER, triangle->__vbo__);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
     glUseProgram(g_triangle_renderer._shader_program);
-    pos_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_position");
-    size_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_size");
-    color_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_color");
-    glUniform2f(pos_location, triangle->_position._x, triangle->_position._y);
-    glUniform2f(size_location, triangle->_size._x, triangle->_size._y);
-    glUniform4f(color_location, 
+    glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
+    glUniform2f(g_triangle_renderer._size_location, triangle->_size._x, triangle->_size._y);
+    glUniform4f(g_triangle_renderer._color_location, 
         triangle->_color._r / 255.0f,
         triangle->_color._g / 255.0f,
         triangle->_color._b / 255.0f,
@@ -121,21 +122,27 @@ ggl_triangle *
 ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 {
     ggl_triangle *triangle = malloc(sizeof(ggl_triangle));
-
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
          0.0f,  0.5f, 0.0f
     };
+    if (triangle == NULL) {
+        return NULL;
+    }
     if (g_triangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_triangle_init();
     } 
+    glBindVertexArray(g_triangle_renderer._vao);
     glGenBuffers(1, &triangle->__vbo__);
     glBindBuffer(GL_ARRAY_BUFFER, triangle->__vbo__);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     triangle->_position = position;
     triangle->_color = color;
     triangle->_size = size;
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     return triangle;
 }

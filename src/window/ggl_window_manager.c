@@ -9,13 +9,14 @@
 
 /**
  * @brief Set the size of the viewport of OpenGL.
+ *        This is an OpenGL default callback.
  *
  * @param window        The window
  * @param width         The width
  * @param height        The height
  */
 static void
-ggl_set_viewport_size(GLFWwindow* window, int width, int height)
+ggl_set_viewport_size(GLFWwindow *win, int width, int height)
 {
     glViewport(0, 0, width, height);
 }  
@@ -49,6 +50,8 @@ ggl_create_window(ggl_context *ctx, const char *title, ggl_vector2i size)
         return GGL_KO;
     }
     ctx->_ggl_window._win_glfw = window;
+    ctx->_ggl_window._ref_width = size._x;
+    ctx->_ggl_window._ref_height = size._y;
     GGL_DEBUG("Window created with name '%s'.", title);
     glfwMakeContextCurrent(window);
     glfwGetFramebufferSize(window, &framebuffer_width, &framebuffer_height);
@@ -72,6 +75,8 @@ ggl_window_should_close(ggl_context *ctx)
         return GGL_TRUE;
     if (glfwWindowShouldClose(ctx->_ggl_window._win_glfw) == GLFW_TRUE)
         return GGL_TRUE;
+    glfwGetFramebufferSize(ctx->_ggl_window._win_glfw,
+        &ctx->_ggl_window._fb_width, &ctx->_ggl_window._fb_height);
     glfwSwapBuffers(ctx->_ggl_window._win_glfw);
     glfwPollEvents();
     return GGL_FALSE;

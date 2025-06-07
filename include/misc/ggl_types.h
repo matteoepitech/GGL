@@ -76,6 +76,10 @@ typedef struct {
  */
 typedef struct {
     GLFWwindow *_win_glfw;
+    int32_t _fb_width;
+    int32_t _fb_height;
+    int32_t _ref_width;
+    int32_t _ref_height;
 } ggl_window;
 
 /**
@@ -88,11 +92,24 @@ typedef struct {
 
 // =====================================
 
+/**
+ * @brief Triangle structure object.
+ */
 typedef struct {
     ggl_vector2f _position;
     ggl_vector2f _size;
     ggl_color _color;
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
 } ggl_triangle;
+
+/**
+ * @brief Rectangle structure object.
+ */
+typedef struct {
+    ggl_vector2f _position;
+    ggl_vector2f _size;
+    ggl_color _color;
+    ggl_ressource_id __vbo__; // @INTERNAL USAGE
+} ggl_rectangle;
 
 #endif /* ifndef _GGL_TYPES_H_ */
