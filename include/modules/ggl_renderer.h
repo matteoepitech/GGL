@@ -11,11 +11,6 @@
     #include "../misc/ggl_types.h"
 
 /*
- * Location : src/renderer/ggl_renderer_init.c
- */
-ggl_status ggl_geometry_init(void);
-
-/*
  * Location : src/renderer/geometry/ggl_triangle.c
  */
 ggl_status __ggl_triangle_init(void); // @INTERNAL

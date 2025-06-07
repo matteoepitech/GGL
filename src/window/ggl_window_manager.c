@@ -53,10 +53,6 @@ ggl_create_window(const char *title, ggl_vector2i size)
     glfwGetFramebufferSize(window, &framebuffer_width, &framebuffer_height);
     ggl_set_viewport_size(window, framebuffer_width, framebuffer_height);
     glfwSetFramebufferSizeCallback(window, ggl_set_viewport_size);
-    if (ggl_geometry_init() == GGL_KO) {
-        GGL_PERROR("Geometry has not beend created.");
-        return GGL_KO;
-    }
     return GGL_OK;
 }
 

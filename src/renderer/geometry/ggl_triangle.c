@@ -133,6 +133,7 @@ ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 {
     ggl_triangle *triangle = malloc(sizeof(ggl_triangle));
 
+    __ggl_triangle_init();
     triangle->_position = position;
     triangle->_color = color;
     triangle->_size = size;

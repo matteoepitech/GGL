@@ -40,6 +40,11 @@ int main()
         ggl_clear_window(bg_c);
         ggl_triangle_render(t2);
         ggl_triangle_render(t1);
+        if (ggl_is_key_down(NULL, GLFW_KEY_SPACE)) {
+            bg_c._b += 1;
+            if (bg_c._b > 255)
+                bg_c._b = 0;
+        }
     }
     ggl_terminate();
     return 0;
