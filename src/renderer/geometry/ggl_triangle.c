@@ -7,6 +7,7 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
+#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -146,4 +147,94 @@ ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
     triangle->_color = color;
     triangle->_size = size;
     return triangle;
+}
+
+/**
+ * @brief Triangle get position.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f
+ggl_triangle_get_position(ggl_triangle *triangle)
+{
+    if (triangle == NULL)
+        return (ggl_vector2f) {0, 0};
+    return triangle->_position;
+}
+
+/**
+ * @brief Triangle get color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The color.
+ */
+ggl_color
+ggl_triangle_get_color(ggl_triangle *triangle)
+{
+    if (triangle == NULL)
+        return (ggl_color) {0, 0, 0, 0};
+    return triangle->_color;
+}
+
+/**
+ * @brief Triangle get size.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The size.
+ */
+ggl_vector2f
+ggl_triangle_get_size(ggl_triangle *triangle)
+{
+    if (triangle == NULL)
+        return (ggl_vector2f) {0, 0};
+    return triangle->_size;
+}
+
+
+/**
+ * @brief Triangle set position.
+ *
+ * @param triangle             The triangle
+ * @param position              The new position
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f
+ggl_triangle_set_position(ggl_triangle *triangle, ggl_vector2f position)
+{
+    triangle->_position = position;
+    return position;
+}
+
+/**
+ * @brief Triangle get color.
+ *
+ * @param triangle             The triangle
+ * @param color                 The new color
+ *
+ * @return The color.
+ */
+ggl_color
+ggl_triangle_set_color(ggl_triangle *triangle, ggl_color color)
+{
+    triangle->_color = color;
+    return color;
+}
+
+/**
+ * @brief Triangle set size.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The size.
+ */
+ggl_vector2f
+ggl_triangle_set_size(ggl_triangle *triangle, ggl_vector2f size)
+{
+    triangle->_size = size;
+    return size;
 }

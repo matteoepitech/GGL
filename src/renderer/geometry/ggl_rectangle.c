@@ -7,6 +7,7 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
+#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -129,11 +130,118 @@ ggl_rectangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
     glGenBuffers(1, &rectangle->__vbo__);
     glBindBuffer(GL_ARRAY_BUFFER, rectangle->__vbo__);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
     rectangle->_position = position;
     rectangle->_color = color;
     rectangle->_size = size;
     return rectangle;
+}
+
+/**
+ * @brief Rectangle get position.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f
+ggl_rectangle_get_position(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return (ggl_vector2f) {0, 0};
+    return rectangle->_position;
+}
+
+/**
+ * @brief Rectangle get color.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The color.
+ */
+ggl_color
+ggl_rectangle_get_color(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return (ggl_color) {0, 0, 0, 0};
+    return rectangle->_color;
+}
+
+/**
+ * @brief Rectangle get size.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The size.
+ */
+ggl_vector2f
+ggl_rectangle_get_size(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return (ggl_vector2f) {0, 0};
+    return rectangle->_size;
+}
+
+/**
+ * @brief Rectangle get bounds.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The bounds of the rectangle.
+ */
+ggl_bounds
+ggl_rectangle_get_bounds(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return (ggl_bounds) {0, 0, 0, 0};
+    return (ggl_bounds) {rectangle->_position._x,
+        rectangle->_position._y,
+        rectangle->_position._x + rectangle->_size._x,
+        rectangle->_position._y + rectangle->_size._y};
+}
+
+/**
+ * @brief Rectangle set position.
+ *
+ * @param rectangle             The rectangle
+ * @param position              The new position
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f
+ggl_rectangle_set_position(ggl_rectangle *rectangle, ggl_vector2f position)
+{
+    rectangle->_position = position;
+    return position;
+}
+
+/**
+ * @brief Rectangle get color.
+ *
+ * @param rectangle             The rectangle
+ * @param color                 The new color
+ *
+ * @return The color.
+ */
+ggl_color
+ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color)
+{
+    rectangle->_color = color;
+    return color;
+}
+
+/**
+ * @brief Rectangle set size.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The size.
+ */
+ggl_vector2f
+ggl_rectangle_set_size(ggl_rectangle *rectangle, ggl_vector2f size)
+{
+    rectangle->_size = size;
+    return size;
 }

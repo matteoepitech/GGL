@@ -62,6 +62,16 @@ typedef struct {
 } ggl_vector2f;
 
 /**
+ * @brief Type for bound, like bounds of a rectangle.
+ */
+typedef struct {
+    float _start_x;
+    float _start_y;
+    float _end_x;
+    float _end_y;
+} ggl_bounds;
+
+/**
  * @brief Type for color. RGBA
  */
 typedef struct {

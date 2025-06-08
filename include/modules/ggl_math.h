@@ -20,4 +20,9 @@ ggl_vector2f ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
 ggl_vector2f ggl_coords_adapt_to_current_size(ggl_context *ctx,
     ggl_vector2f ref_coords);
 
+/*
+ * Location : src/math/ggl_collision.c
+ */
+ggl_bool ggl_bounds_contains(ggl_bounds bounds, ggl_vector2f point);
+
 #endif /* ifndef _GGL_MODULE_MATH_H_ */

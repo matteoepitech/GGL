@@ -29,4 +29,8 @@
         #define GGL_FALSE 0
     #endif /* ifndef GGL_FALSE */
 
+    #define GGL_COLOR_RED (ggl_color) {255, 0, 0, 255}
+    #define GGL_COLOR_GREEN (ggl_color) {0, 255, 0, 255}
+    #define GGL_COLOR_BLUE (ggl_color) {0, 0, 255, 255}
+
 #endif /* ifndef _GGL_DEFINES_H_ */
