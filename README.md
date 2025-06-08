@@ -13,7 +13,8 @@ Perfect for creating lightweight 2D games and graphical interfaces without heada
 ---
 
 ## Examples
-<img src="./media/ggl-checkerboard-example.gif" alt="GGL Logo"/>
+<img src="./media/ggl-checkerboard-example.gif" alt="GGL Logo"/>  
+<img src="./media/ggl-snake-example.gif" alt="GGL Logo"/>
 
 ## Dependencies  
 Make sure you have these installed to use GGL:
