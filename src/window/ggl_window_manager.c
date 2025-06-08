@@ -69,6 +69,8 @@ ggl_create_window(ggl_context *ctx, const char *title, ggl_vector2i size)
     GGL_DEBUG("Window created with name '%s'.", title);
     glfwMakeContextCurrent(window);
     glfwGetFramebufferSize(window, &framebuffer_width, &framebuffer_height);
+    ctx->_ggl_window._fb_ref_height = framebuffer_height;
+    ctx->_ggl_window._fb_ref_width = framebuffer_width;
     ggl_set_viewport_size(window, framebuffer_width, framebuffer_height);
     glfwSetFramebufferSizeCallback(window, ggl_set_viewport_size);
     return GGL_OK;

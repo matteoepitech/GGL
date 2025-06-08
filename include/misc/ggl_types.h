@@ -91,6 +91,8 @@ typedef struct {
     GLFWwindow *_win_glfw;
     int32_t _fb_width;
     int32_t _fb_height;
+    int32_t _fb_ref_width;
+    int32_t _fb_ref_height;
     int32_t _ref_width;
     int32_t _ref_height;
 } ggl_window;

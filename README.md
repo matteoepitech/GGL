@@ -12,6 +12,9 @@ Perfect for creating lightweight 2D games and graphical interfaces without heada
 
 ---
 
+## Examples
+<img src="./media/ggl-checkerboard-example.gif" alt="GGL Logo"/>
+
 ## Dependencies  
 Make sure you have these installed to use GGL:
 
@@ -29,7 +32,7 @@ To build the library on Linux, MacOS, or Windows, simply run:
 ./build.sh
 ```
 
-## Usage / Examples
+## Usage
 
 Include GGL in your project, compile, and use its simple functions to draw shapes, manage windows, and handle events.
 

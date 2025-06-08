@@ -56,7 +56,7 @@ int main(void)
     init_rectangles(rectangles, original_positions);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
-        cursor_pos = ggl_get_cursor_position(ctx);
+        cursor_pos = ggl_get_cursor_screen_position(ctx);
         ggl_clear_window((ggl_color) {0, 0, 0, 0});
 
         for (int i = 0; i < RECT_AMOUNT; i++) {
@@ -68,7 +68,7 @@ int main(void)
         }
 
         for (int i = 0; i < RECT_AMOUNT; i++) {
-            ggl_bounds b = ggl_rectangle_get_bounds(rectangles[i]);
+            ggl_bounds b = ggl_rectangle_get_bounds(ctx, rectangles[i]);
             if (ggl_bounds_contains(b, cursor_pos) == GGL_TRUE) {
                 int last_index = trail[(trail_index - 1 + TRAIL_LENGTH) % TRAIL_LENGTH];
                 if (i != last_index) {
@@ -96,7 +96,11 @@ int main(void)
         }
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
-        printf("Cursor Position : (%.2f : %.2f)\n", cursor_pos._x, cursor_pos._y);
+        printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",
+            cursor_pos._x, cursor_pos._y,
+            ctx->_ggl_window._fb_width, ctx->_ggl_window._fb_height,
+            ctx->_ggl_window._ref_width, ctx->_ggl_window._ref_height,
+            ctx->_ggl_window._fb_ref_width, ctx->_ggl_window._fb_ref_height);
     }
 
     ggl_terminate(ctx);

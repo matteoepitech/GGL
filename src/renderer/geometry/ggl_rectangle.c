@@ -8,6 +8,7 @@
 #include "ggl.h"
 #include "ggl_internal.h"
 #include "misc/ggl_types.h"
+#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -192,14 +193,27 @@ ggl_rectangle_get_size(ggl_rectangle *rectangle)
  * @return The bounds of the rectangle.
  */
 ggl_bounds
-ggl_rectangle_get_bounds(ggl_rectangle *rectangle)
+ggl_rectangle_get_bounds(ggl_context *ctx, ggl_rectangle *rectangle)
 {
+    ggl_vector2f start = rectangle->_position;
+    ggl_vector2f size = rectangle->_size;
+
+    start._x = start._x *
+        ((float) ctx->_ggl_window._fb_width / ctx->_ggl_window._fb_ref_width);
+    start._y = start._y *
+        ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
+    size._x = size._x *
+        ((float) ctx->_ggl_window._fb_width / ctx->_ggl_window._fb_ref_width);
+    size._y = size._y *
+        ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
     if (rectangle == NULL)
         return (ggl_bounds) {0, 0, 0, 0};
-    return (ggl_bounds) {rectangle->_position._x,
-        rectangle->_position._y,
-        rectangle->_position._x + rectangle->_size._x,
-        rectangle->_position._y + rectangle->_size._y};
+    return (ggl_bounds) {
+        start._x,
+        start._y,
+        start._x + size._x,
+        start._y + size._y
+    };
 }
 
 /**

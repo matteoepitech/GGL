@@ -35,7 +35,8 @@ ggl_status ggl_rectangle_render(ggl_context *ctx,
 ggl_vector2f ggl_rectangle_get_position(ggl_rectangle *rectangle);
 ggl_color ggl_rectangle_get_color(ggl_rectangle *rectangle);
 ggl_vector2f ggl_rectangle_get_size(ggl_rectangle *rectangle);
-ggl_bounds ggl_rectangle_get_bounds(ggl_rectangle *rectangle);
+ggl_bounds ggl_rectangle_get_bounds(ggl_context *ctx,
+                                    ggl_rectangle *rectangle);
 ggl_vector2f ggl_rectangle_set_position(ggl_rectangle *rectangle,
                                         ggl_vector2f position);
 ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color);
