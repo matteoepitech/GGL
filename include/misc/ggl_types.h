@@ -131,9 +131,13 @@ typedef struct {
  */
 typedef struct {
     ggl_vector2f _position;
-    ggl_vector2f _size;
-    ggl_color _color;
+    float *_vertices;
+    ggl_color *_vertices_color;
+    uint32_t _vertices_count;
+    uint32_t *_indices;
+    ggl_ressource_id __vao__; // @INTERNAL USAGE
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
+    ggl_ressource_id __ebo__; // @INTERNAL USAGE
 } ggl_convex;
 
 #endif /* ifndef _GGL_TYPES_H_ */

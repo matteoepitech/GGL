@@ -6,7 +6,6 @@
 */
 
 #include "ggl.h"
-#include "ggl_internal.h"
 
 // ==============================================================
 
@@ -15,8 +14,6 @@
  *        Singleton of it using static variable.
  */
 typedef struct {
-    ggl_ressource_id _vao;
-    ggl_ressource_id _ebo;
     ggl_ressource_id _shader_program;
     ggl_ressource_id _pos_location;
     ggl_ressource_id _size_location;
@@ -25,7 +22,87 @@ typedef struct {
 } ggl_convex_renderer;
 static ggl_convex_renderer g_convex_renderer = {0};
 
+const char *GGL_CONVEX_VERTEX_SHADER =
+    "#version 330 core\n"
+    "layout (location = 0) in vec3 l_pos;\n"
+    "layout (location = 1) in vec4 l_color;\n"
+    "uniform vec2 u_position;\n"
+    "uniform vec2 u_size;\n"
+    "out vec4 v_color;\n"
+    "void main() {\n"
+    "    vec3 scaled_pos = l_pos * vec3(u_size, 1.0);\n"
+    "    vec2 final_pos = scaled_pos.xy + u_position;\n"
+    "    final_pos.y = -final_pos.y;\n"
+    "    gl_Position = vec4(final_pos, 0.0, 1.0);\n"
+    "    v_color = l_color;\n"
+    "}\0";
+
+const char *GGL_CONVEX_FRAGMENT_SHADER =
+    "#version 330 core\n"
+    "in vec4 v_color;\n"
+    "out vec4 frag_color;\n"
+    "uniform vec4 u_color;\n"
+    "void main() {\n"
+    "    frag_color = v_color;\n"
+    "}\0";
+
 // ==============================================================
+
+/**
+ * @brief Update the VAO/VBO/EBO of the convex shape.
+ *        @INFO the vertex data has the following pattern :
+ *        x,y,z,r,g,b,a so 7 bytes is 1 stride.
+ *
+ * @param convex                The shape structure pointer
+ *
+ * @return GGL_OK or GGL_KO.
+ */
+static ggl_status
+__ggl_convex_update(ggl_convex *convex)
+{
+    uint32_t *indices_arr = NULL;
+    float *vertex_data = NULL;
+    int indices_count = 0;
+    int vertex_data_size = 0;
+
+    if (convex == NULL || convex->_vertices == NULL)
+        return GGL_KO;
+    if (convex->_vertices_count >= 3) {
+        indices_count = (convex->_vertices_count - 2) * 3;
+    }
+    if (indices_count == 0 || convex->_indices == NULL) {
+        return GGL_KO;
+    }
+    indices_arr = convex->_indices;
+    vertex_data_size = convex->_vertices_count * 7;
+    vertex_data = malloc(sizeof(float) * vertex_data_size);
+    for (int i = 0; i < convex->_vertices_count; i++) {
+        vertex_data[i * 7 + 0] = convex->_vertices[i * 3 + 0];
+        vertex_data[i * 7 + 1] = convex->_vertices[i * 3 + 1];
+        vertex_data[i * 7 + 2] = convex->_vertices[i * 3 + 2];
+        vertex_data[i * 7 + 3] = convex->_vertices_color[i]._r / 255.0f;
+        vertex_data[i * 7 + 4] = convex->_vertices_color[i]._g / 255.0f;
+        vertex_data[i * 7 + 5] = convex->_vertices_color[i]._b / 255.0f;
+        vertex_data[i * 7 + 6] = convex->_vertices_color[i]._a / 255.0f;
+    } 
+    glGenVertexArrays(1, &convex->__vao__);
+    glBindVertexArray(convex->__vao__);
+    glGenBuffers(1, &convex->__ebo__);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, convex->__ebo__);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices_count,
+        indices_arr, GL_STATIC_DRAW); 
+    glGenBuffers(1, &convex->__vbo__);
+    glBindBuffer(GL_ARRAY_BUFFER, convex->__vbo__);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex_data_size,
+        vertex_data, GL_STATIC_DRAW); 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glBindVertexArray(0);
+    free(vertex_data);
+    return GGL_OK;
+}
 
 /**
  * @brief convex init.
@@ -33,23 +110,17 @@ static ggl_convex_renderer g_convex_renderer = {0};
  *
  * @return GGL_OK if the init was fine.
  */
-ggl_status
+static ggl_status
 __ggl_convex_init(void)
 {
     ggl_ressource_id vertex_shader = 0;
     ggl_ressource_id fragment_shader = 0;
-    unsigned int indices[] = {0};
 
     if (g_convex_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
-    glGenVertexArrays(1, &g_convex_renderer._vao);
-    glBindVertexArray(g_convex_renderer._vao);
-    //glGenBuffers(1, &g_convex_renderer._ebo);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_convex_renderer._ebo);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    vertex_shader = compile_shader(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
-    fragment_shader = compile_shader(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
+    vertex_shader = compile_shader(GL_VERTEX_SHADER, GGL_CONVEX_VERTEX_SHADER);
+    fragment_shader = compile_shader(GL_FRAGMENT_SHADER, GGL_CONVEX_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 
@@ -63,7 +134,6 @@ __ggl_convex_init(void)
     g_convex_renderer._pos_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_position");
     g_convex_renderer._size_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_size");
     g_convex_renderer._color_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_color");
-    glBindVertexArray(0);
     return GGL_OK;
 }
 
@@ -80,21 +150,16 @@ ggl_convex_render(ggl_context *ctx, const ggl_convex *convex)
     ggl_vector2f final_pos = {0};
     ggl_vector2f final_size = {0};
 
-    if (convex == NULL || ctx == NULL) {
+    if (convex == NULL || ctx == NULL || convex->_vertices_count < 0) {
         return GGL_KO;
     }
     final_pos = ggl_coords_normalize_to_ndc_pos(ctx, convex->_position);
-    final_size = ggl_coords_normalize_to_ndc_size(ctx, convex->_size);
-    glBindVertexArray(g_convex_renderer._vao);
+    final_size = ggl_coords_normalize_to_ndc_size(ctx, (ggl_vector2f) {1, 1});
+    glBindVertexArray(convex->__vao__);
     glUseProgram(g_convex_renderer._shader_program);
     glUniform2f(g_convex_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_convex_renderer._size_location, final_size._x, final_size._y);
-    glUniform4f(g_convex_renderer._color_location, 
-        convex->_color._r / 255.0f,
-        convex->_color._g / 255.0f,
-        convex->_color._b / 255.0f,
-        convex->_color._a / 255.0f);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_TRIANGLES, (convex->_vertices_count - 2) * 3, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     return GGL_OK;
 }
@@ -103,47 +168,110 @@ ggl_convex_render(ggl_context *ctx, const ggl_convex *convex)
  * @brief Create a convex.
  *
  * @param position              The pos of the convex using ggl_vector2f
- * @param size                  The size of the trignale using ggl_vector2f
- * @param color                 The color of the convex using ggl_color
  *
  * @return The convex geometry structure.
  */
 ggl_convex *
-ggl_convex_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
+ggl_convex_create(ggl_vector2f position)
 {
     ggl_convex *convex = malloc(sizeof(ggl_convex));
-    float vertices[] = {
-         1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,
-         0.0f, -1.0f, 0.0f,
-         0.0f,  0.0f, 0.0f // Anchor left up
-    };
 
     if (convex == NULL) {
         return NULL;
     }
     if (g_convex_renderer._is_initialized == GGL_FALSE) {
         __ggl_convex_init();
-    } 
-    glBindVertexArray(g_convex_renderer._vao);
-    glGenBuffers(1, &convex->__vbo__);
-    glBindBuffer(GL_ARRAY_BUFFER, convex->__vbo__);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
-    glEnableVertexAttribArray(0);
-    glBindVertexArray(0);
+    }
     convex->_position = position;
-    convex->_color = color;
-    convex->_size = size;
+    convex->_vertices = NULL;
+    convex->_indices = NULL;
+    convex->_vertices_color = NULL;
+    convex->_vertices_count = 0;
     return convex;
 }
 
 /**
+ * @brief Add a vertex in the convex shape.
+ *        @INFO the vertex data has the following pattern :
+ *        x,y,z,r,g,b,a so 7 bytes is 1 stride.
+ *
+ * @param convex                The original shape
+ * @param position              The position of the point to add
+ * @param color                 The color of the vertex to add
+ *
+ * @return The new convex shape.
+ */
+ggl_convex *
+ggl_convex_add_vertex(ggl_convex *convex, ggl_vector2f position, ggl_color color)
+{
+    int triangle_count = 0;
+
+    if (convex == NULL)
+        return NULL;
+    convex->_vertices_count++;
+    convex->_vertices = realloc(convex->_vertices,
+        sizeof(float) * 3 * convex->_vertices_count);
+    convex->_vertices[(3 * convex->_vertices_count) - 3] = position._x;
+    convex->_vertices[(3 * convex->_vertices_count) - 2] = position._y;
+    convex->_vertices[(3 * convex->_vertices_count) - 1] = 0.0f;
+    convex->_vertices_color = realloc(convex->_vertices_color,
+        sizeof(ggl_color) * convex->_vertices_count);
+    convex->_vertices_color[convex->_vertices_count - 1] = color;
+    if (convex->_vertices_count >= 3) {
+        triangle_count = convex->_vertices_count - 2;
+        convex->_indices = realloc(convex->_indices,
+            sizeof(uint32_t) * triangle_count * 3);
+        for (int i = 0; i < triangle_count; i++) {
+            convex->_indices[i * 3] = 0;
+            convex->_indices[i * 3 + 1] = i + 1;
+            convex->_indices[i * 3 + 2] = i + 2;
+        }
+    }
+    __ggl_convex_update(convex);
+    return convex;
+}
+
+/**
+ * @brief Set color for a specific vertex.
+ *
+ * @param convex                The convex shape
+ * @param vertex_index          The index of the vertex
+ * @param color                 The color to set
+ *
+ * @return GGL_OK if successful, GGL_KO otherwise.
+ */
+ggl_status
+ggl_convex_set_vertex_color(ggl_convex *convex, int vertex_index, ggl_color color)
+{
+    if (convex == NULL || vertex_index < 0 ||
+        vertex_index >= convex->_vertices_count) {
+        return GGL_KO;
+    } 
+    convex->_vertices_color[vertex_index] = color;
+    __ggl_convex_update(convex);
+    return GGL_OK;
+}
+
+/**
+ * @brief Get color of a specific vertex.
+ *
+ * @param convex                The convex shape
+ * @param vertex_index          The index of the vertex
+ *
+ * @return The color of the vertex.
+ */
+ggl_color
+ggl_convex_get_vertex_color(ggl_convex *convex, int vertex_index)
+{
+    if (convex == NULL || vertex_index < 0 ||
+        vertex_index >= convex->_vertices_count) {
+        return (ggl_color) {0, 0, 0, 0};
+    } 
+    return convex->_vertices_color[vertex_index];
+}
+
+/**
  * @brief Convex get position.
- *
- * @param convex             The convex
- *
- * @return The vector of position.
  */
 ggl_vector2f
 ggl_convex_get_position(ggl_convex *convex)
@@ -154,41 +282,7 @@ ggl_convex_get_position(ggl_convex *convex)
 }
 
 /**
- * @brief Convex get color.
- *
- * @param convex             The convex
- *
- * @return The color.
- */
-ggl_color
-ggl_convex_get_color(ggl_convex *convex)
-{
-    if (convex == NULL)
-        return (ggl_color) {0, 0, 0, 0};
-    return convex->_color;
-}
-
-/**
- * @brief Convex get size.
- *
- * @param convex             The convex
- *
- * @return The size.
- */
-ggl_vector2f
-ggl_convex_get_size(ggl_convex *convex)
-{
-    if (convex == NULL)
-        return (ggl_vector2f) {0, 0};
-    return convex->_size;
-}
-
-/**
  * @brief Convex get bounds.
- *
- * @param convex             The convex
- *
- * @return The bounds of the convex.
  */
 ggl_bounds
 ggl_convex_get_bounds(ggl_context *ctx, ggl_convex *convex)
@@ -199,44 +293,10 @@ ggl_convex_get_bounds(ggl_context *ctx, ggl_convex *convex)
 
 /**
  * @brief Convex set position.
- *
- * @param convex             The convex
- * @param position              The new position
- *
- * @return The vector of position.
  */
 ggl_vector2f
 ggl_convex_set_position(ggl_convex *convex, ggl_vector2f position)
 {
     convex->_position = position;
     return position;
-}
-
-/**
- * @brief Convex get color.
- *
- * @param convex             The convex
- * @param color                 The new color
- *
- * @return The color.
- */
-ggl_color
-ggl_convex_set_color(ggl_convex *convex, ggl_color color)
-{
-    convex->_color = color;
-    return color;
-}
-
-/**
- * @brief Convex set size.
- *
- * @param convex             The convex
- *
- * @return The size.
- */
-ggl_vector2f
-ggl_convex_set_size(ggl_convex *convex, ggl_vector2f size)
-{
-    convex->_size = size;
-    return size;
 }

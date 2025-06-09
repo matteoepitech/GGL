@@ -56,9 +56,24 @@ int main(void)
     ggl_setup_debug_close(ctx);
     init_rectangles(rectangles, original_positions);
 
-    ggl_convex *convex_shape = NULL;
+    ggl_convex *convex_shape = ggl_convex_create((ggl_vector2f) {1280.0f / 2.0f, 720.0f / 2.0f});
 
-    convex_shape = ggl_convex_create((ggl_vector2f) {1280.0f / 2.0f, 720.0f / 2.0f}, (ggl_vector2f) {1, 1}, GGL_COLOR_WHITE);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {0, 80}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {-60, 20}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {-80, -20}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {-60, -60}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {-20, -80}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {0, -60}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {20, -80}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, -60}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {80, -20}, GGL_COLOR_RED);
+    ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, 20}, GGL_COLOR_RED);
+    
+
+    ggl_convex *triangle_shape = ggl_convex_create((ggl_vector2f) {(1280.0f / 2.0f) + 150.0f, 720.0f / 2.0f});
+    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {0, 100}, GGL_COLOR_GREEN);
+    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {100, 100}, GGL_COLOR_BLUE);
+    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {50, -100}, GGL_COLOR_RED);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
@@ -101,6 +116,7 @@ int main(void)
         }
 
         ggl_convex_render(ctx, convex_shape);
+        ggl_convex_render(ctx, triangle_shape);
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",
