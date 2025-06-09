@@ -115,7 +115,6 @@ typedef struct {
     ggl_vector2f _position;
     ggl_vector2f _size;
     ggl_color _color;
-    ggl_ressource_id __vbo__; // @INTERNAL USAGE
 } ggl_triangle;
 
 /**
@@ -125,7 +124,16 @@ typedef struct {
     ggl_vector2f _position;
     ggl_vector2f _size;
     ggl_color _color;
-    ggl_ressource_id __vbo__; // @INTERNAL USAGE
 } ggl_rectangle;
+
+/**
+ * @brief Convex structure object.
+ */
+typedef struct {
+    ggl_vector2f _position;
+    ggl_vector2f _size;
+    ggl_color _color;
+    ggl_ressource_id __vbo__; // @INTERNAL USAGE
+} ggl_convex;
 
 #endif /* ifndef _GGL_TYPES_H_ */

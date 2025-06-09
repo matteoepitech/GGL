@@ -56,8 +56,9 @@ int main(void)
     ggl_setup_debug_close(ctx);
     init_rectangles(rectangles, original_positions);
 
-    ggl_triangle *t = ggl_triangle_create((ggl_vector2f) {1280.0f / 2, 720.0f / 2}, (ggl_vector2f) {50, 1000}, GGL_COLOR_WHITE);
-    ggl_triangle *t2 = ggl_triangle_create((ggl_vector2f) {1280.0f / 2 + 5, 720.0f / 2 + 5}, (ggl_vector2f) {50, 1000}, GGL_COLOR_BLACK);
+    ggl_convex *convex_shape = NULL;
+
+    convex_shape = ggl_convex_create((ggl_vector2f) {1280.0f / 2.0f, 720.0f / 2.0f}, (ggl_vector2f) {1, 1}, GGL_COLOR_WHITE);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
@@ -99,8 +100,7 @@ int main(void)
             ggl_rectangle_render(ctx, rectangles[i]);
         }
 
-        ggl_triangle_render(ctx, t2);
-        ggl_triangle_render(ctx, t);
+        ggl_convex_render(ctx, convex_shape);
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",

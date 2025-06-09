@@ -43,4 +43,22 @@ ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color);
 ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle,
     ggl_vector2f size);
 
+/*
+ * Location : src/renderer/geometry/ggl_convex.c
+ */
+ggl_convex *ggl_convex_create(ggl_vector2f position, ggl_vector2f size,
+                                    ggl_color color);
+ggl_status ggl_convex_render(ggl_context *ctx,
+                                const ggl_convex *convex);
+ggl_vector2f ggl_convex_get_position(ggl_convex *convex);
+ggl_color ggl_convex_get_color(ggl_convex *convex);
+ggl_vector2f ggl_convex_get_size(ggl_convex *convex);
+ggl_bounds ggl_convex_get_bounds(ggl_context *ctx,
+                                    ggl_convex *convex);
+ggl_vector2f ggl_convex_set_position(ggl_convex *convex,
+                                        ggl_vector2f position);
+ggl_color ggl_convex_set_color(ggl_convex *convex, ggl_color color);
+ggl_vector2f ggl_convex_set_size(ggl_convex *convex,
+    ggl_vector2f size);
+
 #endif /* ifndef _GGL_MODULE_RENDERER_H_ */

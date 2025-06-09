@@ -7,8 +7,6 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
-#include "misc/ggl_types.h"
-#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -18,6 +16,7 @@
  */
 typedef struct {
     ggl_ressource_id _vao;
+    ggl_ressource_id _vbo;
     ggl_ressource_id _ebo;
     ggl_ressource_id _shader_program;
     ggl_ressource_id _pos_location;
@@ -40,13 +39,22 @@ __ggl_rectangle_init(void)
 {
     ggl_ressource_id vertex_shader = 0;
     ggl_ressource_id fragment_shader = 0;
-    unsigned int indices[] = { 0, 1, 3, 1, 2, 3};
+    float vertices[] = {
+        0.0f, 0.0f, 0.0f,       // left up
+        0.0f, -1.0f, 0.0f,      // left down
+        1.0f, 0.0f, 0.0f,       // right up
+        1.0f, -1.0f, 0.0f,      // right down
+    };
+    unsigned int indices[] = { 0, 1, 2, 1, 3, 2 };
 
     if (g_rectangle_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
     glGenVertexArrays(1, &g_rectangle_renderer._vao);
     glBindVertexArray(g_rectangle_renderer._vao);
+    glGenBuffers(1, &g_rectangle_renderer._vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_rectangle_renderer._vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
     glGenBuffers(1, &g_rectangle_renderer._ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_rectangle_renderer._ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -65,6 +73,8 @@ __ggl_rectangle_init(void)
     g_rectangle_renderer._pos_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_position");
     g_rectangle_renderer._size_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_color");
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
+    glEnableVertexAttribArray(0);
     glBindVertexArray(0);
     return GGL_OK;
 }
@@ -114,26 +124,13 @@ ggl_rectangle *
 ggl_rectangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 {
     ggl_rectangle *rectangle = malloc(sizeof(ggl_rectangle));
-    float vertices[] = {
-         1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,
-         0.0f, -1.0f, 0.0f,
-         0.0f,  0.0f, 0.0f // Anchor left up
-    };
 
     if (rectangle == NULL) {
         return NULL;
     }
     if (g_rectangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_rectangle_init();
-    } 
-    glBindVertexArray(g_rectangle_renderer._vao);
-    glGenBuffers(1, &rectangle->__vbo__);
-    glBindBuffer(GL_ARRAY_BUFFER, rectangle->__vbo__);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
-    glEnableVertexAttribArray(0);
-    glBindVertexArray(0);
+    }
     rectangle->_position = position;
     rectangle->_color = color;
     rectangle->_size = size;

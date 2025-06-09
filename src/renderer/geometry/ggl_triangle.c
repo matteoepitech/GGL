@@ -7,7 +7,6 @@
 
 #include "ggl.h"
 #include "ggl_internal.h"
-#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -17,6 +16,7 @@
  */
 typedef struct {
     ggl_ressource_id _vao;
+    ggl_ressource_id _vbo;
     ggl_ressource_id _shader_program;
     ggl_ressource_id _pos_location;
     ggl_ressource_id _size_location;
@@ -56,11 +56,20 @@ __ggl_triangle_init(void)
 {
     ggl_ressource_id vertex_shader = 0;
     ggl_ressource_id fragment_shader = 0;
+    float vertices[] = {
+        0.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        0.5f,  1.0f, 0.0f
+    };
 
     if (g_triangle_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
     glGenVertexArrays(1, &g_triangle_renderer._vao);
+    glBindVertexArray(g_triangle_renderer._vao);
+    glGenBuffers(1, &g_triangle_renderer._vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_triangle_renderer._vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
     vertex_shader = compile_shader(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
     fragment_shader = compile_shader(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
@@ -76,6 +85,10 @@ __ggl_triangle_init(void)
     g_triangle_renderer._pos_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_position");
     g_triangle_renderer._size_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_size");
     g_triangle_renderer._color_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_color");
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     return GGL_OK;
 }
 
@@ -124,25 +137,13 @@ ggl_triangle *
 ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 {
     ggl_triangle *triangle = malloc(sizeof(ggl_triangle));
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
+
     if (triangle == NULL) {
         return NULL;
     }
     if (g_triangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_triangle_init();
-    } 
-    glBindVertexArray(g_triangle_renderer._vao);
-    glGenBuffers(1, &triangle->__vbo__);
-    glBindBuffer(GL_ARRAY_BUFFER, triangle->__vbo__);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
     triangle->_position = position;
     triangle->_color = color;
     triangle->_size = size;
