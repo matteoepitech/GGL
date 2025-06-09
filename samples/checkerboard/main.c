@@ -6,6 +6,7 @@
 */
 
 #include "../../include/ggl.h"
+#include "misc/ggl_types.h"
 #include "modules/ggl_core.h"
 #include "modules/ggl_input.h"
 #include "modules/ggl_math.h"
@@ -55,6 +56,9 @@ int main(void)
     ggl_setup_debug_close(ctx);
     init_rectangles(rectangles, original_positions);
 
+    ggl_triangle *t = ggl_triangle_create((ggl_vector2f) {1280.0f / 2, 720.0f / 2}, (ggl_vector2f) {50, 1000}, GGL_COLOR_WHITE);
+    ggl_triangle *t2 = ggl_triangle_create((ggl_vector2f) {1280.0f / 2 + 5, 720.0f / 2 + 5}, (ggl_vector2f) {50, 1000}, GGL_COLOR_BLACK);
+
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
         ggl_clear_window((ggl_color) {0, 0, 0, 0});
@@ -94,6 +98,9 @@ int main(void)
         for (int i = 0; i < RECT_AMOUNT; i++) {
             ggl_rectangle_render(ctx, rectangles[i]);
         }
+
+        ggl_triangle_render(ctx, t2);
+        ggl_triangle_render(ctx, t);
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",
