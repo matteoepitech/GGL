@@ -9,6 +9,8 @@
     #define _GGL_H_
 
     #define GL_SILENCE_DEPRECATION
+    
+    #define STB_IMAGE_IMPLEMENTATION
 
     #include "modules/ggl_core.h"
     #include "modules/ggl_window.h"
@@ -16,6 +18,7 @@
     #include "modules/ggl_input.h"
     #include "modules/ggl_renderer.h"
     #include "modules/ggl_shader.h"
+    #include "modules/ggl_texture.h"
     
     #include "misc/ggl_types.h"
     #include "misc/ggl_defines.h"

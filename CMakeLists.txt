@@ -10,6 +10,7 @@ add_library(ggl SHARED ${GGL_SRC})
 
 target_include_directories(ggl PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/stb
 )
 
 add_library(glad STATIC

@@ -6,7 +6,7 @@
 */
 
 #include "ggl.h"
-#include "modules/ggl_shader.h"
+#include "modules/ggl_texture.h"
 
 // ==============================================================
 
@@ -60,6 +60,11 @@ __ggl_triangle_init(void)
         0.0f, 0.0f, 0.0f,
         1.0f, 0.0f, 0.0f,
         0.5f,  1.0f, 0.0f
+    };
+    float texCoords[] = {
+        0.0f, 0.0f,  // lower-left corner  
+        1.0f, 0.0f,  // lower-right corner
+        0.5f, 1.0f   // top-center corner
     };
 
     if (g_triangle_renderer._is_initialized == GGL_TRUE) {
@@ -143,6 +148,19 @@ ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
     if (g_triangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_triangle_init();
     }
+    glGenTextures(1, &triangle->_info.__texture_id__);
+    glBindTexture(GL_TEXTURE_2D, triangle->_info.__texture_id__);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    ggl_texture *t = ggl_texture_create("./tree.jpeg");
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->_width, t->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, t->_data);
+    glGenerateMipmap(GL_TEXTURE_2D);
     triangle->_position = position;
     triangle->_color = color;
     triangle->_size = size;

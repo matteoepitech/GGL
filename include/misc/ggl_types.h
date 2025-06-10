@@ -105,6 +105,24 @@ typedef struct {
     double _current_fps;
 } ggl_context;
 
+/**
+ * @brief A structure containins informations about a texture.
+ */
+typedef struct {
+    int _width;
+    int _height;
+    int _nr_channels;
+    unsigned char *_data;
+} ggl_texture;
+
+// =====================================
+
+/**
+ * @brief A structure containing misc data for a shape. Like textures,shaders..
+ */
+typedef struct {
+    ggl_ressource_id __texture_id__;  // @INTERNAL USAGE;
+} ggl_shape_data;
 
 // =====================================
 
@@ -115,6 +133,7 @@ typedef struct {
     ggl_vector2f _position;
     ggl_vector2f _size;
     ggl_color _color;
+    ggl_shape_data _info;
 } ggl_triangle;
 
 /**
@@ -124,6 +143,7 @@ typedef struct {
     ggl_vector2f _position;
     ggl_vector2f _size;
     ggl_color _color;
+    ggl_shape_data _info;
 } ggl_rectangle;
 
 /**
@@ -138,6 +158,7 @@ typedef struct {
     ggl_ressource_id __vao__; // @INTERNAL USAGE
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
     ggl_ressource_id __ebo__; // @INTERNAL USAGE
+    ggl_shape_data _info;
 } ggl_convex;
 
 #endif /* ifndef _GGL_TYPES_H_ */
