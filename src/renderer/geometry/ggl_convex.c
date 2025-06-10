@@ -119,8 +119,8 @@ __ggl_convex_init(void)
     if (g_convex_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
-    vertex_shader = compile_shader(GL_VERTEX_SHADER, GGL_CONVEX_VERTEX_SHADER);
-    fragment_shader = compile_shader(GL_FRAGMENT_SHADER, GGL_CONVEX_FRAGMENT_SHADER);
+    vertex_shader = ggl_create_shader(GL_VERTEX_SHADER, GGL_CONVEX_VERTEX_SHADER);
+    fragment_shader = ggl_create_shader(GL_FRAGMENT_SHADER, GGL_CONVEX_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 
@@ -130,9 +130,9 @@ __ggl_convex_init(void)
     glLinkProgram(g_convex_renderer._shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    g_convex_renderer._pos_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_position");
-    g_convex_renderer._size_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_size");
-    g_convex_renderer._color_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_color");
+    g_convex_renderer._pos_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_position");
+    g_convex_renderer._size_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_size");
+    g_convex_renderer._color_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_color");
     g_convex_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
 }

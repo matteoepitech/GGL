@@ -57,8 +57,8 @@ __ggl_rectangle_init(void)
     glGenBuffers(1, &g_rectangle_renderer._ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_rectangle_renderer._ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    vertex_shader = compile_shader(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
-    fragment_shader = compile_shader(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
+    vertex_shader = ggl_create_shader(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
+    fragment_shader = ggl_create_shader(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 
@@ -68,9 +68,9 @@ __ggl_rectangle_init(void)
     glLinkProgram(g_rectangle_renderer._shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    g_rectangle_renderer._pos_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_position");
-    g_rectangle_renderer._size_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_size");
-    g_rectangle_renderer._color_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_color");
+    g_rectangle_renderer._pos_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_position");
+    g_rectangle_renderer._size_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_size");
+    g_rectangle_renderer._color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_color");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
