@@ -73,3 +73,40 @@ ggl_coords_normalize_to_ndc_size(ggl_context *ctx, ggl_vector2f ref_coords)
     normalized._y = adapted._y / (current_height / 2.0f);
     return normalized;
 }
+
+/**
+ * @brief Normalizes a reference coordinate value to NDC range [-1;1]
+ *        taking the current screen dimensions into account.
+ *
+ * @param ctx           The program context
+ * @param ref_value     Coordinate value based on 1280x720 resolution
+ * @param axis          Axis to normalize (0 for X, 1 for Y)
+ *
+ * @return The normalized coordinate value in NDC range.
+ */
+float
+ggl_coord_normalize_to_ndc_pos(ggl_context *ctx, float ref_value, int axis)
+{
+    float normalized = 0.0f;
+    float current_dimension = 0.0f;
+    float ref_dimension = 0.0f;
+    float adapted_value = 0.0f;
+    
+    if (ctx == NULL) {
+        return 0.0f;
+    } 
+    if (axis == 0) {
+        current_dimension = (float)ctx->_ggl_window._fb_width;
+        ref_dimension = ctx->_ggl_window._ref_width;
+    } else {
+        current_dimension = (float)ctx->_ggl_window._fb_height;
+        ref_dimension = ctx->_ggl_window._ref_height;
+    }
+    adapted_value = ref_value * (current_dimension / ref_dimension);
+    if (axis == 0) {
+        normalized = (adapted_value / current_dimension * 2.0f) - 1.0f;
+    } else {
+        normalized = 1.0f - (adapted_value / current_dimension * 2.0f);
+    }
+    return normalized;
+}

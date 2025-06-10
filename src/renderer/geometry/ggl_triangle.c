@@ -80,14 +80,13 @@ __ggl_triangle_init(void)
     glLinkProgram(g_triangle_renderer._shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    g_triangle_renderer._is_initialized = GGL_TRUE;
     g_triangle_renderer._pos_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_position");
     g_triangle_renderer._size_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_size");
     g_triangle_renderer._color_location = glGetUniformLocation(g_triangle_renderer._shader_program, "u_color");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    g_triangle_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
 }
 

@@ -96,8 +96,8 @@ __ggl_convex_update(ggl_convex *convex)
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex_data_size,
         vertex_data, GL_STATIC_DRAW); 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
     free(vertex_data);
@@ -130,10 +130,10 @@ __ggl_convex_init(void)
     glLinkProgram(g_convex_renderer._shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    g_convex_renderer._is_initialized = GGL_TRUE;
     g_convex_renderer._pos_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_position");
     g_convex_renderer._size_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_size");
     g_convex_renderer._color_location = glGetUniformLocation(g_convex_renderer._shader_program, "u_color");
+    g_convex_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
 }
 

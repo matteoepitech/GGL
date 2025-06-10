@@ -6,7 +6,6 @@
 */
 
 #include "ggl.h"
-#include "ggl_internal.h"
 
 // ==============================================================
 
@@ -69,13 +68,13 @@ __ggl_rectangle_init(void)
     glLinkProgram(g_rectangle_renderer._shader_program);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    g_rectangle_renderer._is_initialized = GGL_TRUE;
     g_rectangle_renderer._pos_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_position");
     g_rectangle_renderer._size_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = glGetUniformLocation(g_rectangle_renderer._shader_program, "u_color");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
+    g_rectangle_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
 }
 
