@@ -17,6 +17,9 @@ extern const char *GGL_TRIANGLE_FRAGMENT_SHADER;
 extern const char *GGL_CONVEX_VERTEX_SHADER;
 extern const char *GGL_CONVEX_FRAGMENT_SHADER;
 
+extern const char *GGL_CIRCLE_VERTEX_SHADER;
+extern const char *GGL_CIRCLE_FRAGMENT_SHADER;
+
 /**
  * @brief Get a var location in a shader.
  *

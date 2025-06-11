@@ -28,4 +28,11 @@
             } while(0)
     #endif /* ifndef GGL_DEBUG */
 
+    #define GGL_DEG_TO_RAD(deg) ((deg) * M_PI / 180.0f)
+    #define GGL_RAD_TO_DEG(rad) ((rad) * 180.0f / M_PI)
+
+    #ifndef M_PI
+        #define M_PI 3.14159265358979323846f
+    #endif /* ifndef M_PI */
+
 #endif /* ifndef _GGL_MACROS_H_ */

@@ -16,6 +16,7 @@
     #include <stdio.h>
     #include <time.h>
     #include <stdlib.h>
+    #include <math.h>
     
     #include <OpenGL/gl3.h>
     #include <GLFW/glfw3.h>
@@ -36,6 +37,11 @@ typedef int8_t ggl_bool;
  * @brief Used for inputs.
  */
 typedef int32_t ggl_key;
+
+/**
+ * @brief Used for int values.
+ */
+typedef int32_t ggl_int;
 
 /**
  * @brief Used for ressource like createShader, program VAO, VBO, EBO..
@@ -160,5 +166,20 @@ typedef struct {
     ggl_ressource_id __ebo__; // @INTERNAL USAGE
     ggl_shape_data _info;
 } ggl_convex;
+
+/**
+ * @brief Circle structure object.
+ */
+typedef struct {
+    ggl_vector2f _position;
+    ggl_int _radius;
+    ggl_int _step;
+    ggl_color _color;
+    ggl_shape_data _info;
+    ggl_ressource_id __vao__; // @INTERNAL USAGE
+    ggl_ressource_id __vbo__; // @INTERNAL USAGE
+    ggl_ressource_id __ebo__; // @INTERNAL USAGE
+    ggl_int __triangle_count__; // @INTERNAL USAGE
+} ggl_circle;
 
 #endif /* ifndef _GGL_TYPES_H_ */

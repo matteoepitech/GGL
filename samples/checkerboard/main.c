@@ -27,7 +27,7 @@ static void init_rectangles(ggl_rectangle *rects[RECT_AMOUNT], ggl_vector2f posi
     for (int i = 0; i < RECT_AMOUNT; i++) {
         rects[i] = ggl_rectangle_create(pos, (ggl_vector2f) {RECT_SIZE, RECT_SIZE},
             swap == 0 ? (ggl_color) {90, 130, 126, 255} : (ggl_color) {132, 174, 146, 255});
-        ggl_rectangle_set_texture(rects[i], t);
+        //ggl_rectangle_set_texture(rects[i], t);
         positions[i] = pos;
         swap ^= 1;
         pos._x += RECT_SIZE;
@@ -49,7 +49,6 @@ int main(void)
         trail[i] = -1;
     ggl_color colors[3] = {GGL_COLOR_RED, GGL_COLOR_GREEN, GGL_COLOR_BLUE};
     int trail_index = 0;
-    float size_matthias = 0.0f;
 
     ggl_texture *t = ggl_texture_create("./tree.jpeg");
     ggl_texture *t2 = ggl_texture_create("./tree.jpeg");
@@ -75,17 +74,10 @@ int main(void)
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {80, -20}, GGL_COLOR_RED);
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, 20}, GGL_COLOR_RED);
 
-    ggl_triangle *my_matthias = ggl_triangle_create((ggl_vector2f) {(1280.0f / 2.0f) - (700.0f / 2.0f), (720.0f / 2.0f) + (700.0f / 2.0f)}, (ggl_vector2f) {700, 700}, GGL_COLOR_RED);
+    ggl_circle *my_circle = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f - 500, 720.0f / 2.0f}, 250, 50, GGL_COLOR_GREEN);
+    ggl_circle *my_circle_2 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f - 0, 720.0f / 2.0f}, 250, 50, GGL_COLOR_WHITE);
+    ggl_circle *my_circle_3 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f + 500, 720.0f / 2.0f}, 250, 50, GGL_COLOR_RED);
 
-    ggl_triangle *my_matthias_2 = ggl_triangle_create((ggl_vector2f) {(1280.0f / 2.0f) + (700.0f / 2.0f), (720.0f / 2.0f) + (700.0f / 2.0f)}, (ggl_vector2f) {700, 700}, GGL_COLOR_GREEN);
-
-    ggl_rectangle *my_matthias_3 = ggl_rectangle_create((ggl_vector2f) {1280 / 2.0f - 250, 700.0f / 2.0f - 250}, (ggl_vector2f) {1, 1}, GGL_COLOR_BLUE);
-    ggl_rectangle *my_matthias_4 = ggl_rectangle_create((ggl_vector2f) {1280 / 2.0f + 250, 700.0f / 2.0f - 250}, (ggl_vector2f) {1, 1}, GGL_COLOR_BLUE);
-
-    ggl_triangle_set_texture(my_matthias, t);
-    ggl_triangle_set_texture(my_matthias_2, t2);
-    ggl_rectangle_set_texture(my_matthias_3, t);
-    ggl_rectangle_set_texture(my_matthias_4, t2);
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
         ggl_clear_window((ggl_color) {0, 0, 0, 0});
@@ -125,20 +117,26 @@ int main(void)
             ggl_rectangle_render(ctx, rectangles[i]);
         }
 
-        ggl_convex_render(ctx, convex_shape);
+        // ggl_convex_render(ctx, convex_shape);
 
 
-        ggl_triangle_render(ctx, my_matthias);
-        ggl_triangle_render(ctx, my_matthias_2);
-        ggl_rectangle_render(ctx, my_matthias_3);
-        ggl_rectangle_render(ctx, my_matthias_4);
+        static float circle_r = 0.0f;
 
-        float v = (sinf(size_matthias) + 1) / 2.0f;
-        ggl_triangle_set_size(my_matthias, (ggl_vector2f) {v * 500, v * 800});
-        ggl_triangle_set_size(my_matthias_2, (ggl_vector2f) {v * -500, v * 800});
-        ggl_rectangle_set_size(my_matthias_3, (ggl_vector2f) {(v + 0.1f) * 500, v * 500});
-        ggl_rectangle_set_size(my_matthias_4, (ggl_vector2f) {(v - 0.1f) * -500, v * 1000});
-        size_matthias += 0.05f;
+        float t = circle_r;
+
+        float r1 = (((sinf(t) + 1.0f) / 2.0f) * 250.0f);
+        float r2 = (((sinf(t - 0.5f) + 1.0f) / 2.0f) * 250.0f);
+        float r3 = (((sinf(t - 1.0f) + 1.0f) / 2.0f) * 250.0f);
+
+        ggl_circle_set_radius(my_circle, r1);
+        ggl_circle_set_radius(my_circle_2, r2);
+        ggl_circle_set_radius(my_circle_3, r3);
+
+        ggl_circle_render(ctx, my_circle);
+        ggl_circle_render(ctx, my_circle_2);
+        ggl_circle_render(ctx, my_circle_3);
+
+        circle_r += 0.05f;
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",

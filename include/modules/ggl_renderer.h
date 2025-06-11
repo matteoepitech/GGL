@@ -295,4 +295,102 @@ ggl_vector2f ggl_convex_set_position(ggl_convex *convex,
 
 // ==============================================================
 
+/**
+ * @brief Create a circle.
+ *
+ * @param position              The pos of the circle using ggl_vector2f
+ * @param radius                The radius of the circle using ggl_int
+ * @param step                  The number of step of the circle using ggl_int
+ * @param color                 The color of the circle using ggl_color
+ *
+ * @return The circle geometry structure.
+ */
+ggl_circle *ggl_circle_create(ggl_vector2f position,
+                              ggl_int radius,
+                              ggl_int step,
+                              ggl_color color);
+
+/**
+ * @brief Render a circle.
+ *
+ * @param ctx                    The context
+ * @param circle              The circle to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status ggl_circle_render(ggl_context *ctx,
+                             const ggl_circle *circle);
+
+/**
+ * @brief circle get position.
+ *
+ * @param circle              The circle
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f ggl_circle_get_position(ggl_circle *circle);
+
+/**
+ * @brief circle get color.
+ *
+ * @param circle              The circle
+ *
+ * @return The color.
+ */
+ggl_color ggl_circle_get_color(ggl_circle *circle);
+
+/**
+ * @brief circle get radius.
+ *
+ * @param circle              The circle
+ *
+ * @return The radius.
+ */
+ggl_int ggl_circle_get_radius(ggl_circle *circle);
+
+/**
+ * @brief circle set position.
+ *
+ * @param circle             The circle
+ * @param position              The new position
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f ggl_circle_set_position(ggl_circle *circle,
+                                     ggl_vector2f position);
+
+/**
+ * @brief circle set color.
+ *
+ * @param circle             The circle
+ * @param color                 The new color
+ *
+ * @return The color.
+ */
+ggl_color ggl_circle_set_color(ggl_circle *circle,
+                               ggl_color color);
+
+/**
+ * @brief circle set radius.
+ *
+ * @param circle              The circle
+ *
+ * @return The radius.
+ */
+ggl_int ggl_circle_set_radius(ggl_circle *circle,
+                              ggl_int radius);
+
+/**
+ * @brief Set a texture for a circle.
+ *
+ * @param circle              The circle
+ * @param texture               The texture to add
+ *
+ * @return GGL_OK.
+ */
+ggl_status ggl_circle_set_texture(ggl_circle *circle,
+                                  ggl_texture *texture);
+
+// ==============================================================
+
 #endif /* ifndef _GGL_MODULE_RENDERER_H_ */

@@ -62,7 +62,7 @@ const char *GGL_TRIANGLE_FRAGMENT_SHADER =
  *
  * @return GGL_OK if the init was fine.
  */
-ggl_status
+static ggl_status
 __ggl_triangle_init(void)
 {
     ggl_ressource_id vertex_shader = 0;
@@ -110,7 +110,7 @@ __ggl_triangle_init(void)
  * @brief Create a triangle.
  *
  * @param position              The pos of the triangle using ggl_vector2f
- * @param size                  The size of the trignale using ggl_vector2f
+ * @param size                  The size of the triangle using ggl_vector2f
  * @param color                 The color of the triangle using ggl_color
  *
  * @return The triangle geometry structure.

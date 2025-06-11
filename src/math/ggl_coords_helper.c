@@ -12,7 +12,7 @@
  *        Maintains the same relative ratio as in the reference window.
  *
  * @param ctx           The program context
- * @param ref_coords    Coordinates based on 1280x720 resolution
+ * @param ref_coords    Coordinates based on the reference resolution
  *
  * @return Coordinates adapted to the current screen size.
  */
@@ -36,7 +36,7 @@ ggl_coords_adapt_to_current_size(ggl_context *ctx,
  *        range [-1;1] taking the current aspect ratio into account.
  *
  * @param ctx           The program context
- * @param ref_coords    Coordinates based on 1280x720 resolution
+ * @param ref_coords    Coordinates based on the reference resolution
  *
  * @return The final normalized coordinates.
  */
@@ -59,7 +59,7 @@ ggl_coords_normalize_to_ndc_pos(ggl_context *ctx,
  *        range [O;1] taking the current aspect ratio into account.
  *
  * @param ctx           The program context
- * @param ref_coords    Coordinates based on 1280x720 resolution
+ * @param ref_coords    Coordinates based on the reference resolution
  *
  * @return The final normalized coordinates.
  */
@@ -82,7 +82,7 @@ ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
  *        taking the current screen dimensions into account.
  *
  * @param ctx           The program context
- * @param ref_value     Coordinate value based on 1280x720 resolution
+ * @param ref_value     Coordinate value based on the reference resolution
  * @param axis          Axis to normalize (0 for X, 1 for Y)
  *
  * @return The normalized coordinate value in NDC range.
