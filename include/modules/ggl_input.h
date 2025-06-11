@@ -10,14 +10,25 @@
     
     #include "../misc/ggl_types.h"
 
-/*
- * Location : src/input/ggl_debug_close.c
+/**
+ * @brief Setup the debug close. If you don't call this function
+ *        you will not gonna have this feature.
+ *
+ * @param ctx           The context
+ *
+ * @return GGL_OK if worked, GGL_KO if not.
  */
 ggl_status ggl_setup_debug_close(ggl_context *ctx);
 
-/*
- * Location : src/input/ggl_input_manager.c
+/**
+ * @brief Is a key is down or not.
+ *
+ * @param ctx           The context
+ * @param key           The key (int)
+ *
+ * @return GGL_TRUE or GGL_FALSE.
  */
-ggl_bool ggl_is_key_down(ggl_context *ctx, ggl_key key);
+ggl_bool ggl_is_key_down(ggl_context *ctx,
+                         ggl_key key);
 
 #endif /* ifndef _GGL_MODULE_INPUT_H_ */

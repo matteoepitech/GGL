@@ -10,42 +10,265 @@
 
     #include "../misc/ggl_types.h"
 
-/*
- * Location : src/renderer/geometry/ggl_triangle.c
+/**
+ * @brief Create a triangle.
+ *
+ * @param position              The pos of the triangle using ggl_vector2f
+ * @param size                  The size of the trignale using ggl_vector2f
+ * @param color                 The color of the triangle using ggl_color
+ *
+ * @return The triangle geometry structure.
  */
-ggl_triangle *ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color);
-ggl_status ggl_triangle_render(ggl_context *ctx, const ggl_triangle *triangle);
+ggl_triangle *ggl_triangle_create(ggl_vector2f position,
+                                  ggl_vector2f size,
+                                  ggl_color color);
+
+/**
+ * @brief Render a triangle.
+ *
+ * @param ctx                    The context
+ * @param triangle              The triangle to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status ggl_triangle_render(ggl_context *ctx,
+                               const ggl_triangle *triangle);
+
+/**
+ * @brief Triangle get position.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The vector of position.
+ */
 ggl_vector2f ggl_triangle_get_position(ggl_triangle *triangle);
-ggl_color ggl_triangle_get_color(ggl_triangle *triangle);
-ggl_vector2f ggl_triangle_get_size(ggl_triangle *triangle);
-ggl_vector2f ggl_triangle_set_position(ggl_triangle *triangle, ggl_vector2f position);
-ggl_color ggl_triangle_set_color(ggl_triangle *triangle, ggl_color color);
-ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle, ggl_vector2f size);
-;
 
-/*
- * Location : src/renderer/geometry/ggl_rectangle.c
+/**
+ * @brief Triangle get color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The color.
  */
-ggl_rectangle *ggl_rectangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color);
-ggl_status ggl_rectangle_render(ggl_context *ctx, const ggl_rectangle *rectangle);
-ggl_vector2f ggl_rectangle_get_position(ggl_rectangle *rectangle);
-ggl_color ggl_rectangle_get_color(ggl_rectangle *rectangle);
-ggl_vector2f ggl_rectangle_get_size(ggl_rectangle *rectangle);
-ggl_bounds ggl_rectangle_get_bounds(ggl_context *ctx, ggl_rectangle *rectangle);
-ggl_vector2f ggl_rectangle_set_position(ggl_rectangle *rectangle, ggl_vector2f position);
-ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color);
-ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle, ggl_vector2f size);
+ggl_color ggl_triangle_get_color(ggl_triangle *triangle);
 
-/*
- * Location : src/renderer/geometry/ggl_convex.c
+/**
+ * @brief Triangle get size.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The size.
+ */
+ggl_vector2f ggl_triangle_get_size(ggl_triangle *triangle);
+
+/**
+ * @brief Triangle set position.
+ *
+ * @param triangle             The triangle
+ * @param position              The new position
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f ggl_triangle_set_position(ggl_triangle *triangle,
+                                       ggl_vector2f position);
+
+/**
+ * @brief Triangle set color.
+ *
+ * @param triangle             The triangle
+ * @param color                 The new color
+ *
+ * @return The color.
+ */
+ggl_color ggl_triangle_set_color(ggl_triangle *triangle,
+                                 ggl_color color);
+
+/**
+ * @brief Triangle set size.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The size.
+ */
+ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle,
+                                   ggl_vector2f size);
+
+
+// ==============================================================
+
+/**
+ * @brief Create a rectangle.
+ *
+ * @param position              The pos of the rectangle using ggl_vector2f
+ * @param size                  The size of the trignale using ggl_vector2f
+ * @param color                 The color of the rectangle using ggl_color
+ *
+ * @return The rectangle geometry structure.
+ */
+ggl_rectangle *ggl_rectangle_create(ggl_vector2f position,
+                                    ggl_vector2f size,
+                                    ggl_color color);
+
+/**
+ * @brief Render a rectangle.
+ *
+ * @param ctx                    The context
+ * @param rectangle              The rectangle to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status ggl_rectangle_render(ggl_context *ctx,
+                                const ggl_rectangle *rectangle);
+
+/**
+ * @brief Rectangle get position.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f ggl_rectangle_get_position(ggl_rectangle *rectangle);
+
+/**
+ * @brief Rectangle get color.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The color.
+ */
+ggl_color ggl_rectangle_get_color(ggl_rectangle *rectangle);
+
+/**
+ * @brief Rectangle get size.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The size.
+ */
+ggl_vector2f ggl_rectangle_get_size(ggl_rectangle *rectangle);
+
+/**
+ * @brief Rectangle get bounds.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The bounds of the rectangle.
+ */
+ggl_bounds ggl_rectangle_get_bounds(ggl_context *ctx,
+                                    ggl_rectangle *rectangle);
+
+/**
+ * @brief Rectangle set position.
+ *
+ * @param rectangle             The rectangle
+ * @param position              The new position
+ *
+ * @return The vector of position.
+ */
+ggl_vector2f ggl_rectangle_set_position(ggl_rectangle *rectangle,
+                                        ggl_vector2f position);
+
+/**
+ * @brief Rectangle set color.
+ *
+ * @param rectangle             The rectangle
+ * @param color                 The new color
+ *
+ * @return The color.
+ */
+ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle,
+                                  ggl_color color);
+
+/**
+ * @brief Rectangle set size.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The size.
+ */
+ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle,
+                                    ggl_vector2f size);
+
+// ==============================================================
+
+/**
+ * @brief Create a convex.
+ *
+ * @param position              The pos of the convex using ggl_vector2f
+ *
+ * @return The convex geometry structure.
  */
 ggl_convex *ggl_convex_create(ggl_vector2f position);
-ggl_convex *ggl_convex_add_vertex(ggl_convex *convex, ggl_vector2f position, ggl_color color);
-ggl_status ggl_convex_render(ggl_context *ctx, const ggl_convex *convex);
+
+/**
+ * @brief Render a convex.
+ *
+ * @param ctx                    The context
+ * @param convex              The convex to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status ggl_convex_render(ggl_context *ctx,
+                             const ggl_convex *convex);
+
+/**
+ * @brief Add a vertex in the convex shape.
+ *        @INFO the vertex data has the following pattern :
+ *        x,y,z,r,g,b,a so 7 bytes is 1 stride.
+ *
+ * @param convex                The original shape
+ * @param position              The position of the point to add
+ * @param color                 The color of the vertex to add
+ *
+ * @return The new convex shape.
+ */
+ggl_convex *ggl_convex_add_vertex(ggl_convex *convex,
+                                  ggl_vector2f position,
+                                  ggl_color color);
+
+/**
+ * @brief Set color for a specific vertex.
+ *
+ * @param convex                The convex shape
+ * @param vertex_index          The index of the vertex
+ * @param color                 The color to set
+ *
+ * @return GGL_OK if successful, GGL_KO otherwise.
+ */
+ggl_status ggl_convex_set_vertex_color(ggl_convex *convex,
+                                       int vertex_index,
+                                       ggl_color color);
+/**
+ * @brief Get color of a specific vertex.
+ *
+ * @param convex                The convex shape
+ * @param vertex_index          The index of the vertex
+ *
+ * @return The color of the vertex.
+ */
+ggl_color ggl_convex_get_vertex_color(ggl_convex *convex,
+                                      int vertex_index);
+
+/**
+ * @brief Get the position of the convex shape.
+ *
+ * @param convex        The shape
+ *
+ * @return The position.
+ */
 ggl_vector2f ggl_convex_get_position(ggl_convex *convex);
-ggl_color ggl_convex_get_vertex_color(ggl_convex *convex, int vertex_index);
-ggl_bounds ggl_convex_get_bounds(ggl_context *ctx, ggl_convex *convex);
-ggl_vector2f ggl_convex_set_position(ggl_convex *convex, ggl_vector2f position);
-ggl_status ggl_convex_set_vertex_color(ggl_convex *convex, int vertex_index, ggl_color color);
+
+/**
+ * @brief Set the position of the convex shape.
+ *
+ * @param convex                The shape
+ * @param position              The position
+ *
+ * @return The new position.
+ */
+ggl_vector2f ggl_convex_set_position(ggl_convex *convex,
+                                     ggl_vector2f position);
+
+// ==============================================================
 
 #endif /* ifndef _GGL_MODULE_RENDERER_H_ */

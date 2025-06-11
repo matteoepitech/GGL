@@ -138,33 +138,6 @@ __ggl_convex_init(void)
 }
 
 /**
- * @brief Render a convex.
- *
- * @param convex              The convex to render
- *
- * @return GGL_OK if worked. GGL_KO if not.
- */
-ggl_status
-ggl_convex_render(ggl_context *ctx, const ggl_convex *convex)
-{
-    ggl_vector2f final_pos = {0};
-    ggl_vector2f final_size = {0};
-
-    if (convex == NULL || ctx == NULL || convex->_vertices_count < 0) {
-        return GGL_KO;
-    }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, convex->_position);
-    final_size = ggl_coords_normalize_to_ndc_size(ctx, (ggl_vector2f) {1, 1});
-    glBindVertexArray(convex->__vao__);
-    glUseProgram(g_convex_renderer._shader_program);
-    glUniform2f(g_convex_renderer._pos_location, final_pos._x, final_pos._y);
-    glUniform2f(g_convex_renderer._size_location, final_size._x, final_size._y);
-    glDrawElements(GL_TRIANGLES, (convex->_vertices_count - 2) * 3, GL_UNSIGNED_INT, NULL);
-    glBindVertexArray(0);
-    return GGL_OK;
-}
-
-/**
  * @brief Create a convex.
  *
  * @param position              The pos of the convex using ggl_vector2f
@@ -191,6 +164,35 @@ ggl_convex_create(ggl_vector2f position)
 }
 
 /**
+ * @brief Render a convex.
+ *
+ * @param ctx                    The context
+ * @param convex              The convex to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status
+ggl_convex_render(ggl_context *ctx,
+                  const ggl_convex *convex)
+{
+    ggl_vector2f final_pos = {0};
+    ggl_vector2f final_size = {0};
+
+    if (convex == NULL || ctx == NULL || convex->_vertices_count < 0) {
+        return GGL_KO;
+    }
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, convex->_position);
+    final_size = ggl_coords_normalize_to_ndc_size(ctx, (ggl_vector2f) {1, 1});
+    glBindVertexArray(convex->__vao__);
+    glUseProgram(g_convex_renderer._shader_program);
+    glUniform2f(g_convex_renderer._pos_location, final_pos._x, final_pos._y);
+    glUniform2f(g_convex_renderer._size_location, final_size._x, final_size._y);
+    glDrawElements(GL_TRIANGLES, (convex->_vertices_count - 2) * 3, GL_UNSIGNED_INT, NULL);
+    glBindVertexArray(0);
+    return GGL_OK;
+}
+
+/**
  * @brief Add a vertex in the convex shape.
  *        @INFO the vertex data has the following pattern :
  *        x,y,z,r,g,b,a so 7 bytes is 1 stride.
@@ -202,7 +204,9 @@ ggl_convex_create(ggl_vector2f position)
  * @return The new convex shape.
  */
 ggl_convex *
-ggl_convex_add_vertex(ggl_convex *convex, ggl_vector2f position, ggl_color color)
+ggl_convex_add_vertex(ggl_convex *convex,
+                      ggl_vector2f position,
+                      ggl_color color)
 {
     int triangle_count = 0;
 
@@ -241,7 +245,9 @@ ggl_convex_add_vertex(ggl_convex *convex, ggl_vector2f position, ggl_color color
  * @return GGL_OK if successful, GGL_KO otherwise.
  */
 ggl_status
-ggl_convex_set_vertex_color(ggl_convex *convex, int vertex_index, ggl_color color)
+ggl_convex_set_vertex_color(ggl_convex *convex,
+                            int vertex_index,
+                            ggl_color color)
 {
     if (convex == NULL || vertex_index < 0 ||
         vertex_index >= convex->_vertices_count) {
@@ -261,7 +267,8 @@ ggl_convex_set_vertex_color(ggl_convex *convex, int vertex_index, ggl_color colo
  * @return The color of the vertex.
  */
 ggl_color
-ggl_convex_get_vertex_color(ggl_convex *convex, int vertex_index)
+ggl_convex_get_vertex_color(ggl_convex *convex,
+                            int vertex_index)
 {
     if (convex == NULL || vertex_index < 0 ||
         vertex_index >= convex->_vertices_count) {
@@ -271,31 +278,29 @@ ggl_convex_get_vertex_color(ggl_convex *convex, int vertex_index)
 }
 
 /**
- * @brief Convex get position.
+ * @brief Get the position of the convex shape.
+ *
+ * @param convex        The shape
+ *
+ * @return The position.
  */
 ggl_vector2f
 ggl_convex_get_position(ggl_convex *convex)
 {
-    if (convex == NULL)
-        return (ggl_vector2f) {0, 0};
     return convex->_position;
 }
 
 /**
- * @brief Convex get bounds.
- */
-ggl_bounds
-ggl_convex_get_bounds(ggl_context *ctx, ggl_convex *convex)
-{
-    // @TODO
-    return (ggl_bounds) {0, 0, 0, 0};
-}
-
-/**
- * @brief Convex set position.
+ * @brief Set the position of the convex shape.
+ *
+ * @param convex                The shape
+ * @param position              The position
+ *
+ * @return The new position.
  */
 ggl_vector2f
-ggl_convex_set_position(ggl_convex *convex, ggl_vector2f position)
+ggl_convex_set_position(ggl_convex *convex,
+                        ggl_vector2f position)
 {
     convex->_position = position;
     return position;

@@ -10,17 +10,34 @@
 
     #include "../misc/ggl_types.h"
 
+// @brief Internal shaders
 extern const char *GGL_TRIANGLE_VERTEX_SHADER;
 extern const char *GGL_TRIANGLE_FRAGMENT_SHADER;
 
-/*
- * Location : src/shader/ggl_shader_helper.c
- */
-ggl_ressource_id ggl_get_shader_var_location(ggl_ressource_id program_id, const char *var_name);
+extern const char *GGL_CONVEX_VERTEX_SHADER;
+extern const char *GGL_CONVEX_FRAGMENT_SHADER;
 
-/*
- * Location : src/shader/ggl_shader_compiler.c
+/**
+ * @brief Get a var location in a shader.
+ *
+ * @param program_id            The program ID
+ * @param var_name              The var name
+ *
+ * @return The location of the var.
  */
-ggl_ressource_id ggl_create_shader(unsigned int type, const char* source_str);
+ggl_ressource_id ggl_get_shader_var_location(ggl_ressource_id program_id,
+                                             const char *var_name);
+
+/**
+ * @brief Compile a shader using the type of the shader in OpenGL
+ *        and the string of the content of the shader.
+ *
+ * @param type          The type of the shader
+ * @param source_str    The string of the shader
+ *
+ * @return The ID of the ressource we just created.
+ */
+ggl_ressource_id ggl_create_shader(unsigned int type,
+                                   const char* source_str);
 
 #endif /* ifndef _GGL_MODULE_SHADER_H_ */

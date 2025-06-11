@@ -16,7 +16,8 @@
  * @return The location of the var.
  */
 ggl_ressource_id
-ggl_get_shader_var_location(ggl_ressource_id program_id, const char *var_name)
+ggl_get_shader_var_location(ggl_ressource_id program_id,
+                            const char *var_name)
 {
     if (program_id == 0 || var_name == NULL)
         return 0;

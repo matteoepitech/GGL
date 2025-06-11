@@ -17,7 +17,8 @@
  * @return Coordinates adapted to the current screen size.
  */
 ggl_vector2f
-ggl_coords_adapt_to_current_size(ggl_context *ctx, ggl_vector2f ref_coords)
+ggl_coords_adapt_to_current_size(ggl_context *ctx,
+                                 ggl_vector2f ref_coords)
 {
     ggl_vector2f adapted = {0};
     float current_width = (float) ctx->_ggl_window._fb_width;
@@ -40,7 +41,8 @@ ggl_coords_adapt_to_current_size(ggl_context *ctx, ggl_vector2f ref_coords)
  * @return The final normalized coordinates.
  */
 ggl_vector2f
-ggl_coords_normalize_to_ndc_pos(ggl_context *ctx, ggl_vector2f ref_coords)
+ggl_coords_normalize_to_ndc_pos(ggl_context *ctx,
+                                ggl_vector2f ref_coords)
 {
     ggl_vector2f normalized = {0};
     ggl_vector2f adapted = ggl_coords_adapt_to_current_size(ctx, ref_coords);
@@ -62,7 +64,8 @@ ggl_coords_normalize_to_ndc_pos(ggl_context *ctx, ggl_vector2f ref_coords)
  * @return The final normalized coordinates.
  */
 ggl_vector2f
-ggl_coords_normalize_to_ndc_size(ggl_context *ctx, ggl_vector2f ref_coords)
+ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
+                                 ggl_vector2f ref_coords)
 {
     ggl_vector2f normalized = {0};
     ggl_vector2f adapted = ggl_coords_adapt_to_current_size(ctx, ref_coords);
@@ -85,7 +88,9 @@ ggl_coords_normalize_to_ndc_size(ggl_context *ctx, ggl_vector2f ref_coords)
  * @return The normalized coordinate value in NDC range.
  */
 float
-ggl_coord_normalize_to_ndc_pos(ggl_context *ctx, float ref_value, int axis)
+ggl_coord_normalize_to_ndc_pos(ggl_context *ctx,
+                               float ref_value,
+                               int axis)
 {
     float normalized = 0.0f;
     float current_dimension = 0.0f;

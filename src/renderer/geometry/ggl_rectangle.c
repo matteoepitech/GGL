@@ -79,14 +79,44 @@ __ggl_rectangle_init(void)
 }
 
 /**
+ * @brief Create a rectangle.
+ *
+ * @param position              The pos of the rectangle using ggl_vector2f
+ * @param size                  The size of the trignale using ggl_vector2f
+ * @param color                 The color of the rectangle using ggl_color
+ *
+ * @return The rectangle geometry structure.
+ */
+ggl_rectangle *
+ggl_rectangle_create(ggl_vector2f position,
+                     ggl_vector2f size,
+                     ggl_color color)
+{
+    ggl_rectangle *rectangle = malloc(sizeof(ggl_rectangle));
+
+    if (rectangle == NULL) {
+        return NULL;
+    }
+    if (g_rectangle_renderer._is_initialized == GGL_FALSE) {
+        __ggl_rectangle_init();
+    }
+    rectangle->_position = position;
+    rectangle->_color = color;
+    rectangle->_size = size;
+    return rectangle;
+}
+
+/**
  * @brief Render a rectangle.
  *
+ * @param ctx                    The context
  * @param rectangle              The rectangle to render
  *
  * @return GGL_OK if worked. GGL_KO if not.
  */
 ggl_status
-ggl_rectangle_render(ggl_context *ctx, const ggl_rectangle *rectangle)
+ggl_rectangle_render(ggl_context *ctx,
+                     const ggl_rectangle *rectangle)
 {
     ggl_vector2f final_pos = {0};
     ggl_vector2f final_size = {0};
@@ -108,32 +138,6 @@ ggl_rectangle_render(ggl_context *ctx, const ggl_rectangle *rectangle)
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     return GGL_OK;
-}
-
-/**
- * @brief Create a rectangle.
- *
- * @param position              The pos of the rectangle using ggl_vector2f
- * @param size                  The size of the trignale using ggl_vector2f
- * @param color                 The color of the rectangle using ggl_color
- *
- * @return The rectangle geometry structure.
- */
-ggl_rectangle *
-ggl_rectangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
-{
-    ggl_rectangle *rectangle = malloc(sizeof(ggl_rectangle));
-
-    if (rectangle == NULL) {
-        return NULL;
-    }
-    if (g_rectangle_renderer._is_initialized == GGL_FALSE) {
-        __ggl_rectangle_init();
-    }
-    rectangle->_position = position;
-    rectangle->_color = color;
-    rectangle->_size = size;
-    return rectangle;
 }
 
 /**
@@ -189,7 +193,8 @@ ggl_rectangle_get_size(ggl_rectangle *rectangle)
  * @return The bounds of the rectangle.
  */
 ggl_bounds
-ggl_rectangle_get_bounds(ggl_context *ctx, ggl_rectangle *rectangle)
+ggl_rectangle_get_bounds(ggl_context *ctx,
+                         ggl_rectangle *rectangle)
 {
     ggl_vector2f start = rectangle->_position;
     ggl_vector2f size = rectangle->_size;
@@ -221,14 +226,15 @@ ggl_rectangle_get_bounds(ggl_context *ctx, ggl_rectangle *rectangle)
  * @return The vector of position.
  */
 ggl_vector2f
-ggl_rectangle_set_position(ggl_rectangle *rectangle, ggl_vector2f position)
+ggl_rectangle_set_position(ggl_rectangle *rectangle,
+                           ggl_vector2f position)
 {
     rectangle->_position = position;
     return position;
 }
 
 /**
- * @brief Rectangle get color.
+ * @brief Rectangle set color.
  *
  * @param rectangle             The rectangle
  * @param color                 The new color
@@ -236,7 +242,8 @@ ggl_rectangle_set_position(ggl_rectangle *rectangle, ggl_vector2f position)
  * @return The color.
  */
 ggl_color
-ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color)
+ggl_rectangle_set_color(ggl_rectangle *rectangle,
+                        ggl_color color)
 {
     rectangle->_color = color;
     return color;
@@ -250,7 +257,8 @@ ggl_rectangle_set_color(ggl_rectangle *rectangle, ggl_color color)
  * @return The size.
  */
 ggl_vector2f
-ggl_rectangle_set_size(ggl_rectangle *rectangle, ggl_vector2f size)
+ggl_rectangle_set_size(ggl_rectangle *rectangle,
+                       ggl_vector2f size)
 {
     rectangle->_size = size;
     return size;

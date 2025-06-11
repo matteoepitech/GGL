@@ -10,14 +10,27 @@
 
     #include "../misc/ggl_types.h"
 
-/*
- * Location : src/core/ggl_init.c
+/**
+ * @brief Init of GGL. This is the first function you should call.
+ *
+ * @return The context of the GGL program.
  */
 ggl_context *ggl_init(void);
+
+/**
+ * @brief Terminate the GGL library. This is the last function you
+ *        should call
+ *
+ * @return GGL_OK if everything worked, GGL_KO, if not.
+ */
 ggl_status ggl_terminate(ggl_context *ctx);
 
-/*
- * Location : src/core/ggl_cursor.c
+/**
+ * @brief Get cursor position using context. SCREEN position.
+ *
+ * @param ctx           The context
+ *
+ * @return The vector of position.
  */
 ggl_vector2f ggl_get_cursor_screen_position(ggl_context *ctx);
 

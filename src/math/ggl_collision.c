@@ -16,7 +16,8 @@
  * @return GGL_TRUE or GGL_FALSE.
  */
 ggl_bool
-ggl_bounds_contains(ggl_bounds bounds, ggl_vector2f point)
+ggl_bounds_contains(ggl_bounds bounds,
+                    ggl_vector2f point)
 {
     if (point._x >= bounds._start_x &&
         point._y >= bounds._start_y &&

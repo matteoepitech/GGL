@@ -7,11 +7,11 @@
 
 #include "ggl.h"
 
+// @TEMPORARY stuff for checking the FPS
 #define MAX_SAMPLES 100
 double fps_samples[MAX_SAMPLES] = {0};
 int fps_index = 0;
-
-void smooth_fps(ggl_context *ctx, double new_fps) {
+static void ggl_smooth_fps(ggl_context *ctx, double new_fps) {
     fps_samples[fps_index] = new_fps;
     fps_index = (fps_index + 1) % MAX_SAMPLES;
 
@@ -20,6 +20,7 @@ void smooth_fps(ggl_context *ctx, double new_fps) {
         sum += fps_samples[i];
     ctx->_current_fps = sum / MAX_SAMPLES;
 }
+// @TEMPORARY stuff for checking the FPS
 
 /**
  * @brief Set the size of the viewport of OpenGL.
@@ -30,7 +31,9 @@ void smooth_fps(ggl_context *ctx, double new_fps) {
  * @param height        The height
  */
 static void
-ggl_set_viewport_size(GLFWwindow *win, int width, int height)
+ggl_set_viewport_size(GLFWwindow *win,
+                      int width,
+                      int height)
 {
     glViewport(0, 0, width, height);
 }  
@@ -38,13 +41,16 @@ ggl_set_viewport_size(GLFWwindow *win, int width, int height)
 /**
  * @brief Create a GGL window.
  *
+ * @param ctx           The context
  * @param title         The title of the window
  * @param size          The size of the window
  *
  * @return GGL_OK if everything worked. GGL_KO if not.
  */
 ggl_status
-ggl_create_window(ggl_context *ctx, const char *title, ggl_vector2i size)
+ggl_create_window(ggl_context *ctx,
+                  const char *title,
+                  ggl_vector2i size)
 {
     GLFWwindow* window = NULL;
     int framebuffer_width = 0;
@@ -97,7 +103,7 @@ ggl_bool ggl_window_should_close(ggl_context *ctx)
     current_time = glfwGetTime();
     if (prev_time != 0.0) {
         delta_time = current_time - prev_time;
-        smooth_fps(ctx, 1.0 / delta_time);
+        ggl_smooth_fps(ctx, 1.0 / delta_time);
     }
     prev_time = current_time;
     glfwGetFramebufferSize(ctx->_ggl_window._win_glfw,

@@ -6,7 +6,6 @@
 */
 
 #include "ggl.h"
-#include "modules/ggl_texture.h"
 
 // ==============================================================
 
@@ -97,38 +96,6 @@ __ggl_triangle_init(void)
 }
 
 /**
- * @brief Render a triangle.
- *
- * @param triangle              The triangle to render
- *
- * @return GGL_OK if worked. GGL_KO if not.
- */
-ggl_status
-ggl_triangle_render(ggl_context *ctx, const ggl_triangle *triangle)
-{
-    ggl_vector2f final_pos = {0};
-    ggl_vector2f final_size = {0};
-
-    if (triangle == NULL || ctx == NULL) {
-        return GGL_KO;
-    }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, triangle->_position);
-    final_size = ggl_coords_normalize_to_ndc_size(ctx, triangle->_size);
-    glBindVertexArray(g_triangle_renderer._vao);
-    glUseProgram(g_triangle_renderer._shader_program);
-    glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
-    glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
-    glUniform4f(g_triangle_renderer._color_location, 
-        triangle->_color._r / 255.0f,
-        triangle->_color._g / 255.0f,
-        triangle->_color._b / 255.0f,
-        triangle->_color._a / 255.0f);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glBindVertexArray(0);
-    return GGL_OK;
-}
-
-/**
  * @brief Create a triangle.
  *
  * @param position              The pos of the triangle using ggl_vector2f
@@ -138,7 +105,9 @@ ggl_triangle_render(ggl_context *ctx, const ggl_triangle *triangle)
  * @return The triangle geometry structure.
  */
 ggl_triangle *
-ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
+ggl_triangle_create(ggl_vector2f position,
+                    ggl_vector2f size,
+                    ggl_color color)
 {
     ggl_triangle *triangle = malloc(sizeof(ggl_triangle));
 
@@ -168,6 +137,40 @@ ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 }
 
 /**
+ * @brief Render a triangle.
+ *
+ * @param ctx                    The context
+ * @param triangle              The triangle to render
+ *
+ * @return GGL_OK if worked. GGL_KO if not.
+ */
+ggl_status
+ggl_triangle_render(ggl_context *ctx,
+                    const ggl_triangle *triangle)
+{
+    ggl_vector2f final_pos = {0};
+    ggl_vector2f final_size = {0};
+
+    if (triangle == NULL || ctx == NULL) {
+        return GGL_KO;
+    }
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, triangle->_position);
+    final_size = ggl_coords_normalize_to_ndc_size(ctx, triangle->_size);
+    glBindVertexArray(g_triangle_renderer._vao);
+    glUseProgram(g_triangle_renderer._shader_program);
+    glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
+    glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
+    glUniform4f(g_triangle_renderer._color_location, 
+        triangle->_color._r / 255.0f,
+        triangle->_color._g / 255.0f,
+        triangle->_color._b / 255.0f,
+        triangle->_color._a / 255.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray(0);
+    return GGL_OK;
+}
+
+/**
  * @brief Triangle get position.
  *
  * @param triangle              The triangle
@@ -177,8 +180,6 @@ ggl_triangle_create(ggl_vector2f position, ggl_vector2f size, ggl_color color)
 ggl_vector2f
 ggl_triangle_get_position(ggl_triangle *triangle)
 {
-    if (triangle == NULL)
-        return (ggl_vector2f) {0, 0};
     return triangle->_position;
 }
 
@@ -192,8 +193,6 @@ ggl_triangle_get_position(ggl_triangle *triangle)
 ggl_color
 ggl_triangle_get_color(ggl_triangle *triangle)
 {
-    if (triangle == NULL)
-        return (ggl_color) {0, 0, 0, 0};
     return triangle->_color;
 }
 
@@ -207,8 +206,6 @@ ggl_triangle_get_color(ggl_triangle *triangle)
 ggl_vector2f
 ggl_triangle_get_size(ggl_triangle *triangle)
 {
-    if (triangle == NULL)
-        return (ggl_vector2f) {0, 0};
     return triangle->_size;
 }
 
@@ -222,14 +219,15 @@ ggl_triangle_get_size(ggl_triangle *triangle)
  * @return The vector of position.
  */
 ggl_vector2f
-ggl_triangle_set_position(ggl_triangle *triangle, ggl_vector2f position)
+ggl_triangle_set_position(ggl_triangle *triangle,
+                          ggl_vector2f position)
 {
     triangle->_position = position;
     return position;
 }
 
 /**
- * @brief Triangle get color.
+ * @brief Triangle set color.
  *
  * @param triangle             The triangle
  * @param color                 The new color
@@ -237,7 +235,8 @@ ggl_triangle_set_position(ggl_triangle *triangle, ggl_vector2f position)
  * @return The color.
  */
 ggl_color
-ggl_triangle_set_color(ggl_triangle *triangle, ggl_color color)
+ggl_triangle_set_color(ggl_triangle *triangle,
+                       ggl_color color)
 {
     triangle->_color = color;
     return color;
@@ -251,7 +250,8 @@ ggl_triangle_set_color(ggl_triangle *triangle, ggl_color color)
  * @return The size.
  */
 ggl_vector2f
-ggl_triangle_set_size(ggl_triangle *triangle, ggl_vector2f size)
+ggl_triangle_set_size(ggl_triangle *triangle,
+                      ggl_vector2f size)
 {
     triangle->_size = size;
     return size;

@@ -10,8 +10,12 @@
     
     #include "../misc/ggl_types.h"
 
-/*
- * Location : src/texture/ggl_texture_loader.c
+/**
+ * @brief Create a texture.
+ *
+ * @param texture_path          The path of the texture
+ *
+ * @return The texture structure allocated in the memory.
  */
 ggl_texture *ggl_texture_create(const char *texture_path);
 
