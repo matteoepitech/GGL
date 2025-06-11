@@ -93,6 +93,17 @@ ggl_color ggl_triangle_set_color(ggl_triangle *triangle,
 ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle,
                                    ggl_vector2f size);
 
+/**
+ * @brief Set a texture for a triangle.
+ *
+ * @param triangle              The triangle
+ * @param texture               The texture to add
+ *
+ * @return GGL_OK.
+ */
+ggl_status ggl_triangle_set_texture(ggl_triangle *triangle,
+                                    ggl_texture *texture);
+
 
 // ==============================================================
 
@@ -188,6 +199,17 @@ ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle,
  */
 ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle,
                                     ggl_vector2f size);
+
+/**
+ * @brief Set a texture for a rectangle.
+ *
+ * @param rectangle              The rectangle
+ * @param texture               The texture to add
+ *
+ * @return GGL_OK.
+ */
+ggl_status ggl_rectangle_set_texture(ggl_rectangle *rectangle,
+                                     ggl_texture *texture);
 
 // ==============================================================
 

@@ -13,12 +13,12 @@
 #include "modules/ggl_renderer.h"
 #include "modules/ggl_window.h"
 
-#define RECT_AMOUNT 5001
-#define RECT_SIZE 30
-#define RECT_ROW 101
+#define RECT_AMOUNT 50
+#define RECT_SIZE 150
+#define RECT_ROW 10
 #define TRAIL_LENGTH 15
 
-static void init_rectangles(ggl_rectangle *rects[RECT_AMOUNT], ggl_vector2f positions[RECT_AMOUNT])
+static void init_rectangles(ggl_rectangle *rects[RECT_AMOUNT], ggl_vector2f positions[RECT_AMOUNT], ggl_texture *t)
 {
     ggl_vector2f pos = {0, 0};
     int swap = 0;
@@ -26,6 +26,7 @@ static void init_rectangles(ggl_rectangle *rects[RECT_AMOUNT], ggl_vector2f posi
     for (int i = 0; i < RECT_AMOUNT; i++) {
         rects[i] = ggl_rectangle_create(pos, (ggl_vector2f) {RECT_SIZE, RECT_SIZE},
             swap == 0 ? (ggl_color) {90, 130, 126, 255} : (ggl_color) {132, 174, 146, 255});
+        ggl_rectangle_set_texture(rects[i], t);
         positions[i] = pos;
         swap ^= 1;
         pos._x += RECT_SIZE;
@@ -48,13 +49,15 @@ int main(void)
     ggl_color colors[3] = {GGL_COLOR_RED, GGL_COLOR_GREEN, GGL_COLOR_BLUE};
     int trail_index = 0;
 
+    ggl_texture *t = ggl_texture_create("./matthias.jpg");
+
     if (ctx == NULL)
         return 1;
     if (ggl_create_window(ctx, "CheckBoard", (ggl_vector2i) {1280, 720}) == GGL_KO)
         return 1;
 
     ggl_setup_debug_close(ctx);
-    init_rectangles(rectangles, original_positions);
+    init_rectangles(rectangles, original_positions, t);
 
     ggl_convex *convex_shape = ggl_convex_create((ggl_vector2f) {1280.0f / 2.0f, 720.0f / 2.0f});
 
@@ -68,13 +71,10 @@ int main(void)
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, -60}, GGL_COLOR_RED);
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {80, -20}, GGL_COLOR_RED);
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, 20}, GGL_COLOR_RED);
-    
 
-    ggl_convex *triangle_shape = ggl_convex_create((ggl_vector2f) {(1280.0f / 2.0f) + 150.0f, 720.0f / 2.0f});
-    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {0, 100}, GGL_COLOR_GREEN);
-    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {100, 100}, GGL_COLOR_BLUE);
-    ggl_convex_add_vertex(triangle_shape, (ggl_vector2f) {50, -100}, GGL_COLOR_RED);
+    ggl_triangle *my_matthias = ggl_triangle_create((ggl_vector2f) {(1280.0f / 2.0f) - (700.0f / 2.0f), (720.0f / 2.0f) + (700.0f / 2.0f)}, (ggl_vector2f) {700, 700}, GGL_COLOR_RED);
 
+    ggl_triangle_set_texture(my_matthias, t);
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
         ggl_clear_window((ggl_color) {0, 0, 0, 0});
@@ -116,7 +116,9 @@ int main(void)
         }
 
         ggl_convex_render(ctx, convex_shape);
-        ggl_convex_render(ctx, triangle_shape);
+
+
+        ggl_triangle_render(ctx, my_matthias);
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",

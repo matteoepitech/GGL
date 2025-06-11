@@ -21,6 +21,8 @@ typedef struct {
     ggl_ressource_id _pos_location;
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
+    ggl_ressource_id _sampler_texture_location;
+    ggl_ressource_id _has_texture_location;
     ggl_bool _is_initialized;
 } ggl_rectangle_renderer;
 static ggl_rectangle_renderer g_rectangle_renderer = {0};
@@ -39,10 +41,10 @@ __ggl_rectangle_init(void)
     ggl_ressource_id vertex_shader = 0;
     ggl_ressource_id fragment_shader = 0;
     float vertices[] = {
-        0.0f, 0.0f, 0.0f,       // left up
-        0.0f, -1.0f, 0.0f,      // left down
-        1.0f, 0.0f, 0.0f,       // right up
-        1.0f, -1.0f, 0.0f,      // right down
+        0.0f, 0.0f, 0.0f, 0.0f, 1.0f,      // left up
+        0.0f, -1.0f, 0.0f, 0.0f, 0.0f,     // left down
+        1.0f, 0.0f, 0.0f, 1.0f, 1.0f,      // right up
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f      // right down
     };
     unsigned int indices[] = { 0, 1, 2, 1, 3, 2 };
 
@@ -71,8 +73,12 @@ __ggl_rectangle_init(void)
     g_rectangle_renderer._pos_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_position");
     g_rectangle_renderer._size_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_color");
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
+    g_rectangle_renderer._has_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_has_texture");
+    g_rectangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_sampler_texture");
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), NULL);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
     glBindVertexArray(0);
     g_rectangle_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
@@ -100,6 +106,7 @@ ggl_rectangle_create(ggl_vector2f position,
     if (g_rectangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_rectangle_init();
     }
+    rectangle->_info.__texture_id__ = 0;
     rectangle->_position = position;
     rectangle->_color = color;
     rectangle->_size = size;
@@ -128,6 +135,12 @@ ggl_rectangle_render(ggl_context *ctx,
     final_size = ggl_coords_normalize_to_ndc_size(ctx, rectangle->_size);
     glBindVertexArray(g_rectangle_renderer._vao);
     glUseProgram(g_rectangle_renderer._shader_program);
+    glUniform1i(g_rectangle_renderer._sampler_texture_location, 0);
+    if (ggl_texture_load_from_id(rectangle->_info.__texture_id__) == GGL_TRUE) {
+        glUniform1i(g_rectangle_renderer._has_texture_location, 1);
+    } else {
+        glUniform1i(g_rectangle_renderer._has_texture_location, 0);
+    }
     glUniform2f(g_rectangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_rectangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_rectangle_renderer._color_location, 
@@ -137,6 +150,7 @@ ggl_rectangle_render(ggl_context *ctx,
         rectangle->_color._a / 255.0f);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
+    ggl_texture_unload();
     return GGL_OK;
 }
 
@@ -262,4 +276,32 @@ ggl_rectangle_set_size(ggl_rectangle *rectangle,
 {
     rectangle->_size = size;
     return size;
+}
+
+/**
+ * @brief Set a texture for a rectangle.
+ *
+ * @param rectangle              The rectangle
+ * @param texture               The texture to add
+ *
+ * @return GGL_OK.
+ */
+ggl_status
+ggl_rectangle_set_texture(ggl_rectangle *rectangle,
+                         ggl_texture *texture)
+{
+    if (rectangle->_info.__texture_id__ != 0) {
+        glDeleteTextures(1, &rectangle->_info.__texture_id__);
+    }
+    glGenTextures(1, &rectangle->_info.__texture_id__);
+    glBindTexture(GL_TEXTURE_2D, rectangle->_info.__texture_id__); 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture->_width,
+        texture->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture->_data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return GGL_OK;
 }

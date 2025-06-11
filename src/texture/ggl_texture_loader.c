@@ -22,6 +22,7 @@ ggl_texture_create(const char *texture_path)
 
     if (texture_path == NULL)
         return NULL;
+    stbi_set_flip_vertically_on_load(GGL_TRUE);
     tex = malloc(sizeof(ggl_texture));
     tex->_data = stbi_load(texture_path, &tex->_width,
         &tex->_height, &tex->_nr_channels, 0);
@@ -30,4 +31,33 @@ ggl_texture_create(const char *texture_path)
         return NULL;
     }
     return tex;
+}
+
+/**
+ * @brief Load a texture from his ID.
+ *
+ * @param tid
+ *
+ * @return GGL_TRUE if loaded. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_texture_load_from_id(ggl_ressource_id tid)
+{
+    if (tid == 0)
+        return GGL_FALSE;
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tid);
+    return GGL_TRUE;
+}
+
+/**
+ * @brief Unload the current binded texture.
+ *
+ * @return GGL_OK.
+ */
+ggl_status
+ggl_texture_unload(void)
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return GGL_OK;
 }
