@@ -75,8 +75,10 @@ int main(void)
     ggl_convex_add_vertex(convex_shape, (ggl_vector2f) {60, 20}, GGL_COLOR_RED);
 
     ggl_circle *my_circle = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f - 500, 720.0f / 2.0f}, 250, 50, GGL_COLOR_GREEN);
-    ggl_circle *my_circle_2 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f - 0, 720.0f / 2.0f}, 250, 50, GGL_COLOR_WHITE);
-    ggl_circle *my_circle_3 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f + 500, 720.0f / 2.0f}, 250, 50, GGL_COLOR_RED);
+    ggl_circle *my_circle_2 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f - 0, 720.0f / 2.0f}, 250, 40, GGL_COLOR_WHITE);
+    ggl_circle *my_circle_3 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f + 500, 720.0f / 2.0f}, 250, 40, GGL_COLOR_RED);
+
+    ggl_rectangle *button = ggl_rectangle_create((ggl_vector2f) {(GGL_WIN_WIDTH(ctx) / 2.0f) - 200, (GGL_WIN_HEIGHT(ctx) / 2.0f) - 100}, (ggl_vector2f) {400, 200}, GGL_COLOR_WHITE);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
@@ -128,15 +130,24 @@ int main(void)
         float r2 = (((sinf(t - 0.5f) + 1.0f) / 2.0f) * 250.0f);
         float r3 = (((sinf(t - 1.0f) + 1.0f) / 2.0f) * 250.0f);
 
-        ggl_circle_set_radius(my_circle, r1);
-        ggl_circle_set_radius(my_circle_2, r2);
-        ggl_circle_set_radius(my_circle_3, r3);
+        // ggl_circle_set_radius(my_circle, r1);
+        // ggl_circle_set_radius(my_circle_2, r2);
+        // ggl_circle_set_radius(my_circle_3, r3);
+        //
+        // ggl_circle_render(ctx, my_circle);
+        // ggl_circle_render(ctx, my_circle_2);
+        // ggl_circle_render(ctx, my_circle_3);
+        //
+        // circle_r += 0.05f;
 
-        ggl_circle_render(ctx, my_circle);
-        ggl_circle_render(ctx, my_circle_2);
-        ggl_circle_render(ctx, my_circle_3);
+        ggl_rectangle_render(ctx, button);
 
-        circle_r += 0.05f;
+        if (ggl_rectangle_contain(ctx, button, ggl_get_cursor_screen_position(ctx)) == GGL_TRUE) {
+            ggl_rectangle_set_color(button, GGL_COLOR_RED);
+        } else {
+            ggl_rectangle_set_color(button, GGL_COLOR_WHITE);
+        }
+        
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",

@@ -42,4 +42,31 @@ ggl_status ggl_clear_window(ggl_color background_color);
  */
 ggl_bool ggl_window_should_close(ggl_context *ctx);
 
+/**
+ * @brief Get the height of the window.
+ *
+ * @param ctx           The context
+ *
+ * @return The height of the window.
+ */
+ggl_int ggl_get_window_height(ggl_context *ctx);
+
+/**
+ * @brief Get the width of the window.
+ *
+ * @param ctx           The context
+ *
+ * @return The width of the window.
+ */
+ggl_int ggl_get_window_width(ggl_context *ctx);
+
+/**
+ * @brief Get the size of the window.
+ *
+ * @param ctx           The context
+ *
+ * @return The size of the window.
+ */
+ggl_vector2f ggl_get_window_size(ggl_context *ctx);
+
 #endif /* ifndef _GGL_MODULE_WINDOW_H_ */

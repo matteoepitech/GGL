@@ -28,11 +28,17 @@
     #ifndef GGL_FALSE
         #define GGL_FALSE 0
     #endif /* ifndef GGL_FALSE */
+    
+    #ifndef M_PI
+        #define M_PI 3.14159265358979323846f
+    #endif /* ifndef M_PI */
 
-    #define GGL_COLOR_RED (ggl_color) {255, 0, 0, 255}
-    #define GGL_COLOR_GREEN (ggl_color) {0, 255, 0, 255}
-    #define GGL_COLOR_BLUE (ggl_color) {0, 0, 255, 255}
-    #define GGL_COLOR_WHITE (ggl_color) {255, 255, 255, 255}
-    #define GGL_COLOR_BLACK (ggl_color) {0, 0, 0, 255}
+    #ifndef GGL_COLORS 
+        #define GGL_COLOR_RED (ggl_color) {255, 0, 0, 255}
+        #define GGL_COLOR_GREEN (ggl_color) {0, 255, 0, 255}
+        #define GGL_COLOR_BLUE (ggl_color) {0, 0, 255, 255}
+        #define GGL_COLOR_WHITE (ggl_color) {255, 255, 255, 255}
+        #define GGL_COLOR_BLACK (ggl_color) {0, 0, 0, 255}
+    #endif /* ifndef GGL_COLORS */
 
 #endif /* ifndef _GGL_DEFINES_H_ */
