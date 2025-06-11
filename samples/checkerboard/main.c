@@ -12,10 +12,11 @@
 #include "modules/ggl_math.h"
 #include "modules/ggl_renderer.h"
 #include "modules/ggl_window.h"
+#include <math.h>
 
-#define RECT_AMOUNT 50
-#define RECT_SIZE 150
-#define RECT_ROW 10
+#define RECT_AMOUNT 501
+#define RECT_SIZE 50
+#define RECT_ROW 31
 #define TRAIL_LENGTH 15
 
 static void init_rectangles(ggl_rectangle *rects[RECT_AMOUNT], ggl_vector2f positions[RECT_AMOUNT], ggl_texture *t)
@@ -48,8 +49,10 @@ int main(void)
         trail[i] = -1;
     ggl_color colors[3] = {GGL_COLOR_RED, GGL_COLOR_GREEN, GGL_COLOR_BLUE};
     int trail_index = 0;
+    float size_matthias = 0.0f;
 
-    ggl_texture *t = ggl_texture_create("./matthias.jpg");
+    ggl_texture *t = ggl_texture_create("./tree.jpeg");
+    ggl_texture *t2 = ggl_texture_create("./tree.jpeg");
 
     if (ctx == NULL)
         return 1;
@@ -57,7 +60,7 @@ int main(void)
         return 1;
 
     ggl_setup_debug_close(ctx);
-    init_rectangles(rectangles, original_positions, t);
+    init_rectangles(rectangles, original_positions, t2);
 
     ggl_convex *convex_shape = ggl_convex_create((ggl_vector2f) {1280.0f / 2.0f, 720.0f / 2.0f});
 
@@ -74,7 +77,15 @@ int main(void)
 
     ggl_triangle *my_matthias = ggl_triangle_create((ggl_vector2f) {(1280.0f / 2.0f) - (700.0f / 2.0f), (720.0f / 2.0f) + (700.0f / 2.0f)}, (ggl_vector2f) {700, 700}, GGL_COLOR_RED);
 
+    ggl_triangle *my_matthias_2 = ggl_triangle_create((ggl_vector2f) {(1280.0f / 2.0f) + (700.0f / 2.0f), (720.0f / 2.0f) + (700.0f / 2.0f)}, (ggl_vector2f) {700, 700}, GGL_COLOR_GREEN);
+
+    ggl_rectangle *my_matthias_3 = ggl_rectangle_create((ggl_vector2f) {1280 / 2.0f - 250, 700.0f / 2.0f - 250}, (ggl_vector2f) {1, 1}, GGL_COLOR_BLUE);
+    ggl_rectangle *my_matthias_4 = ggl_rectangle_create((ggl_vector2f) {1280 / 2.0f + 250, 700.0f / 2.0f - 250}, (ggl_vector2f) {1, 1}, GGL_COLOR_BLUE);
+
     ggl_triangle_set_texture(my_matthias, t);
+    ggl_triangle_set_texture(my_matthias_2, t2);
+    ggl_rectangle_set_texture(my_matthias_3, t);
+    ggl_rectangle_set_texture(my_matthias_4, t2);
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
         ggl_clear_window((ggl_color) {0, 0, 0, 0});
@@ -119,6 +130,16 @@ int main(void)
 
 
         ggl_triangle_render(ctx, my_matthias);
+        ggl_triangle_render(ctx, my_matthias_2);
+        ggl_rectangle_render(ctx, my_matthias_3);
+        ggl_rectangle_render(ctx, my_matthias_4);
+
+        float v = (sinf(size_matthias) + 1) / 2.0f;
+        ggl_triangle_set_size(my_matthias, (ggl_vector2f) {v * 500, v * 800});
+        ggl_triangle_set_size(my_matthias_2, (ggl_vector2f) {v * -500, v * 800});
+        ggl_rectangle_set_size(my_matthias_3, (ggl_vector2f) {(v + 0.1f) * 500, v * 500});
+        ggl_rectangle_set_size(my_matthias_4, (ggl_vector2f) {(v - 0.1f) * -500, v * 1000});
+        size_matthias += 0.05f;
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",
