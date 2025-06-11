@@ -6,6 +6,7 @@
 */
 
 #include "ggl.h"
+#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -200,15 +201,18 @@ ggl_rectangle_get_size(ggl_rectangle *rectangle)
 }
 
 /**
- * @brief Rectangle get bounds.
+ * @brief Is a point in the bounds of the rectangle?
  *
- * @param rectangle             The rectangle
+ * @param ctx           The context
+ * @param rectangle     The rectangle
+ * @param point         The point
  *
- * @return The bounds of the rectangle.
+ * @return GGL_TRUE or FALSE.
  */
-ggl_bounds
-ggl_rectangle_get_bounds(ggl_context *ctx,
-                         ggl_rectangle *rectangle)
+ggl_bool
+ggl_rectangle_contain(ggl_context *ctx,
+                      ggl_rectangle *rectangle,
+                      ggl_vector2f point)
 {
     ggl_vector2f start = rectangle->_position;
     ggl_vector2f size = rectangle->_size;
@@ -222,13 +226,12 @@ ggl_rectangle_get_bounds(ggl_context *ctx,
     size._y = size._y *
         ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
     if (rectangle == NULL)
-        return (ggl_bounds) {0, 0, 0, 0};
-    return (ggl_bounds) {
+        return GGL_FALSE;
+    return ggl_bounds_contains((ggl_bounds) {
         start._x,
         start._y,
         start._x + size._x,
-        start._y + size._y
-    };
+        start._y + size._y}, point);
 }
 
 /**

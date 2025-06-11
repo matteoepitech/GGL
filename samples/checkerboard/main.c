@@ -99,8 +99,7 @@ int main(void)
         }
 
         for (int i = 0; i < RECT_AMOUNT; i++) {
-            ggl_bounds b = ggl_rectangle_get_bounds(ctx, rectangles[i]);
-            if (ggl_bounds_contains(b, cursor_pos) == GGL_TRUE) {
+            if (ggl_rectangle_contain(ctx, rectangles[i], cursor_pos) == GGL_TRUE) {
                 int last_index = trail[(trail_index - 1 + TRAIL_LENGTH) % TRAIL_LENGTH];
                 if (i != last_index) {
                     trail[trail_index] = i;

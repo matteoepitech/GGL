@@ -159,15 +159,17 @@ ggl_color ggl_rectangle_get_color(ggl_rectangle *rectangle);
 ggl_vector2f ggl_rectangle_get_size(ggl_rectangle *rectangle);
 
 /**
- * @brief Rectangle get bounds.
+ * @brief Is a point in the bounds of the rectangle?
  *
- * @param rectangle             The rectangle
+ * @param ctx           The context
+ * @param rectangle     The rectangle
+ * @param point         The point
  *
- * @return The bounds of the rectangle.
+ * @return GGL_TRUE or FALSE.
  */
-ggl_bounds ggl_rectangle_get_bounds(ggl_context *ctx,
-                                    ggl_rectangle *rectangle);
-
+ggl_bool ggl_rectangle_contain(ggl_context *ctx,
+                               ggl_rectangle *rectangle,
+                               ggl_vector2f point);
 /**
  * @brief Rectangle set position.
  *
