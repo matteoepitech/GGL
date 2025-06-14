@@ -8,13 +8,12 @@
 #include "ggl.h"
 
 /**
- * @brief Converts reference coordinates to the current screen coordinates
- *        Maintains the same relative ratio as in the reference window.
+ * @brief Converts reference coordinates to current screen resolution.
  *
- * @param ctx           The program context
- * @param ref_coords    Coordinates based on the reference resolution
+ * @param ctx           Program context
+ * @param ref_coords    Reference coordinates
  *
- * @return Coordinates adapted to the current screen size.
+ * @return Scaled screen-space coordinates.
  */
 ggl_vector2f
 ggl_coords_adapt_to_current_size(ggl_context *ctx,
@@ -32,13 +31,13 @@ ggl_coords_adapt_to_current_size(ggl_context *ctx,
 }
 
 /**
- * @brief Normalizes reference coordinates to screen coordinates in the
- *        range [-1;1] taking the current aspect ratio into account.
+ * @brief Converts position to NDC [-1;1],
+ *        considering aspect ratio.
  *
- * @param ctx           The program context
- * @param ref_coords    Coordinates based on the reference resolution
+ * @param ctx           Program context
+ * @param ref_coords    Reference position
  *
- * @return The final normalized coordinates.
+ * @return Normalized position in NDC.
  */
 ggl_vector2f
 ggl_coords_normalize_to_ndc_pos(ggl_context *ctx,
@@ -55,13 +54,13 @@ ggl_coords_normalize_to_ndc_pos(ggl_context *ctx,
 }
 
 /**
- * @brief Normalizes reference coordinates to screen coordinates in the
- *        range [O;1] taking the current aspect ratio into account.
+ * @brief Converts a size vector to normalized screen space [0;1],
+ *        considering aspect ratio.
  *
- * @param ctx           The program context
- * @param ref_coords    Coordinates based on the reference resolution
+ * @param ctx           Program context
+ * @param ref_coords    Reference size
  *
- * @return The final normalized coordinates.
+ * @return Normalized size vector.
  */
 ggl_vector2f
 ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
@@ -78,14 +77,14 @@ ggl_coords_normalize_to_ndc_size(ggl_context *ctx,
 }
 
 /**
- * @brief Normalizes a reference coordinate value to NDC range [-1;1]
- *        taking the current screen dimensions into account.
+ * @brief Converts a reference value to NDC [-1;1]
+ *        based on current screen size.
  *
- * @param ctx           The program context
- * @param ref_value     Coordinate value based on the reference resolution
- * @param axis          Axis to normalize (0 for X, 1 for Y)
+ * @param ctx           Program context
+ * @param ref_value     Reference coordinate
+ * @param axis          0 = X, 1 = Y
  *
- * @return The normalized coordinate value in NDC range.
+ * @return Normalized NDC value.
  */
 float
 ggl_coord_normalize_to_ndc_pos(ggl_context *ctx,

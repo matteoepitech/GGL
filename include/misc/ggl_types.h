@@ -57,7 +57,7 @@ typedef float ggl_float;
 /**
  * @brief Used for double values.
  */
-typedef float ggl_double;
+typedef double ggl_double;
 
 /**
  * @brief Used for ressource like createShader, program VAO, VBO, EBO..
@@ -82,16 +82,6 @@ typedef struct {
     ggl_float _x;
     ggl_float _y;
 } ggl_vector2f;
-
-/**
- * @brief Type for bound, like bounds of a rectangle.
- */
-typedef struct {
-   ggl_float _start_x;
-   ggl_float _start_y;
-   ggl_float _end_x;
-   ggl_float _end_y;
-} ggl_bounds;
 
 /**
  * @brief Type for color. RGBA
@@ -177,10 +167,10 @@ typedef struct {
     ggl_color *_vertices_color;
     ggl_uint _vertices_count;
     ggl_uint *_indices;
+    ggl_shape_data _info;
     ggl_ressource_id __vao__; // @INTERNAL USAGE
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
     ggl_ressource_id __ebo__; // @INTERNAL USAGE
-    ggl_shape_data _info;
 } ggl_convex;
 
 /**

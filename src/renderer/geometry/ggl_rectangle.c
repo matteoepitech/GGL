@@ -6,7 +6,6 @@
 */
 
 #include "ggl.h"
-#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -23,7 +22,6 @@ typedef struct {
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
     ggl_ressource_id _sampler_texture_location;
-    ggl_ressource_id _has_texture_location;
     ggl_bool _is_initialized;
 } ggl_rectangle_renderer;
 static ggl_rectangle_renderer g_rectangle_renderer = {0};
@@ -74,7 +72,6 @@ __ggl_rectangle_init(void)
     g_rectangle_renderer._pos_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_position");
     g_rectangle_renderer._size_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_color");
-    g_rectangle_renderer._has_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_has_texture");
     g_rectangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), NULL);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -137,11 +134,7 @@ ggl_rectangle_render(ggl_context *ctx,
     glBindVertexArray(g_rectangle_renderer._vao);
     glUseProgram(g_rectangle_renderer._shader_program);
     glUniform1i(g_rectangle_renderer._sampler_texture_location, 0);
-    if (ggl_texture_load_from_id(rectangle->_info.__texture_id__) == GGL_TRUE) {
-        glUniform1i(g_rectangle_renderer._has_texture_location, 1);
-    } else {
-        glUniform1i(g_rectangle_renderer._has_texture_location, 0);
-    }
+    ggl_texture_load_from_id(rectangle->_info.__texture_id__);
     glUniform2f(g_rectangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_rectangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_rectangle_renderer._color_location, 
@@ -227,11 +220,12 @@ ggl_rectangle_contain(ggl_context *ctx,
         ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
     if (rectangle == NULL)
         return GGL_FALSE;
-    return ggl_bounds_contains((ggl_bounds) {
-        start._x,
-        start._y,
-        start._x + size._x,
-        start._y + size._y}, point);
+    if (point._x >= start._x &&
+        point._y >= start._y &&
+        point._y <= start._y + size._y &&
+        point._x <= start._x + size._x)
+        return GGL_TRUE;
+    return GGL_FALSE;
 }
 
 /**

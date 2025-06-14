@@ -79,6 +79,11 @@ int main(void)
     ggl_circle *my_circle_3 = ggl_circle_create((ggl_vector2f) {1280.0f / 2.0f + 500, 720.0f / 2.0f}, 250, 40, GGL_COLOR_RED);
 
     ggl_rectangle *button = ggl_rectangle_create((ggl_vector2f) {(GGL_WIN_WIDTH(ctx) / 2.0f) - 200, (GGL_WIN_HEIGHT(ctx) / 2.0f) - 100}, (ggl_vector2f) {400, 200}, GGL_COLOR_WHITE);
+    ggl_rectangle_set_texture(button, t);
+
+    ggl_triangle *triangle = ggl_triangle_create(
+        (ggl_vector2f) {GGL_WIN_WIDTH(ctx) / 3.0f, GGL_WIN_HEIGHT(ctx) / 3.0f}, (ggl_vector2f) {100, 100}, GGL_COLOR_GREEN);
+    ggl_triangle_set_texture(triangle, t);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         cursor_pos = ggl_get_cursor_screen_position(ctx);
@@ -147,7 +152,8 @@ int main(void)
         } else {
             ggl_rectangle_set_color(button, GGL_COLOR_WHITE);
         }
-        
+       
+        ggl_triangle_render(ctx, triangle);
 
         printf("FPS : %d\n", (int) ctx->_current_fps);
         printf("Cursor: %.1f, %.1f | FB: %d x %d | Ref: %d x %d | FB Ref: %d %d\n",

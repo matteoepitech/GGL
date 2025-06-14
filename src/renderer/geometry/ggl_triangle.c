@@ -21,7 +21,6 @@ typedef struct {
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
     ggl_ressource_id _sampler_texture_location;
-    ggl_ressource_id _has_texture_location;
     ggl_bool _is_initialized;
 } ggl_triangle_renderer;
 static ggl_triangle_renderer g_triangle_renderer = {0};
@@ -43,15 +42,10 @@ const char *GGL_TRIANGLE_FRAGMENT_SHADER =
     "#version 330 core\n"
     "out vec4 frag_color;\n"
     "uniform vec4 u_color;\n"
-    "uniform bool u_has_texture;\n"
     "in vec2 tex_coord;\n"
     "uniform sampler2D u_sampler_texture;\n"
     "void main() {\n"
-    "   if (u_has_texture) {\n"
-    "           frag_color = texture(u_sampler_texture, tex_coord) * u_color;\n"
-    "   } else {\n"
-    "           frag_color = u_color;\n"
-    "   }\n"
+    "   frag_color = texture(u_sampler_texture, tex_coord) * u_color;\n"
     "}";
 
 // ==============================================================
@@ -95,7 +89,6 @@ __ggl_triangle_init(void)
     g_triangle_renderer._pos_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_position");
     g_triangle_renderer._size_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_size");
     g_triangle_renderer._color_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_color");
-    g_triangle_renderer._has_texture_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_has_texture");
     g_triangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -158,11 +151,7 @@ ggl_triangle_render(ggl_context *ctx,
     glBindVertexArray(g_triangle_renderer._vao);
     glUseProgram(g_triangle_renderer._shader_program);
     glUniform1i(g_triangle_renderer._sampler_texture_location, 0);
-    if (ggl_texture_load_from_id(triangle->_info.__texture_id__) == GGL_TRUE) {
-        glUniform1i(g_triangle_renderer._has_texture_location, 1);
-    } else {
-        glUniform1i(g_triangle_renderer._has_texture_location, 0);
-    }
+    ggl_texture_load_from_id(triangle->_info.__texture_id__);
     glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_triangle_renderer._color_location, 

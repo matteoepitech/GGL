@@ -22,7 +22,7 @@ ggl_texture *ggl_texture_create(const char *texture_path);
 /**
  * @brief Load a texture from his ID.
  *
- * @param tid
+ * @param tid                   The ID of the texture
  *
  * @return GGL_TRUE if loaded. GGL_FALSE otherwise.
  */

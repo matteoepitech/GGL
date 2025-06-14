@@ -10,4 +10,8 @@
 
     #include "misc/ggl_types.h"
 
+// @INTERNAL USAGE : When no texture is passed we use a blank texture.
+// Set in ggl_texture_loader.c
+extern ggl_ressource_id __texture_id_white__;
+
 #endif /* ifndef _GGL_INTERNAL_H_ */
