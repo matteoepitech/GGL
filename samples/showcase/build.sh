@@ -7,7 +7,7 @@ cd ./samples/showcase
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
     echo "Building for macOS..."
-    gcc main.c -o program -fsanitize=address -lggl -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -I../../include/
+    gcc main.c -o program -lggl -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -I../../include/ -Wl,-rpath,.
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Linux
     echo "Building for Linux..."

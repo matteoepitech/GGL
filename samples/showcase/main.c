@@ -142,5 +142,15 @@ int main(int argc, char *argv[])
         ggl_rectangle_render(ctx, cursor);
     }
     
+    ggl_rectangle_free(cursor);
+    ggl_rectangle_free(rect_tex_bis);
+    ggl_rectangle_free(rect_tex);
+    ggl_rectangle_free(rect);
+    ggl_triangle_free(tri_tex);
+    ggl_triangle_free(tri);
+    ggl_circle_free(circle);
+    ggl_convex_free(convex);
+    ggl_texture_free(texture);
+    ggl_texture_free(texture_misc);
     return ggl_terminate(ctx);
 }
