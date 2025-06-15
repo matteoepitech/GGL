@@ -55,7 +55,7 @@ int main(void)
 
     if (ctx == NULL)
         return 1;
-    if (ggl_create_window(ctx, "CheckBoard", (ggl_vector2i) {1280, 720}) == GGL_KO)
+    if (ggl_window_create(ctx, "CheckBoard", (ggl_vector2i) {1280, 720}) == GGL_KO)
         return 1;
 
     ggl_setup_debug_close(ctx);
@@ -86,8 +86,8 @@ int main(void)
     ggl_triangle_set_texture(triangle, t);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
-        cursor_pos = ggl_get_cursor_screen_position(ctx);
-        ggl_clear_window((ggl_color) {0, 0, 0, 0});
+        cursor_pos = ggl_get_cursor_scaled_position(ctx);
+        ggl_window_clear((ggl_color) {0, 0, 0, 0});
 
         for (int i = 0; i < RECT_AMOUNT; i++) {
             ggl_rectangle_set_color(rectangles[i],

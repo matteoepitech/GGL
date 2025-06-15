@@ -60,8 +60,8 @@ __ggl_circle_init(void)
     if (g_circle_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
-    vertex_shader = ggl_create_shader(GL_VERTEX_SHADER, GGL_CIRCLE_VERTEX_SHADER);
-    fragment_shader = ggl_create_shader(GL_FRAGMENT_SHADER, GGL_CIRCLE_FRAGMENT_SHADER);
+    vertex_shader = ggl_shader_create(GL_VERTEX_SHADER, GGL_CIRCLE_VERTEX_SHADER);
+    fragment_shader = ggl_shader_create(GL_FRAGMENT_SHADER, GGL_CIRCLE_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 

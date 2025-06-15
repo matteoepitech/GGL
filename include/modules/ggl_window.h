@@ -19,7 +19,7 @@
  *
  * @return GGL_OK if everything worked. GGL_KO if not.
  */
-ggl_status ggl_create_window(ggl_context *ctx,
+ggl_status ggl_window_create(ggl_context *ctx,
                              const char *title,
                              ggl_vector2i size);
 
@@ -30,7 +30,7 @@ ggl_status ggl_create_window(ggl_context *ctx,
  *
  * @return GGL_OK if worked. GGL_KO if not.
  */
-ggl_status ggl_clear_window(ggl_color background_color);
+ggl_status ggl_window_clear(ggl_color background_color);
 
 /**
  * @brief Is the window need to be closed ?

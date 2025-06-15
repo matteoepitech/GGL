@@ -25,13 +25,4 @@ ggl_context *ggl_init(void);
  */
 ggl_status ggl_terminate(ggl_context *ctx);
 
-/**
- * @brief Get cursor position using context. SCREEN position.
- *
- * @param ctx           The context
- *
- * @return The vector of position.
- */
-ggl_vector2f ggl_get_cursor_screen_position(ggl_context *ctx);
-
 #endif /* ifndef _GGL_MODULE_CORE_H */

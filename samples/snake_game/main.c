@@ -187,12 +187,12 @@ int main(void)
     ggl_vector2i trail_pos = {RECT_COL / 2, RECT_ROW / 2};
     
     srand(time(NULL));
-    if (!ctx || ggl_create_window(ctx, "Snake Game", (ggl_vector2i){1280, 720}) == GGL_KO)
+    if (!ctx || ggl_window_create(ctx, "Snake Game", (ggl_vector2i){1280, 720}) == GGL_KO)
         return 1;
     ggl_setup_debug_close(ctx);
     init_rectangles(rectangles);
     while (!ggl_window_should_close(ctx) && !game_over) {
-        ggl_clear_window((ggl_color){0, 0, 0, 255});
+        ggl_window_clear((ggl_color){0, 0, 0, 255});
         update_player_position(ctx, &trail_pos);
         render_grid(ctx, rectangles);
         printf("FPS : %d | Score: %d | Length: %d\n", (int) ctx->_current_fps, score, current_trail_length);

@@ -17,7 +17,7 @@
  * @return The ID of the ressource we just created.
  */
 ggl_ressource_id
-ggl_create_shader(unsigned int type,
+ggl_shader_create(unsigned int type,
                   const char* source_str)
 {
     ggl_ressource_id shader = glCreateShader(type);

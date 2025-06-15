@@ -30,10 +30,9 @@ const char *GGL_CONVEX_VERTEX_SHADER =
     "uniform vec2 u_size;\n"
     "out vec4 v_color;\n"
     "void main() {\n"
-    "    vec3 scaled_pos = l_pos * vec3(u_size, 1.0);\n"
-    "    vec2 final_pos = scaled_pos.xy + u_position;\n"
-    "    final_pos.y = -final_pos.y;\n"
-    "    gl_Position = vec4(final_pos, 0.0, 1.0);\n"
+    "    vec2 final_size = vec2(u_size.x, u_size.y * -1);\n"
+    "    vec3 scaled_pos = l_pos * vec3(final_size, 1.0);\n"
+    "    gl_Position = vec4(scaled_pos.xy + u_position, 0.0, 1.0);\n"
     "    v_color = l_color;\n"
     "}\0";
 
@@ -119,8 +118,8 @@ __ggl_convex_init(void)
     if (g_convex_renderer._is_initialized == GGL_TRUE) {
         return GGL_OK;
     }
-    vertex_shader = ggl_create_shader(GL_VERTEX_SHADER, GGL_CONVEX_VERTEX_SHADER);
-    fragment_shader = ggl_create_shader(GL_FRAGMENT_SHADER, GGL_CONVEX_FRAGMENT_SHADER);
+    vertex_shader = ggl_shader_create(GL_VERTEX_SHADER, GGL_CONVEX_VERTEX_SHADER);
+    fragment_shader = ggl_shader_create(GL_FRAGMENT_SHADER, GGL_CONVEX_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 

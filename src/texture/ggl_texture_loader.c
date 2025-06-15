@@ -68,7 +68,7 @@ ggl_texture_create(const char *texture_path)
  * @return GGL_TRUE if loaded. GGL_FALSE otherwise.
  */
 ggl_bool
-ggl_texture_load_from_id(ggl_ressource_id tid)
+__ggl_texture_load_from_id(ggl_ressource_id tid)
 {
     glActiveTexture(GL_TEXTURE0);
     if (tid == 0) {
@@ -89,7 +89,7 @@ ggl_texture_load_from_id(ggl_ressource_id tid)
  * @return GGL_OK.
  */
 ggl_status
-ggl_texture_unload(void)
+__ggl_texture_unload(void)
 {
     glBindTexture(GL_TEXTURE_2D, 0);
     return GGL_OK;

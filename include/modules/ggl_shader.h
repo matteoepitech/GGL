@@ -40,7 +40,7 @@ ggl_ressource_id ggl_get_shader_var_location(ggl_ressource_id program_id,
  *
  * @return The ID of the ressource we just created.
  */
-ggl_ressource_id ggl_create_shader(unsigned int type,
+ggl_ressource_id ggl_shader_create(unsigned int type,
                                    const char* source_str);
 
 #endif /* ifndef _GGL_MODULE_SHADER_H_ */

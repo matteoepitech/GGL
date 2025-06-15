@@ -48,7 +48,7 @@ ggl_set_viewport_size(GLFWwindow *win,
  * @return GGL_OK if everything worked. GGL_KO if not.
  */
 ggl_status
-ggl_create_window(ggl_context *ctx,
+ggl_window_create(ggl_context *ctx,
                   const char *title,
                   ggl_vector2i size)
 {
@@ -121,7 +121,7 @@ ggl_bool ggl_window_should_close(ggl_context *ctx)
  * @return GGL_OK if worked. GGL_KO if not.
  */
 ggl_status
-ggl_clear_window(ggl_color background_color)
+ggl_window_clear(ggl_color background_color)
 {
     glClearColor(background_color._r / 255.0f,
         background_color._g / 255.0f,

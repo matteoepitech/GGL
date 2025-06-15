@@ -75,8 +75,8 @@ __ggl_triangle_init(void)
     glGenBuffers(1, &g_triangle_renderer._vbo);
     glBindBuffer(GL_ARRAY_BUFFER, g_triangle_renderer._vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
-    vertex_shader = ggl_create_shader(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
-    fragment_shader = ggl_create_shader(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
+    vertex_shader = ggl_shader_create(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
+    fragment_shader = ggl_shader_create(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 
@@ -151,7 +151,7 @@ ggl_triangle_render(ggl_context *ctx,
     glBindVertexArray(g_triangle_renderer._vao);
     glUseProgram(g_triangle_renderer._shader_program);
     glUniform1i(g_triangle_renderer._sampler_texture_location, 0);
-    ggl_texture_load_from_id(triangle->_info.__texture_id__);
+    __ggl_texture_load_from_id(triangle->_info.__texture_id__);
     glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_triangle_renderer._color_location, 
@@ -161,7 +161,7 @@ ggl_triangle_render(ggl_context *ctx,
         triangle->_color._a / 255.0f);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
-    ggl_texture_unload();
+    __ggl_texture_unload();
     return GGL_OK;
 }
 
