@@ -129,6 +129,22 @@ ggl_triangle_create(ggl_vector2f position,
 }
 
 /**
+ * @brief Free a triangle.
+ *
+ * @param triangle                The triangle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_triangle_free(ggl_triangle *triangle)
+{
+    if (triangle == NULL)
+        return GGL_FALSE;
+    free(triangle);
+    return GGL_TRUE;
+}
+
+/**
  * @brief Render a triangle.
  *
  * @param ctx                    The context

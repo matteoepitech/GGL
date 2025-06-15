@@ -163,6 +163,25 @@ ggl_convex_create(ggl_vector2f position)
 }
 
 /**
+ * @brief Free a convex.
+ *
+ * @param convex                The convex
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_convex_free(ggl_convex *convex)
+{
+    if (convex == NULL)
+        return GGL_FALSE;
+    free(convex->_vertices_color);
+    free(convex->_vertices);
+    free(convex->_indices);
+    free(convex);
+    return GGL_TRUE;
+}
+
+/**
  * @brief Render a convex.
  *
  * @param ctx                    The context

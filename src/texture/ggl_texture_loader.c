@@ -61,9 +61,27 @@ ggl_texture_create(const char *texture_path)
 }
 
 /**
- * @brief Load a texture from his ID.
+ * @brief Free a texture.
  *
- * @param tid
+ * @param texture               The texture
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_texture_free(ggl_texture *texture)
+{
+    if (texture == NULL)
+        return GGL_FALSE;
+    stbi_image_free(texture->_data);
+    free(texture);
+    return GGL_TRUE;
+}
+
+/**
+ * @brief Load a texture from his ID.
+ *        INTERNAL USAGE
+ *
+ * @param tid                   The ID of the texture
  *
  * @return GGL_TRUE if loaded. GGL_FALSE otherwise.
  */
@@ -85,6 +103,7 @@ __ggl_texture_load_from_id(ggl_ressource_id tid)
 
 /**
  * @brief Unload the current binded texture.
+ *        INTERNAL USAGE
  *
  * @return GGL_OK.
  */

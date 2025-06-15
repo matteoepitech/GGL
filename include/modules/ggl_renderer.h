@@ -24,6 +24,15 @@ ggl_triangle *ggl_triangle_create(ggl_vector2f position,
                                   ggl_color color);
 
 /**
+ * @brief Free a triangle.
+ *
+ * @param triangle                The triangle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool ggl_triangle_free(ggl_triangle *triangle);
+
+/**
  * @brief Render a triangle.
  *
  * @param ctx                    The context
@@ -119,6 +128,15 @@ ggl_status ggl_triangle_set_texture(ggl_triangle *triangle,
 ggl_rectangle *ggl_rectangle_create(ggl_vector2f position,
                                     ggl_vector2f size,
                                     ggl_color color);
+
+/**
+ * @brief Free a rectangle.
+ *
+ * @param rectangle                The rectangle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool ggl_rectangle_free(ggl_rectangle *rectangle);
 
 /**
  * @brief Render a rectangle.
@@ -225,6 +243,15 @@ ggl_status ggl_rectangle_set_texture(ggl_rectangle *rectangle,
 ggl_convex *ggl_convex_create(ggl_vector2f position);
 
 /**
+ * @brief Free a convex.
+ *
+ * @param convex                The convex
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool ggl_convex_free(ggl_convex *convex);
+
+/**
  * @brief Render a convex.
  *
  * @param ctx                    The context
@@ -309,6 +336,15 @@ ggl_circle *ggl_circle_create(ggl_vector2f position,
                               ggl_int radius,
                               ggl_int step,
                               ggl_color color);
+
+/**
+ * @brief Free a circle.
+ *
+ * @param circle                The circle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool ggl_circle_free(ggl_circle *circle);
 
 /**
  * @brief Render a circle.

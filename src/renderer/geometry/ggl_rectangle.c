@@ -112,6 +112,22 @@ ggl_rectangle_create(ggl_vector2f position,
 }
 
 /**
+ * @brief Free a rectangle.
+ *
+ * @param rectangle                The rectangle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_rectangle_free(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return GGL_FALSE;
+    free(rectangle);
+    return GGL_TRUE;
+}
+
+/**
  * @brief Render a rectangle.
  *
  * @param ctx                    The context

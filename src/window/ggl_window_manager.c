@@ -11,7 +11,10 @@
 #define MAX_SAMPLES 100
 double fps_samples[MAX_SAMPLES] = {0};
 int fps_index = 0;
-static void ggl_smooth_fps(ggl_context *ctx, double new_fps) {
+
+static void
+ggl_smooth_fps(ggl_context *ctx, double new_fps)
+{
     fps_samples[fps_index] = new_fps;
     fps_index = (fps_index + 1) % MAX_SAMPLES;
 
@@ -90,7 +93,8 @@ ggl_window_create(ggl_context *ctx,
  *
  * @return GGL_TRUE if yes GGL_FALSE if no.
  */
-ggl_bool ggl_window_should_close(ggl_context *ctx)
+ggl_bool
+ggl_window_should_close(ggl_context *ctx)
 {
     static double prev_time = 0.0;
     double current_time;

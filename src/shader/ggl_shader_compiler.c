@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** GGL PROJECT, 2025
 ** src/shader/ggl_shader_compiler
 ** File description:
 ** GGL file for shader compiling

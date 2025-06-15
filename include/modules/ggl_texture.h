@@ -20,6 +20,15 @@
 ggl_texture *ggl_texture_create(const char *texture_path);
 
 /**
+ * @brief Free a texture.
+ *
+ * @param texture               The texture
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool ggl_texture_free(ggl_texture *texture);
+
+/**
  * @brief Load a texture from his ID.
  *        INTERNAL USAGE
  *

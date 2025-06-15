@@ -44,5 +44,7 @@ ggl_terminate(ggl_context *ctx)
         return GGL_KO;
     glfwDestroyWindow(ctx->_ggl_window._win_glfw);
     glfwTerminate();
+    if (ctx != NULL)
+        free(ctx);
     return GGL_OK;
 }

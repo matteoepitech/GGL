@@ -154,6 +154,22 @@ ggl_circle_create(ggl_vector2f position,
 }
 
 /**
+ * @brief Free a circle.
+ *
+ * @param circle                The circle
+ *
+ * @return GGL_TRUE if everything worked. GGL_FALSE otherwise.
+ */
+ggl_bool
+ggl_circle_free(ggl_circle *circle)
+{
+    if (circle == NULL)
+        return GGL_FALSE;
+    free(circle);
+    return GGL_TRUE;
+}
+
+/**
  * @brief Render a circle.
  *
  * @param ctx                    The context
