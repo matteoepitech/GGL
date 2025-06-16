@@ -18,8 +18,10 @@ typedef struct {
     ggl_ressource_id _vbo;
     ggl_ressource_id _shader_program;
     ggl_ressource_id _pos_location;
+    ggl_ressource_id _rot_location;
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
+    ggl_ressource_id _center_location;
     ggl_ressource_id _sampler_texture_location;
     ggl_bool _is_initialized;
 } ggl_triangle_renderer;
@@ -31,11 +33,23 @@ const char *GGL_TRIANGLE_VERTEX_SHADER =
     "layout (location = 1) in vec2 l_texcoord;\n"
     "uniform vec2 u_position;\n"
     "uniform vec2 u_size;\n"
+    "uniform float u_rad;\n"
+    "uniform vec2 u_center;\n"
     "out vec2 tex_coord;\n"
     "void main() {\n"
-    "    vec3 scaled_pos = l_pos * vec3(u_size, 1.0);\n"
+    "    vec2 pos = l_pos.xy - u_center;\n"
+    "    float cos_r = cos(u_rad);\n"
+    "    float sin_r = sin(u_rad);\n"
+    "    vec2 rotated = vec2(\n"
+    "        pos.x * cos_r - pos.y * sin_r,\n"
+    "        pos.x * sin_r + pos.y * cos_r\n"
+    "    );\n"
+    "    rotated.x = rotated.x + u_center.x;\n"
+    "    rotated.y = rotated.y + u_center.y;\n"
+    "    vec2 scaled = rotated * u_size;\n"
+    "    vec2 final_pos = scaled + u_position;\n"
+    "    gl_Position = vec4(final_pos, 0.0, 1.0);\n"
     "    tex_coord = l_texcoord;\n"
-    "    gl_Position = vec4(scaled_pos.xy + u_position, 0.0, 1.0);\n"
     "}";
 
 const char *GGL_TRIANGLE_FRAGMENT_SHADER =
@@ -87,8 +101,10 @@ __ggl_triangle_init(void)
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
     g_triangle_renderer._pos_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_position");
+    g_triangle_renderer._rot_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_rad");
     g_triangle_renderer._size_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_size");
     g_triangle_renderer._color_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_color");
+    g_triangle_renderer._center_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_center");
     g_triangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -124,6 +140,7 @@ ggl_triangle_create(ggl_vector2f position,
     triangle->_info.__texture_id__ = 0;
     triangle->_info._position = position;
     triangle->_info._color = color;
+    triangle->_info._rotation = 0.0f;
     triangle->_size = size;
     return triangle;
 }
@@ -175,6 +192,9 @@ ggl_triangle_render(ggl_context *ctx,
         triangle->_info._color._g / 255.0f,
         triangle->_info._color._b / 255.0f,
         triangle->_info._color._a / 255.0f);
+    glUniform1f(g_triangle_renderer._rot_location,
+        GGL_DEG_TO_RAD(triangle->_info._rotation));
+    glUniform2f(g_triangle_renderer._center_location, 0.5, 0.5);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
     __ggl_texture_unload();

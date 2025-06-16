@@ -20,6 +20,7 @@
 #define MARGIN_LEFT 110
 #define MARGING_TOP 70
 #define SPACING_X 150
+#define SPACING_Y 170
 
 float elapsed = 0.0f;
 
@@ -31,9 +32,9 @@ static float oscillate(float t, float min, float max, float speed)
 static ggl_color shift_color(float t)
 {
     return (ggl_color){
-        (int) (sinf(t * 0.7f) * 20 + C_THR._r),
-        (int) (sinf(t * 1.3f + 2.0f) * 20 + C_THR._g),
-        (int) (sinf(t * 2.0f + 4.0f) * 20 + C_THR._b),
+        (int) (sinf(t * 0.7f) * 20 + GGL_COLOR_RED._r / 2.0f),
+        (int) (sinf(t * 1.3f + 2.0f) * 20 + GGL_COLOR_GREEN._g / 2.0f),
+        (int) (sinf(t * 2.0f + 4.0f) * 20 + GGL_COLOR_BLUE._b),
     };
 }
 
@@ -104,9 +105,21 @@ int main(int argc, char *argv[])
     ggl_rectangle_set_texture(rect_tex_bis, texture);
     
     ggl_rectangle *rect_rot = ggl_rectangle_create(
-        (ggl_vector2f){pos8_x - 60, MARGING_TOP - 40}, 
+        (ggl_vector2f){pos8_x - 50, MARGING_TOP - 40}, 
         (ggl_vector2f){120, 80}, 
         C_TWO);
+    
+    ggl_triangle *tri_rot = ggl_triangle_create(
+        (ggl_vector2f){pos1_x - 50, MARGING_TOP + SPACING_Y},
+        (ggl_vector2f){80, 80}, 
+        C_TWO);
+
+    ggl_convex *convex_rot = ggl_convex_create((ggl_vector2f){pos2_x, MARGING_TOP + SPACING_Y - 40});
+    ggl_convex_add_vertex(convex_rot, (ggl_vector2f){0, -40}, C_FOUR);
+    ggl_convex_add_vertex(convex_rot, (ggl_vector2f){40, -10}, C_FOUR);
+    ggl_convex_add_vertex(convex_rot, (ggl_vector2f){30, 40}, C_FOUR);
+    ggl_convex_add_vertex(convex_rot, (ggl_vector2f){-30, 40}, C_FOUR);
+    ggl_convex_add_vertex(convex_rot, (ggl_vector2f){-40, -10}, C_FOUR);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         ggl_window_clear(C_ONE);
@@ -140,8 +153,15 @@ int main(int argc, char *argv[])
             ggl_rectangle_set_texture(rect_tex_bis, texture_misc);
         }
         ggl_rectangle_render(ctx, rect_tex_bis);
-        ggl_rectangle_render(ctx, rect_rot);
+
         ggl_rectangle_set_rotation(rect_rot, oscillate(elapsed, 0, 360, 1));
+        ggl_rectangle_render(ctx, rect_rot);
+
+        ggl_triangle_set_rotation(tri_rot, oscillate(elapsed, 0, 360, 1));
+        ggl_triangle_render(ctx, tri_rot);
+
+        ggl_convex_set_rotation(convex_rot, oscillate(elapsed, 0, 360, 1));
+        ggl_convex_render(ctx, convex_rot);
 
         ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
         c_pos._x -= 10;

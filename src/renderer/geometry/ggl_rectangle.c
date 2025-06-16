@@ -19,8 +19,10 @@ typedef struct {
     ggl_ressource_id _ebo;
     ggl_ressource_id _shader_program;
     ggl_ressource_id _pos_location;
+    ggl_ressource_id _rot_location;
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
+    ggl_ressource_id _center_location;
     ggl_ressource_id _sampler_texture_location;
     ggl_bool _is_initialized;
 } ggl_rectangle_renderer;
@@ -70,8 +72,10 @@ __ggl_rectangle_init(void)
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
     g_rectangle_renderer._pos_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_position");
+    g_rectangle_renderer._rot_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_rad");
     g_rectangle_renderer._size_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_color");
+    g_rectangle_renderer._center_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_center");
     g_rectangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), NULL);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -107,6 +111,7 @@ ggl_rectangle_create(ggl_vector2f position,
     rectangle->_info.__texture_id__ = 0;
     rectangle->_info._position = position;
     rectangle->_info._color = color;
+    rectangle->_info._rotation = 0.0f;
     rectangle->_size = size;
     return rectangle;
 }
@@ -158,6 +163,9 @@ ggl_rectangle_render(ggl_context *ctx,
         rectangle->_info._color._g / 255.0f,
         rectangle->_info._color._b / 255.0f,
         rectangle->_info._color._a / 255.0f);
+    glUniform1f(g_rectangle_renderer._rot_location,
+        GGL_DEG_TO_RAD(rectangle->_info._rotation));
+    glUniform2f(g_rectangle_renderer._center_location, 0.5, -0.5);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     __ggl_texture_unload();
