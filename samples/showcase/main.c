@@ -122,8 +122,36 @@ int main(int argc, char *argv[])
     ggl_convex_add_vertex(convex_rot, (ggl_vector2f){-40, -10}, C_FOUR);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
+        ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
+
         ggl_window_clear(C_ONE);
         elapsed += 0.01f;
+
+
+        if (ggl_rectangle_contain(ctx, rect_rot, c_pos)) {
+            ggl_rectangle_set_color(rect_rot, GGL_COLOR_BLUE);
+        } else {
+            ggl_rectangle_set_color(rect_rot, C_TWO);
+        }
+
+        if (ggl_rectangle_contain(ctx, rect_tex, c_pos)) {
+            ggl_rectangle_set_color(rect_tex, GGL_COLOR_BLUE);
+        } else {
+            ggl_rectangle_set_color(rect_tex, C_TWO);
+        }
+        
+        if (ggl_circle_contain(ctx, circle, c_pos)) {
+            ggl_circle_set_color(circle, GGL_COLOR_BLUE);
+        } else {
+            ggl_circle_set_color(circle, C_THR);
+        }
+        
+        if (ggl_triangle_contain(ctx, tri_rot, c_pos)) {
+            ggl_triangle_set_color(tri_rot, GGL_COLOR_BLUE);
+        } else {
+            ggl_triangle_set_color(tri_rot, C_THR);
+        }
+
 
         ggl_triangle_set_position(tri, (ggl_vector2f){
             pos1_x + oscillate(elapsed, -70, 0, 1.5f), 
@@ -163,7 +191,6 @@ int main(int argc, char *argv[])
         ggl_convex_set_rotation(convex_rot, oscillate(elapsed, 0, 360, 1));
         ggl_convex_render(ctx, convex_rot);
 
-        ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
         c_pos._x -= 10;
         c_pos._y -= 10;
         ggl_rectangle_set_position(cursor, c_pos);

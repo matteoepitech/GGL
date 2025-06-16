@@ -246,23 +246,20 @@ ggl_rectangle_contain(ggl_context *ctx,
                       ggl_rectangle *rectangle,
                       ggl_vector2f point)
 {
-    ggl_vector2f start = rectangle->_info._position;
-    ggl_vector2f size = rectangle->_size;
+    ggl_vector2f normalized_rect_pos = {0};
+    ggl_vector2f normalized_rect_size = {0};
+    ggl_vector2f normalized_point = {0};
 
-    start._x = start._x *
-        ((float) ctx->_ggl_window._fb_width / ctx->_ggl_window._fb_ref_width);
-    start._y = start._y *
-        ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
-    size._x = size._x *
-        ((float) ctx->_ggl_window._fb_width / ctx->_ggl_window._fb_ref_width);
-    size._y = size._y *
-        ((float) ctx->_ggl_window._fb_height / ctx->_ggl_window._fb_ref_height);
-    if (rectangle == NULL)
+    if (ctx == NULL || rectangle == NULL)
         return GGL_FALSE;
-    if (point._x >= start._x &&
-        point._y >= start._y &&
-        point._y <= start._y + size._y &&
-        point._x <= start._x + size._x)
+    normalized_rect_pos = ggl_coords_normalize_to_ndc_pos(ctx, rectangle->_info._position);
+    normalized_rect_size = ggl_coords_normalize_to_ndc_size(ctx, rectangle->_size);
+    normalized_point = ggl_coords_normalize_to_ndc_pos(ctx, point);
+    normalized_rect_pos._y -= normalized_rect_size._y;
+    if (normalized_point._x >= normalized_rect_pos._x &&
+        normalized_point._y >= normalized_rect_pos._y &&
+        normalized_point._y <= normalized_rect_pos._y + normalized_rect_size._y &&
+        normalized_point._x <= normalized_rect_pos._x + normalized_rect_size._x)
         return GGL_TRUE;
     return GGL_FALSE;
 }

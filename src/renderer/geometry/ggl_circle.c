@@ -6,6 +6,7 @@
 */
 
 #include "ggl.h"
+#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -316,4 +317,24 @@ ggl_circle_set_texture(ggl_circle *circle,
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
     return GGL_OK;
+}
+
+/**
+ * @brief Is a point in the bounds of the circle?
+ *
+ * @param ctx           The context
+ * @param circle        The circle
+ * @param point         The point
+ *
+ * @return GGL_TRUE or FALSE.
+ */
+ggl_bool
+ggl_circle_contain(ggl_context *ctx,
+                   ggl_circle *circle,
+                   ggl_vector2f point)
+{
+    if (ggl_distance_between_points(circle->_info._position, point) >= circle->_radius) {
+        return GGL_FALSE;
+    }
+    return GGL_TRUE;
 }

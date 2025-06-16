@@ -133,6 +133,19 @@ ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle,
 ggl_status ggl_triangle_set_texture(ggl_triangle *triangle,
                                     ggl_texture *texture);
 
+/**
+ * @brief Is a point in the bounds of the triangle?
+ *
+ * @param ctx           The context
+ * @param triangle        The triangle
+ * @param point         The point
+ *
+ * @return GGL_TRUE or FALSE.
+ */
+ggl_bool ggl_triangle_contain(ggl_context *ctx,
+                              ggl_triangle *triangle,
+                              ggl_vector2f point);
+
 
 // ==============================================================
 
@@ -271,6 +284,7 @@ ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle,
 ggl_status ggl_rectangle_set_texture(ggl_rectangle *rectangle,
                                      ggl_texture *texture);
 
+
 // ==============================================================
 
 /**
@@ -380,6 +394,7 @@ ggl_vector2f ggl_convex_set_position(ggl_convex *convex,
 ggl_float ggl_convex_set_rotation(ggl_convex *convex,
                                   ggl_float rotation);
 
+
 // ==============================================================
 
 /**
@@ -486,6 +501,19 @@ ggl_int ggl_circle_set_radius(ggl_circle *circle,
  */
 ggl_status ggl_circle_set_texture(ggl_circle *circle,
                                   ggl_texture *texture);
+
+/**
+ * @brief Is a point in the bounds of the circle?
+ *
+ * @param ctx           The context
+ * @param circle        The circle
+ * @param point         The point
+ *
+ * @return GGL_TRUE or FALSE.
+ */
+ggl_bool ggl_circle_contain(ggl_context *ctx,
+                            ggl_circle *circle,
+                            ggl_vector2f point);
 
 // ==============================================================
 

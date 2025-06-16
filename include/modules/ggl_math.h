@@ -60,4 +60,24 @@ float ggl_coord_normalize_to_ndc_pos(ggl_context *ctx,
                                      float ref_value,
                                      int axis);
 
+/**
+ * @brief Get the vector length.
+ *
+ * @param vector                The vector
+ *
+ * @return The vector length.
+ */
+ggl_float ggl_get_vector_length(ggl_vector2f vector);
+
+/**
+ * @brief Get the distance between 2 points.
+ *
+ * @param point1                The point 1
+ * @param point2                The point 2
+ *
+ * @return The distance.
+ */
+ggl_float ggl_distance_between_points(ggl_vector2f point1,
+                                      ggl_vector2f point2);
+
 #endif /* ifndef _GGL_MODULE_MATH_H_ */

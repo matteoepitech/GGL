@@ -2,7 +2,7 @@
 ** GGL PROJECT, 2025
 ** src/math/ggl_coords_helper.c
 ** File description:
-** GGL coords helper avec ratio adaptatif
+** GGL coords helper
 */
 
 #include "ggl.h"

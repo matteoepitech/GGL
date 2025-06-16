@@ -346,3 +346,83 @@ ggl_triangle_set_texture(ggl_triangle *triangle,
     glBindTexture(GL_TEXTURE_2D, 0);
     return GGL_OK;
 }
+
+/**
+ * @brief Get the transformed vertices from a triangle.
+ *        Since the triangle has hardcoded coordinates we can create them.
+ *
+ * @param triangle              The triangle
+ * @param a                     The point 1
+ * @param b                     The point 2
+ * @param c                     The point 3
+ */
+static void
+__ggl_triangle_get_transformed_vertices(const ggl_triangle *triangle,
+                                        ggl_vector2f *a,
+                                        ggl_vector2f *b,
+                                        ggl_vector2f *c)
+{
+    ggl_vector2f local_a = {0.0f, 0.0f};
+    ggl_vector2f local_b = {1.0f, 0.0f};
+    ggl_vector2f local_c = {0.5f, 1.0f};
+    ggl_vector2f center = {0.5f, 0.5f};
+    ggl_vector2f size = triangle->_size;
+    ggl_vector2f pos = triangle->_info._position;
+    ggl_float rad = GGL_DEG_TO_RAD(triangle->_info._rotation);
+    ggl_vector2f verts[3] = {local_a, local_b, local_c};
+    ggl_vector2f *out[3] = {a, b, c};
+
+    for (int i = 0; i < 3; i++) {
+        ggl_vector2f v = {verts[i]._x - center._x, verts[i]._y - center._y};
+        ggl_float cos_r = cosf(rad);
+        ggl_float sin_r = sinf(rad);
+        ggl_vector2f rotated = {
+            v._x * cos_r - v._y * sin_r + center._x,
+            v._x * sin_r + v._y * cos_r + center._y};
+        ggl_vector2f scaled = {
+            rotated._x * size._x,
+            rotated._y * size._y * -1.0f};
+        ggl_vector2f final_pos = {
+            scaled._x + pos._x,
+            scaled._y + pos._y};
+        *out[i] = final_pos;
+    }
+}
+
+/**
+ * @brief Is a point in the bounds of the triangle?
+ *        This function use the Barycentric method with improved precision.
+ *
+ * @param ctx           The context
+ * @param triangle      The triangle
+ * @param point         The point
+ *
+ * @return GGL_TRUE or FALSE.
+ */
+ggl_bool
+ggl_triangle_contain(ggl_context *ctx,
+                     ggl_triangle *triangle,
+                     ggl_vector2f point)
+{
+    ggl_vector2f a = {0};
+    ggl_vector2f b = {0};
+    ggl_vector2f c = {0};
+    ggl_float denom = 0;
+    ggl_float alpha = 0;
+    ggl_float beta = 0;
+    ggl_float gamma = 0;
+    const ggl_float EPSILON = 1e-6f;
+
+    if (triangle == NULL || ctx == NULL) {
+        return GGL_FALSE;
+    }
+    __ggl_triangle_get_transformed_vertices(triangle, &a, &b, &c);
+    denom = (b._y - c._y) * (a._x - c._x) + (c._x - b._x) * (a._y - c._y);
+    if (fabsf(denom) < EPSILON) {
+        return GGL_FALSE;
+    }
+    alpha = ((b._y - c._y) * (point._x - c._x) + (c._x - b._x) * (point._y - c._y)) / denom;
+    beta  = ((c._y - a._y) * (point._x - c._x) + (a._x - c._x) * (point._y - c._y)) / denom;
+    gamma = 1.0f - alpha - beta;
+    return (alpha >= -EPSILON && beta >= -EPSILON && gamma >= -EPSILON);
+}
