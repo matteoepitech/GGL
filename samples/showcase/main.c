@@ -120,6 +120,12 @@ int main(int argc, char *argv[])
     ggl_convex_add_vertex(convex_rot, (ggl_vector2f){30, 40}, C_FOUR);
     ggl_convex_add_vertex(convex_rot, (ggl_vector2f){-30, 40}, C_FOUR);
     ggl_convex_add_vertex(convex_rot, (ggl_vector2f){-40, -10}, C_FOUR);
+    
+    ggl_triangle *tri_outline = ggl_triangle_create(
+        (ggl_vector2f){pos3_x - 50, MARGING_TOP + SPACING_Y},
+        (ggl_vector2f){80, 80}, 
+        C_TWO);
+    ggl_triangle_set_outline_width(tri_outline, 10);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
@@ -190,6 +196,8 @@ int main(int argc, char *argv[])
 
         ggl_convex_set_rotation(convex_rot, oscillate(elapsed, 0, 360, 1));
         ggl_convex_render(ctx, convex_rot);
+
+        ggl_triangle_render(ctx, tri_outline);
 
         c_pos._x -= 10;
         c_pos._y -= 10;

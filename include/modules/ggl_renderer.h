@@ -11,6 +11,20 @@
     #include "../misc/ggl_types.h"
 
 /**
+ * @brief Create a shape data.
+ *
+ * @param position              The position of the shape
+ * @param color                 The color of the shape
+ *
+ * @return The shape data.
+ */
+ggl_shape_data __ggl_create_shape_data(ggl_vector2f position,
+                                       ggl_color color);
+
+
+// ==============================================================
+
+/**
  * @brief Create a triangle.
  *
  * @param position              The pos of the triangle using ggl_vector2f
@@ -80,6 +94,15 @@ ggl_color ggl_triangle_get_color(ggl_triangle *triangle);
 ggl_vector2f ggl_triangle_get_size(ggl_triangle *triangle);
 
 /**
+ * @brief Triangle get outline_width.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_width.
+ */
+ggl_float ggl_triangle_get_outline_width(ggl_triangle *triangle);
+
+/**
  * @brief Triangle set position.
  *
  * @param triangle             The triangle
@@ -121,6 +144,16 @@ ggl_color ggl_triangle_set_color(ggl_triangle *triangle,
  */
 ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle,
                                    ggl_vector2f size);
+
+/**
+ * @brief Triangle set outline_width.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_width.
+ */
+ggl_float ggl_triangle_set_outline_width(ggl_triangle *triangle,
+                                         ggl_float outline_width);
 
 /**
  * @brief Set a texture for a triangle.

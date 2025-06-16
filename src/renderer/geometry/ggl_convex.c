@@ -20,42 +20,14 @@ typedef struct {
     ggl_ressource_id _color_location;
     ggl_ressource_id _rot_location;
     ggl_ressource_id _center_location;
+    ggl_ressource_id _outline_width_location;
+    ggl_ressource_id _outline_color_location;
     ggl_bool _is_initialized;
 } ggl_convex_renderer;
 static ggl_convex_renderer g_convex_renderer = {0};
 
-const char *GGL_CONVEX_VERTEX_SHADER =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 l_pos;\n"
-    "layout (location = 1) in vec4 l_color;\n"
-    "uniform vec2 u_position;\n"
-    "uniform vec2 u_size;\n"
-    "uniform float u_rad;\n"
-    "uniform vec2 u_center;\n"
-    "out vec4 v_color;\n"
-    "void main() {\n"
-    "    vec2 pos = l_pos.xy - u_center;\n"
-    "    float cos_r = cos(u_rad);\n"
-    "    float sin_r = sin(u_rad);\n"
-    "    vec2 rotated = vec2(\n"
-    "        pos.x * cos_r - pos.y * sin_r,\n"
-    "        pos.x * sin_r + pos.y * cos_r\n"
-    "    );\n"
-    "    rotated += u_center;\n"
-    "    vec2 scaled = rotated * u_size;\n"
-    "    vec2 final_pos = scaled + u_position;\n"
-    "    gl_Position = vec4(final_pos, 0.0, 1.0);\n"
-    "    v_color = l_color;\n"
-    "}";
-
-const char *GGL_CONVEX_FRAGMENT_SHADER =
-    "#version 330 core\n"
-    "in vec4 v_color;\n"
-    "out vec4 frag_color;\n"
-    "uniform vec4 u_color;\n"
-    "void main() {\n"
-    "    frag_color = v_color;\n"
-    "}\0";
+char *GGL_CONVEX_VERTEX_SHADER;
+char *GGL_CONVEX_FRAGMENT_SHADER;
 
 // ==============================================================
 
@@ -145,6 +117,8 @@ __ggl_convex_init(void)
     g_convex_renderer._size_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_size");
     g_convex_renderer._color_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_color");
     g_convex_renderer._center_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_center");
+    g_convex_renderer._outline_width_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_out_width");
+    g_convex_renderer._outline_color_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_out_color");
     g_convex_renderer._rot_location = ggl_get_shader_var_location(g_convex_renderer._shader_program, "u_rad");
     g_convex_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
@@ -168,9 +142,7 @@ ggl_convex_create(ggl_vector2f position)
     if (g_convex_renderer._is_initialized == GGL_FALSE) {
         __ggl_convex_init();
     }
-    convex->_info._position = position;
-    convex->_info._color = GGL_COLOR_WHITE;
-    convex->_info._rotation = 0.0f;
+    convex->_info = __ggl_create_shape_data(position, GGL_COLOR_BLACK);
     convex->_vertices = NULL;
     convex->_indices = NULL;
     convex->_vertices_color = NULL;
@@ -223,6 +195,12 @@ ggl_convex_render(ggl_context *ctx,
     glUniform2f(g_convex_renderer._size_location, final_size._x, final_size._y);
     glUniform1f(g_convex_renderer._rot_location, GGL_DEG_TO_RAD(convex->_info._rotation));
     glUniform2f(g_convex_renderer._center_location, 0.5, -0.5);
+    glUniform1f(g_convex_renderer._outline_width_location, convex->_info._outline_width);
+    glUniform4f(g_convex_renderer._outline_color_location, 
+        convex->_info._outline_color._r / 255.0f,
+        convex->_info._outline_color._g / 255.0f,
+        convex->_info._outline_color._b / 255.0f,
+        convex->_info._outline_color._a / 255.0f);
     glDrawElements(GL_TRIANGLES, (convex->_vertices_count - 2) * 3, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     return GGL_OK;

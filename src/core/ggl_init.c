@@ -6,6 +6,7 @@
 */
 
 #include "ggl.h"
+#include "modules/ggl_shader.h"
 
 /**
  * @brief Init of GGL. This is the first function you should call.
@@ -28,6 +29,11 @@ ggl_init(void)
         return NULL;
     }
     GGL_DEBUG("GGL got initialized.");
+    if (__ggl_shader_init() == GGL_FALSE) {
+        GGL_PERROR("GGL Shaders cannot be created.");
+        return NULL;
+    }
+    GGL_DEBUG("GGL Shaders hava been correctly created.");
     return ctx;
 }
 

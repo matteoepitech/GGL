@@ -136,6 +136,8 @@ typedef struct {
     ggl_vector2f _position;
     ggl_float _rotation;
     ggl_color _color;
+    ggl_float _outline_width;
+    ggl_color _outline_color;
     ggl_ressource_id __texture_id__;  // @INTERNAL USAGE;
 } ggl_shape_data;
 

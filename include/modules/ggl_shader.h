@@ -11,14 +11,21 @@
     #include "../misc/ggl_types.h"
 
 // @brief Internal shaders
-extern const char *GGL_TRIANGLE_VERTEX_SHADER;
-extern const char *GGL_TRIANGLE_FRAGMENT_SHADER;
+extern char *GGL_TRIANGLE_VERTEX_SHADER;
+extern char *GGL_TRIANGLE_FRAGMENT_SHADER;
 
-extern const char *GGL_CONVEX_VERTEX_SHADER;
-extern const char *GGL_CONVEX_FRAGMENT_SHADER;
+extern char *GGL_CONVEX_VERTEX_SHADER;
+extern char *GGL_CONVEX_FRAGMENT_SHADER;
 
-extern const char *GGL_CIRCLE_VERTEX_SHADER;
-extern const char *GGL_CIRCLE_FRAGMENT_SHADER;
+extern char *GGL_CIRCLE_VERTEX_SHADER;
+extern char *GGL_CIRCLE_FRAGMENT_SHADER;
+
+/**
+ * @brief Init all shaders.
+ *
+ * @return GGL_TRUE if worked. GGL_FALSE otherwise.
+ */
+ggl_bool __ggl_shader_init(void);
 
 /**
  * @brief Get a var location in a shader.

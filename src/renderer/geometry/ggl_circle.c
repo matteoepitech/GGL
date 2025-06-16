@@ -6,7 +6,6 @@
 */
 
 #include "ggl.h"
-#include "modules/ggl_math.h"
 
 // ==============================================================
 
@@ -21,28 +20,14 @@ typedef struct {
     ggl_ressource_id _pos_location;
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
+    ggl_ressource_id _outline_width_location;
+    ggl_ressource_id _outline_color_location;
     ggl_bool _is_initialized;
 } ggl_circle_renderer;
 static ggl_circle_renderer g_circle_renderer = {0};
 
-const char *GGL_CIRCLE_VERTEX_SHADER =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 l_pos;\n"
-    "layout (location = 1) in vec4 l_color;\n"
-    "uniform vec2 u_position;\n"
-    "uniform vec2 u_size;\n"
-    "void main() {\n"
-    "    vec3 scaled_pos = l_pos * vec3(u_size, 1.0);\n"
-    "    gl_Position = vec4(scaled_pos.xy + u_position, 0.0, 1.0);\n"
-    "}";
-
-const char *GGL_CIRCLE_FRAGMENT_SHADER =
-    "#version 330 core\n"
-    "out vec4 frag_color;\n"
-    "uniform vec4 u_color;\n"
-    "void main() {\n"
-    "    frag_color = u_color;\n"
-    "}";
+char *GGL_CIRCLE_VERTEX_SHADER;
+char *GGL_CIRCLE_FRAGMENT_SHADER;
 
 // ==============================================================
 
@@ -75,6 +60,8 @@ __ggl_circle_init(void)
     g_circle_renderer._pos_location = ggl_get_shader_var_location(g_circle_renderer._shader_program, "u_position");
     g_circle_renderer._size_location = ggl_get_shader_var_location(g_circle_renderer._shader_program, "u_size");
     g_circle_renderer._color_location = ggl_get_shader_var_location(g_circle_renderer._shader_program, "u_color");
+    g_circle_renderer._outline_width_location = ggl_get_shader_var_location(g_circle_renderer._shader_program, "u_out_width");
+    g_circle_renderer._outline_color_location = ggl_get_shader_var_location(g_circle_renderer._shader_program, "u_out_color");
     g_circle_renderer._is_initialized = GGL_TRUE;
     return GGL_OK;
 }
@@ -137,9 +124,7 @@ ggl_circle_create(ggl_vector2f position,
         __ggl_circle_init();
     }
     vertices = __ggl_circle_build(step);
-    circle->_info.__texture_id__ = 0;
-    circle->_info._position = position;
-    circle->_info._color = color;
+    circle->_info = __ggl_create_shape_data(position, color);
     circle->_radius = radius;
     circle->_step = step;
     glGenVertexArrays(1, &circle->__vao__);
@@ -200,6 +185,12 @@ ggl_circle_render(ggl_context *ctx,
         circle->_info._color._g / 255.0f,
         circle->_info._color._b / 255.0f,
         circle->_info._color._a / 255.0f);
+    glUniform1f(g_circle_renderer._outline_width_location, circle->_info._outline_width);
+    glUniform4f(g_circle_renderer._outline_color_location, 
+        circle->_info._outline_color._r / 255.0f,
+        circle->_info._outline_color._g / 255.0f,
+        circle->_info._outline_color._b / 255.0f,
+        circle->_info._outline_color._a / 255.0f);
     glDrawArrays(GL_TRIANGLES, 0, circle->_step * 3);
     glBindVertexArray(0);
     return GGL_OK;

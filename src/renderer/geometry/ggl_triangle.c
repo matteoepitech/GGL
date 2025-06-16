@@ -6,6 +6,7 @@
 */
 
 #include "ggl.h"
+#include "misc/ggl_types.h"
 
 // ==============================================================
 
@@ -22,45 +23,12 @@ typedef struct {
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
     ggl_ressource_id _center_location;
+    ggl_ressource_id _outline_width_location;
+    ggl_ressource_id _outline_color_location;
     ggl_ressource_id _sampler_texture_location;
     ggl_bool _is_initialized;
 } ggl_triangle_renderer;
 static ggl_triangle_renderer g_triangle_renderer = {0};
-
-const char *GGL_TRIANGLE_VERTEX_SHADER =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 l_pos;\n"
-    "layout (location = 1) in vec2 l_texcoord;\n"
-    "uniform vec2 u_position;\n"
-    "uniform vec2 u_size;\n"
-    "uniform float u_rad;\n"
-    "uniform vec2 u_center;\n"
-    "out vec2 tex_coord;\n"
-    "void main() {\n"
-    "    vec2 pos = l_pos.xy - u_center;\n"
-    "    float cos_r = cos(u_rad);\n"
-    "    float sin_r = sin(u_rad);\n"
-    "    vec2 rotated = vec2(\n"
-    "        pos.x * cos_r - pos.y * sin_r,\n"
-    "        pos.x * sin_r + pos.y * cos_r\n"
-    "    );\n"
-    "    rotated.x = rotated.x + u_center.x;\n"
-    "    rotated.y = rotated.y + u_center.y;\n"
-    "    vec2 scaled = rotated * u_size;\n"
-    "    vec2 final_pos = scaled + u_position;\n"
-    "    gl_Position = vec4(final_pos, 0.0, 1.0);\n"
-    "    tex_coord = l_texcoord;\n"
-    "}";
-
-const char *GGL_TRIANGLE_FRAGMENT_SHADER =
-    "#version 330 core\n"
-    "out vec4 frag_color;\n"
-    "uniform vec4 u_color;\n"
-    "in vec2 tex_coord;\n"
-    "uniform sampler2D u_sampler_texture;\n"
-    "void main() {\n"
-    "   frag_color = texture(u_sampler_texture, tex_coord) * u_color;\n"
-    "}";
 
 // ==============================================================
 
@@ -105,6 +73,8 @@ __ggl_triangle_init(void)
     g_triangle_renderer._size_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_size");
     g_triangle_renderer._color_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_color");
     g_triangle_renderer._center_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_center");
+    g_triangle_renderer._outline_width_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_out_width");
+    g_triangle_renderer._outline_color_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_out_color");
     g_triangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_triangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -137,10 +107,7 @@ ggl_triangle_create(ggl_vector2f position,
     if (g_triangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_triangle_init();
     }
-    triangle->_info.__texture_id__ = 0;
-    triangle->_info._position = position;
-    triangle->_info._color = color;
-    triangle->_info._rotation = 0.0f;
+    triangle->_info = __ggl_create_shape_data(position, color);
     triangle->_size = size;
     return triangle;
 }
@@ -194,6 +161,12 @@ ggl_triangle_render(ggl_context *ctx,
         triangle->_info._color._a / 255.0f);
     glUniform1f(g_triangle_renderer._rot_location,
         GGL_DEG_TO_RAD(triangle->_info._rotation));
+    glUniform1f(g_triangle_renderer._outline_width_location, triangle->_info._outline_width);
+    glUniform4f(g_triangle_renderer._color_location, 
+        triangle->_info._color._r / 255.0f,
+        triangle->_info._color._g / 255.0f,
+        triangle->_info._color._b / 255.0f,
+        triangle->_info._color._a / 255.0f);
     glUniform2f(g_triangle_renderer._center_location, 0.5, 0.5);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
@@ -253,6 +226,19 @@ ggl_vector2f
 ggl_triangle_get_size(ggl_triangle *triangle)
 {
     return triangle->_size;
+}
+
+/**
+ * @brief Triangle get outline_width.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_width.
+ */
+ggl_float
+ggl_triangle_get_outline_width(ggl_triangle *triangle)
+{
+    return triangle->_info._outline_width;
 }
 
 
@@ -317,6 +303,21 @@ ggl_triangle_set_size(ggl_triangle *triangle,
 {
     triangle->_size = size;
     return size;
+}
+
+/**
+ * @brief Triangle set outline_width.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_width.
+ */
+ggl_float
+ggl_triangle_set_outline_width(ggl_triangle *triangle,
+                               ggl_float outline_width)
+{
+    triangle->_info._outline_width = outline_width;
+    return outline_width;
 }
 
 /**

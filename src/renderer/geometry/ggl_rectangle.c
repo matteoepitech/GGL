@@ -23,10 +23,15 @@ typedef struct {
     ggl_ressource_id _size_location;
     ggl_ressource_id _color_location;
     ggl_ressource_id _center_location;
+    ggl_ressource_id _outline_width_location;
+    ggl_ressource_id _outline_color_location;
     ggl_ressource_id _sampler_texture_location;
     ggl_bool _is_initialized;
 } ggl_rectangle_renderer;
 static ggl_rectangle_renderer g_rectangle_renderer = {0};
+
+char *GGL_TRIANGLE_VERTEX_SHADER;
+char *GGL_TRIANGLE_FRAGMENT_SHADER;
 
 // ==============================================================
 
@@ -76,6 +81,8 @@ __ggl_rectangle_init(void)
     g_rectangle_renderer._size_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_size");
     g_rectangle_renderer._color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_color");
     g_rectangle_renderer._center_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_center");
+    g_rectangle_renderer._outline_width_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_out_width");
+    g_rectangle_renderer._outline_color_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_out_color");
     g_rectangle_renderer._sampler_texture_location = ggl_get_shader_var_location(g_rectangle_renderer._shader_program, "u_sampler_texture");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), NULL);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -108,10 +115,7 @@ ggl_rectangle_create(ggl_vector2f position,
     if (g_rectangle_renderer._is_initialized == GGL_FALSE) {
         __ggl_rectangle_init();
     }
-    rectangle->_info.__texture_id__ = 0;
-    rectangle->_info._position = position;
-    rectangle->_info._color = color;
-    rectangle->_info._rotation = 0.0f;
+    rectangle->_info = __ggl_create_shape_data(position, color);
     rectangle->_size = size;
     return rectangle;
 }
@@ -165,6 +169,12 @@ ggl_rectangle_render(ggl_context *ctx,
         rectangle->_info._color._a / 255.0f);
     glUniform1f(g_rectangle_renderer._rot_location,
         GGL_DEG_TO_RAD(rectangle->_info._rotation));
+    glUniform1f(g_rectangle_renderer._outline_width_location, rectangle->_info._outline_width);
+    glUniform4f(g_rectangle_renderer._outline_color_location, 
+        rectangle->_info._outline_color._r / 255.0f,
+        rectangle->_info._outline_color._g / 255.0f,
+        rectangle->_info._outline_color._b / 255.0f,
+        rectangle->_info._outline_color._a / 255.0f);
     glUniform2f(g_rectangle_renderer._center_location, 0.5, -0.5);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
