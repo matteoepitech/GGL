@@ -122,8 +122,8 @@ ggl_triangle_create(ggl_vector2f position,
         __ggl_triangle_init();
     }
     triangle->_info.__texture_id__ = 0;
-    triangle->_position = position;
-    triangle->_color = color;
+    triangle->_info._position = position;
+    triangle->_info._color = color;
     triangle->_size = size;
     return triangle;
 }
@@ -162,7 +162,7 @@ ggl_triangle_render(ggl_context *ctx,
     if (triangle == NULL || ctx == NULL) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, triangle->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, triangle->_info._position);
     final_size = ggl_coords_normalize_to_ndc_size(ctx, triangle->_size);
     glBindVertexArray(g_triangle_renderer._vao);
     glUseProgram(g_triangle_renderer._shader_program);
@@ -171,10 +171,10 @@ ggl_triangle_render(ggl_context *ctx,
     glUniform2f(g_triangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_triangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_triangle_renderer._color_location, 
-        triangle->_color._r / 255.0f,
-        triangle->_color._g / 255.0f,
-        triangle->_color._b / 255.0f,
-        triangle->_color._a / 255.0f);
+        triangle->_info._color._r / 255.0f,
+        triangle->_info._color._g / 255.0f,
+        triangle->_info._color._b / 255.0f,
+        triangle->_info._color._a / 255.0f);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
     __ggl_texture_unload();
@@ -191,7 +191,22 @@ ggl_triangle_render(ggl_context *ctx,
 ggl_vector2f
 ggl_triangle_get_position(ggl_triangle *triangle)
 {
-    return triangle->_position;
+    return triangle->_info._position;
+}
+
+/**
+ * @brief Triangle get rotation.
+ *
+ * @param triangle             The triangle
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_triangle_get_rotation(ggl_triangle *triangle)
+{
+    if (triangle == NULL)
+        return 0.0f;
+    return triangle->_info._rotation;
 }
 
 /**
@@ -204,7 +219,7 @@ ggl_triangle_get_position(ggl_triangle *triangle)
 ggl_color
 ggl_triangle_get_color(ggl_triangle *triangle)
 {
-    return triangle->_color;
+    return triangle->_info._color;
 }
 
 /**
@@ -233,8 +248,24 @@ ggl_vector2f
 ggl_triangle_set_position(ggl_triangle *triangle,
                           ggl_vector2f position)
 {
-    triangle->_position = position;
+    triangle->_info._position = position;
     return position;
+}
+
+/**
+ * @brief Triangle set rotation
+ *
+ * @param triangle             The triangle
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_triangle_set_rotation(ggl_triangle *triangle,
+                          ggl_float rotation)
+{
+    triangle->_info._rotation = rotation;
+    return rotation;
 }
 
 /**
@@ -249,7 +280,7 @@ ggl_color
 ggl_triangle_set_color(ggl_triangle *triangle,
                        ggl_color color)
 {
-    triangle->_color = color;
+    triangle->_info._color = color;
     return color;
 }
 

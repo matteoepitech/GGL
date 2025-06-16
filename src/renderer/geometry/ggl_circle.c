@@ -137,8 +137,8 @@ ggl_circle_create(ggl_vector2f position,
     }
     vertices = __ggl_circle_build(step);
     circle->_info.__texture_id__ = 0;
-    circle->_position = position;
-    circle->_color = color;
+    circle->_info._position = position;
+    circle->_info._color = color;
     circle->_radius = radius;
     circle->_step = step;
     glGenVertexArrays(1, &circle->__vao__);
@@ -187,7 +187,7 @@ ggl_circle_render(ggl_context *ctx,
     if (circle == NULL || ctx == NULL) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, circle->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, circle->_info._position);
     final_size = ggl_coords_normalize_to_ndc_size(ctx,
         (ggl_vector2f) { circle->_radius, circle->_radius});
     glBindVertexArray(circle->__vao__);
@@ -195,10 +195,10 @@ ggl_circle_render(ggl_context *ctx,
     glUniform2f(g_circle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_circle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_circle_renderer._color_location, 
-        circle->_color._r / 255.0f,
-        circle->_color._g / 255.0f,
-        circle->_color._b / 255.0f,
-        circle->_color._a / 255.0f);
+        circle->_info._color._r / 255.0f,
+        circle->_info._color._g / 255.0f,
+        circle->_info._color._b / 255.0f,
+        circle->_info._color._a / 255.0f);
     glDrawArrays(GL_TRIANGLES, 0, circle->_step * 3);
     glBindVertexArray(0);
     return GGL_OK;
@@ -214,7 +214,7 @@ ggl_circle_render(ggl_context *ctx,
 ggl_vector2f
 ggl_circle_get_position(ggl_circle *circle)
 {
-    return circle->_position;
+    return circle->_info._position;
 }
 
 /**
@@ -227,7 +227,7 @@ ggl_circle_get_position(ggl_circle *circle)
 ggl_color
 ggl_circle_get_color(ggl_circle *circle)
 {
-    return circle->_color;
+    return circle->_info._color;
 }
 
 /**
@@ -255,7 +255,7 @@ ggl_vector2f
 ggl_circle_set_position(ggl_circle *circle,
                         ggl_vector2f position)
 {
-    circle->_position = position;
+    circle->_info._position = position;
     return position;
 }
 
@@ -271,7 +271,7 @@ ggl_color
 ggl_circle_set_color(ggl_circle *circle,
                      ggl_color color)
 {
-    circle->_color = color;
+    circle->_info._color = color;
     return color;
 }
 

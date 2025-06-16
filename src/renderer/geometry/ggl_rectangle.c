@@ -105,8 +105,8 @@ ggl_rectangle_create(ggl_vector2f position,
         __ggl_rectangle_init();
     }
     rectangle->_info.__texture_id__ = 0;
-    rectangle->_position = position;
-    rectangle->_color = color;
+    rectangle->_info._position = position;
+    rectangle->_info._color = color;
     rectangle->_size = size;
     return rectangle;
 }
@@ -145,7 +145,7 @@ ggl_rectangle_render(ggl_context *ctx,
     if (rectangle == NULL || ctx == NULL) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, rectangle->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, rectangle->_info._position);
     final_size = ggl_coords_normalize_to_ndc_size(ctx, rectangle->_size);
     glBindVertexArray(g_rectangle_renderer._vao);
     glUseProgram(g_rectangle_renderer._shader_program);
@@ -154,10 +154,10 @@ ggl_rectangle_render(ggl_context *ctx,
     glUniform2f(g_rectangle_renderer._pos_location, final_pos._x, final_pos._y);
     glUniform2f(g_rectangle_renderer._size_location, final_size._x, final_size._y);
     glUniform4f(g_rectangle_renderer._color_location, 
-        rectangle->_color._r / 255.0f,
-        rectangle->_color._g / 255.0f,
-        rectangle->_color._b / 255.0f,
-        rectangle->_color._a / 255.0f);
+        rectangle->_info._color._r / 255.0f,
+        rectangle->_info._color._g / 255.0f,
+        rectangle->_info._color._b / 255.0f,
+        rectangle->_info._color._a / 255.0f);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     __ggl_texture_unload();
@@ -176,7 +176,22 @@ ggl_rectangle_get_position(ggl_rectangle *rectangle)
 {
     if (rectangle == NULL)
         return (ggl_vector2f) {0, 0};
-    return rectangle->_position;
+    return rectangle->_info._position;
+}
+
+/**
+ * @brief Rectangle get rotation.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_rectangle_get_rotation(ggl_rectangle *rectangle)
+{
+    if (rectangle == NULL)
+        return 0.0f;
+    return rectangle->_info._rotation;
 }
 
 /**
@@ -191,7 +206,7 @@ ggl_rectangle_get_color(ggl_rectangle *rectangle)
 {
     if (rectangle == NULL)
         return (ggl_color) {0, 0, 0, 0};
-    return rectangle->_color;
+    return rectangle->_info._color;
 }
 
 /**
@@ -223,7 +238,7 @@ ggl_rectangle_contain(ggl_context *ctx,
                       ggl_rectangle *rectangle,
                       ggl_vector2f point)
 {
-    ggl_vector2f start = rectangle->_position;
+    ggl_vector2f start = rectangle->_info._position;
     ggl_vector2f size = rectangle->_size;
 
     start._x = start._x *
@@ -256,8 +271,24 @@ ggl_vector2f
 ggl_rectangle_set_position(ggl_rectangle *rectangle,
                            ggl_vector2f position)
 {
-    rectangle->_position = position;
+    rectangle->_info._position = position;
     return position;
+}
+
+/**
+ * @brief Rectangle set rotation
+ *
+ * @param rectangle            The rectangle
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_rectangle_set_rotation(ggl_rectangle *rectangle,
+                           ggl_float rotation)
+{
+    rectangle->_info._rotation = rotation;
+    return rotation;
 }
 
 /**
@@ -272,7 +303,7 @@ ggl_color
 ggl_rectangle_set_color(ggl_rectangle *rectangle,
                         ggl_color color)
 {
-    rectangle->_color = color;
+    rectangle->_info._color = color;
     return color;
 }
 

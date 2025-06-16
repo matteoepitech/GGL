@@ -53,6 +53,15 @@ ggl_status ggl_triangle_render(ggl_context *ctx,
 ggl_vector2f ggl_triangle_get_position(ggl_triangle *triangle);
 
 /**
+ * @brief triangle get rotation.
+ *
+ * @param triangle             The triangle
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_triangle_get_rotation(ggl_triangle *triangle);
+
+/**
  * @brief Triangle get color.
  *
  * @param triangle              The triangle
@@ -80,6 +89,17 @@ ggl_vector2f ggl_triangle_get_size(ggl_triangle *triangle);
  */
 ggl_vector2f ggl_triangle_set_position(ggl_triangle *triangle,
                                        ggl_vector2f position);
+
+/**
+ * @brief Triangle set rotation
+ *
+ * @param triangle             The triangle
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_triangle_set_rotation(ggl_triangle *triangle,
+                                    ggl_float rotation);
 
 /**
  * @brief Triangle set color.
@@ -159,6 +179,15 @@ ggl_status ggl_rectangle_render(ggl_context *ctx,
 ggl_vector2f ggl_rectangle_get_position(ggl_rectangle *rectangle);
 
 /**
+ * @brief Rectangle get rotation.
+ *
+ * @param rectangle             The rectangle
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_rectangle_get_rotation(ggl_rectangle *rectangle);
+
+/**
  * @brief Rectangle get color.
  *
  * @param rectangle             The rectangle
@@ -198,6 +227,17 @@ ggl_bool ggl_rectangle_contain(ggl_context *ctx,
  */
 ggl_vector2f ggl_rectangle_set_position(ggl_rectangle *rectangle,
                                         ggl_vector2f position);
+
+/**
+ * @brief Rectangle set rotation
+ *
+ * @param rectangle            The rectangle
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_rectangle_set_rotation(ggl_rectangle *rectangle,
+                                     ggl_float rotation);
 
 /**
  * @brief Rectangle set color.
@@ -310,6 +350,15 @@ ggl_color ggl_convex_get_vertex_color(ggl_convex *convex,
 ggl_vector2f ggl_convex_get_position(ggl_convex *convex);
 
 /**
+ * @brief convex get rotation.
+ *
+ * @param convex             The convex
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_convex_get_rotation(ggl_convex *convex);
+
+/**
  * @brief Set the position of the convex shape.
  *
  * @param convex                The shape
@@ -319,6 +368,17 @@ ggl_vector2f ggl_convex_get_position(ggl_convex *convex);
  */
 ggl_vector2f ggl_convex_set_position(ggl_convex *convex,
                                      ggl_vector2f position);
+
+/**
+ * @brief Convex set rotation
+ *
+ * @param convex               The convex
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float ggl_convex_set_rotation(ggl_convex *convex,
+                                  ggl_float rotation);
 
 // ==============================================================
 

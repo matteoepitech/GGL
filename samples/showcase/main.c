@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
     float pos5_x = MARGIN_LEFT + SPACING_X * 4;
     float pos6_x = MARGIN_LEFT + SPACING_X * 5;
     float pos7_x = MARGIN_LEFT + SPACING_X * 6;
+    float pos8_x = MARGIN_LEFT + SPACING_X * 7;
     ggl_texture *texture = ggl_texture_create("./tree.jpeg");
     ggl_texture *texture_misc = ggl_texture_create("./misc.jpeg");
     
@@ -101,6 +102,11 @@ int main(int argc, char *argv[])
         (ggl_vector2f){120, 80}, 
         GGL_COLOR_WHITE);
     ggl_rectangle_set_texture(rect_tex_bis, texture);
+    
+    ggl_rectangle *rect_rot = ggl_rectangle_create(
+        (ggl_vector2f){pos8_x - 60, MARGING_TOP - 40}, 
+        (ggl_vector2f){120, 80}, 
+        C_TWO);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         ggl_window_clear(C_ONE);
@@ -134,6 +140,8 @@ int main(int argc, char *argv[])
             ggl_rectangle_set_texture(rect_tex_bis, texture_misc);
         }
         ggl_rectangle_render(ctx, rect_tex_bis);
+        ggl_rectangle_render(ctx, rect_rot);
+        ggl_rectangle_set_rotation(rect_rot, oscillate(elapsed, 0, 360, 1));
 
         ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
         c_pos._x -= 10;
@@ -146,6 +154,7 @@ int main(int argc, char *argv[])
     ggl_rectangle_free(rect_tex_bis);
     ggl_rectangle_free(rect_tex);
     ggl_rectangle_free(rect);
+    ggl_rectangle_free(rect_rot);
     ggl_triangle_free(tri_tex);
     ggl_triangle_free(tri);
     ggl_circle_free(circle);

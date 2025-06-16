@@ -154,7 +154,7 @@ ggl_convex_create(ggl_vector2f position)
     if (g_convex_renderer._is_initialized == GGL_FALSE) {
         __ggl_convex_init();
     }
-    convex->_position = position;
+    convex->_info._position = position;
     convex->_vertices = NULL;
     convex->_indices = NULL;
     convex->_vertices_color = NULL;
@@ -199,7 +199,7 @@ ggl_convex_render(ggl_context *ctx,
     if (convex == NULL || ctx == NULL || convex->_vertices_count < 0) {
         return GGL_KO;
     }
-    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, convex->_position);
+    final_pos = ggl_coords_normalize_to_ndc_pos(ctx, convex->_info._position);
     final_size = ggl_coords_normalize_to_ndc_size(ctx, (ggl_vector2f) {1, 1});
     glBindVertexArray(convex->__vao__);
     glUseProgram(g_convex_renderer._shader_program);
@@ -305,7 +305,22 @@ ggl_convex_get_vertex_color(ggl_convex *convex,
 ggl_vector2f
 ggl_convex_get_position(ggl_convex *convex)
 {
-    return convex->_position;
+    return convex->_info._position;
+}
+
+/**
+ * @brief Convex get rotation.
+ *
+ * @param convex             The convex
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_convex_get_rotation(ggl_convex *convex)
+{
+    if (convex == NULL)
+        return 0.0f;
+    return convex->_info._rotation;
 }
 
 /**
@@ -320,6 +335,22 @@ ggl_vector2f
 ggl_convex_set_position(ggl_convex *convex,
                         ggl_vector2f position)
 {
-    convex->_position = position;
+    convex->_info._position = position;
     return position;
+}
+
+/**
+ * @brief Convex set rotation
+ *
+ * @param convex               The convex
+ * @param position             The new rotation
+ *
+ * @return The vector of rotation.
+ */
+ggl_float
+ggl_convex_set_rotation(ggl_convex *convex,
+                        ggl_float rotation)
+{
+    convex->_info._rotation = rotation;
+    return rotation;
 }

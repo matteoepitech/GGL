@@ -133,6 +133,9 @@ typedef struct {
  * @brief A structure containing misc data for a shape. Like textures,shaders..
  */
 typedef struct {
+    ggl_vector2f _position;
+    ggl_float _rotation;
+    ggl_color _color;
     ggl_ressource_id __texture_id__;  // @INTERNAL USAGE;
 } ggl_shape_data;
 
@@ -142,32 +145,27 @@ typedef struct {
  * @brief Triangle structure object.
  */
 typedef struct {
-    ggl_vector2f _position;
-    ggl_vector2f _size;
-    ggl_color _color;
     ggl_shape_data _info;
+    ggl_vector2f _size;
 } ggl_triangle;
 
 /**
  * @brief Rectangle structure object.
  */
 typedef struct {
-    ggl_vector2f _position;
-    ggl_vector2f _size;
-    ggl_color _color;
     ggl_shape_data _info;
+    ggl_vector2f _size;
 } ggl_rectangle;
 
 /**
  * @brief Convex structure object.
  */
 typedef struct {
-    ggl_vector2f _position;
+    ggl_shape_data _info;
     ggl_float *_vertices;
     ggl_color *_vertices_color;
     ggl_uint _vertices_count;
     ggl_uint *_indices;
-    ggl_shape_data _info;
     ggl_ressource_id __vao__; // @INTERNAL USAGE
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
     ggl_ressource_id __ebo__; // @INTERNAL USAGE
@@ -177,11 +175,9 @@ typedef struct {
  * @brief Circle structure object.
  */
 typedef struct {
-    ggl_vector2f _position;
+    ggl_shape_data _info;
     ggl_int _radius;
     ggl_int _step;
-    ggl_color _color;
-    ggl_shape_data _info;
     ggl_ressource_id __vao__; // @INTERNAL USAGE
     ggl_ressource_id __vbo__; // @INTERNAL USAGE
     ggl_ressource_id __ebo__; // @INTERNAL USAGE
