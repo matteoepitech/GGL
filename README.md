@@ -13,7 +13,11 @@ Perfect for creating lightweight 2D games and graphical interfaces without heada
 ---
 
 ## Examples
+
+### Checkerboard with a trail
 <img src="./media/ggl-checkerboard-example.gif" alt="GGL Checkerboard"/>  
+
+### Showcase of a small amount of the capacity of GGL
 <img src="./media/ggl-showcase-example.gif" alt="GGL Showcase"/>  
 
 ## Dependencies  
