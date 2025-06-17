@@ -49,6 +49,12 @@ __ggl_shader_init(void)
     GGL_TRIANGLE_VERTEX_SHADER = __ggl_read_shader_file("/Users/del/Desktop/tmp_shaders/s_triangle.vert");
     if (GGL_TRIANGLE_VERTEX_SHADER == NULL)
         return GGL_FALSE;
+    GGL_RECTANGLE_FRAGMENT_SHADER = __ggl_read_shader_file("/Users/del/Desktop/tmp_shaders/s_rectangle.frag");
+    if (GGL_RECTANGLE_FRAGMENT_SHADER == NULL)
+        return GGL_FALSE;
+    GGL_RECTANGLE_VERTEX_SHADER = __ggl_read_shader_file("/Users/del/Desktop/tmp_shaders/s_rectangle.vert");
+    if (GGL_RECTANGLE_VERTEX_SHADER == NULL)
+        return GGL_FALSE;
     GGL_CIRCLE_FRAGMENT_SHADER = __ggl_read_shader_file("/Users/del/Desktop/tmp_shaders/s_circle.frag");
     if (GGL_CIRCLE_FRAGMENT_SHADER == NULL)
         return GGL_FALSE;

@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
         (ggl_vector2f){pos3_x - 50, MARGING_TOP + SPACING_Y},
         (ggl_vector2f){80, 80}, 
         C_TWO);
+    ggl_triangle_set_outline_color(tri_outline, GGL_COLOR_RED);
     ggl_triangle_set_outline_width(tri_outline, 10);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {

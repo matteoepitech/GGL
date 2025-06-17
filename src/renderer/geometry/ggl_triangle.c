@@ -30,6 +30,9 @@ typedef struct {
 } ggl_triangle_renderer;
 static ggl_triangle_renderer g_triangle_renderer = {0};
 
+char *GGL_TRIANGLE_VERTEX_SHADER;
+char *GGL_TRIANGLE_FRAGMENT_SHADER;
+
 // ==============================================================
 
 /**
@@ -162,11 +165,11 @@ ggl_triangle_render(ggl_context *ctx,
     glUniform1f(g_triangle_renderer._rot_location,
         GGL_DEG_TO_RAD(triangle->_info._rotation));
     glUniform1f(g_triangle_renderer._outline_width_location, triangle->_info._outline_width);
-    glUniform4f(g_triangle_renderer._color_location, 
-        triangle->_info._color._r / 255.0f,
-        triangle->_info._color._g / 255.0f,
-        triangle->_info._color._b / 255.0f,
-        triangle->_info._color._a / 255.0f);
+    glUniform4f(g_triangle_renderer._outline_color_location, 
+        triangle->_info._outline_color._r / 255.0f,
+        triangle->_info._outline_color._g / 255.0f,
+        triangle->_info._outline_color._b / 255.0f,
+        triangle->_info._outline_color._a / 255.0f);
     glUniform2f(g_triangle_renderer._center_location, 0.5, 0.5);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
@@ -241,6 +244,18 @@ ggl_triangle_get_outline_width(ggl_triangle *triangle)
     return triangle->_info._outline_width;
 }
 
+/**
+ * @brief Triangle get outline_color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_color.
+ */
+ggl_color
+ggl_triangle_get_outline_color(ggl_triangle *triangle)
+{
+    return triangle->_info._outline_color;
+}
 
 /**
  * @brief Triangle set position.
@@ -318,6 +333,21 @@ ggl_triangle_set_outline_width(ggl_triangle *triangle,
 {
     triangle->_info._outline_width = outline_width;
     return outline_width;
+}
+
+/**
+ * @brief Triangle set outline_color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_color.
+ */
+ggl_color
+ggl_triangle_set_outline_color(ggl_triangle *triangle,
+                               ggl_color outline_color)
+{
+    triangle->_info._outline_color = outline_color;
+    return outline_color;
 }
 
 /**

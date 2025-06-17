@@ -103,6 +103,15 @@ ggl_vector2f ggl_triangle_get_size(ggl_triangle *triangle);
 ggl_float ggl_triangle_get_outline_width(ggl_triangle *triangle);
 
 /**
+ * @brief Triangle get outline_color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_color.
+ */
+ggl_color ggl_triangle_get_outline_color(ggl_triangle *triangle);
+
+/**
  * @brief Triangle set position.
  *
  * @param triangle             The triangle
@@ -154,6 +163,16 @@ ggl_vector2f ggl_triangle_set_size(ggl_triangle *triangle,
  */
 ggl_float ggl_triangle_set_outline_width(ggl_triangle *triangle,
                                          ggl_float outline_width);
+
+/**
+ * @brief Triangle set outline_color.
+ *
+ * @param triangle              The triangle
+ *
+ * @return The outline_color.
+ */
+ggl_color ggl_triangle_set_outline_color(ggl_triangle *triangle,
+                                         ggl_color outline_color);
 
 /**
  * @brief Set a texture for a triangle.

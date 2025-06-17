@@ -30,8 +30,8 @@ typedef struct {
 } ggl_rectangle_renderer;
 static ggl_rectangle_renderer g_rectangle_renderer = {0};
 
-char *GGL_TRIANGLE_VERTEX_SHADER;
-char *GGL_TRIANGLE_FRAGMENT_SHADER;
+char *GGL_RECTANGLE_VERTEX_SHADER;
+char *GGL_RECTANGLE_FRAGMENT_SHADER;
 
 // ==============================================================
 
@@ -65,8 +65,8 @@ __ggl_rectangle_init(void)
     glGenBuffers(1, &g_rectangle_renderer._ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_rectangle_renderer._ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    vertex_shader = ggl_shader_create(GL_VERTEX_SHADER, GGL_TRIANGLE_VERTEX_SHADER);
-    fragment_shader = ggl_shader_create(GL_FRAGMENT_SHADER, GGL_TRIANGLE_FRAGMENT_SHADER);
+    vertex_shader = ggl_shader_create(GL_VERTEX_SHADER, GGL_RECTANGLE_VERTEX_SHADER);
+    fragment_shader = ggl_shader_create(GL_FRAGMENT_SHADER, GGL_RECTANGLE_FRAGMENT_SHADER);
     if (vertex_shader == 0 || fragment_shader == 0) {
         return GGL_KO;
     } 

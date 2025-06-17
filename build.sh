@@ -7,6 +7,7 @@ mkdir -p build && cd build
 if [[ "$OS" == "Darwin" ]]; then
     cmake ..
     cmake --build . -- -j$(sysctl -n hw.ncpu)
+    cp -r ../resources/* ~/Desktop/tmp_shaders/
     cp libggl.dylib ../samples/showcase/
     cp libggl.dylib ../samples/checkerboard/
     cp libggl.dylib ../samples/snake_game/
