@@ -126,7 +126,12 @@ int main(int argc, char *argv[])
         (ggl_vector2f){80, 80}, 
         C_TWO);
     ggl_triangle_set_outline_color(tri_outline, GGL_COLOR_RED);
-    ggl_triangle_set_outline_width(tri_outline, 10);
+   
+    ggl_rectangle *rect_outline = ggl_rectangle_create(
+        (ggl_vector2f){pos4_x - 50, MARGING_TOP + SPACING_Y - 80}, 
+        (ggl_vector2f){120, 80}, 
+        C_TWO);
+    ggl_rectangle_set_outline_color(rect_outline, GGL_COLOR_GREEN);
 
     while (ggl_window_should_close(ctx) == GGL_FALSE) {
         ggl_vector2f c_pos = ggl_get_cursor_scaled_position(ctx);
@@ -198,7 +203,11 @@ int main(int argc, char *argv[])
         ggl_convex_set_rotation(convex_rot, oscillate(elapsed, 0, 360, 1));
         ggl_convex_render(ctx, convex_rot);
 
+        ggl_triangle_set_outline_width(tri_outline, oscillate(elapsed, 0, 150, 0.5f));
         ggl_triangle_render(ctx, tri_outline);
+        
+        ggl_rectangle_set_outline_width(rect_outline, oscillate(elapsed, 0, 150, 0.5f));
+        ggl_rectangle_render(ctx, rect_outline);
 
         c_pos._x -= 10;
         c_pos._y -= 10;

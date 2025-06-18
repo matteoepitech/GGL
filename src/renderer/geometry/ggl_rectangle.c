@@ -243,6 +243,32 @@ ggl_rectangle_get_size(ggl_rectangle *rectangle)
 }
 
 /**
+ * @brief rectangle get outline_width.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_width.
+ */
+ggl_float
+ggl_rectangle_get_outline_width(ggl_rectangle *rectangle)
+{
+    return rectangle->_info._outline_width;
+}
+
+/**
+ * @brief rectangle get outline_color.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_color.
+ */
+ggl_color
+ggl_rectangle_get_outline_color(ggl_rectangle *rectangle)
+{
+    return rectangle->_info._outline_color;
+}
+
+/**
  * @brief Is a point in the bounds of the rectangle?
  *
  * @param ctx           The context
@@ -338,6 +364,36 @@ ggl_rectangle_set_size(ggl_rectangle *rectangle,
 }
 
 /**
+ * @brief rectangle set outline_width.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_width.
+ */
+ggl_float
+ggl_rectangle_set_outline_width(ggl_rectangle *rectangle,
+                                ggl_float outline_width)
+{
+    rectangle->_info._outline_width = outline_width;
+    return outline_width;
+}
+
+/**
+ * @brief rectangle set outline_color.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_color.
+ */
+ggl_color
+ggl_rectangle_set_outline_color(ggl_rectangle *rectangle,
+                                ggl_color outline_color)
+{
+    rectangle->_info._outline_color = outline_color;
+    return outline_color;
+}
+
+/**
  * @brief Set a texture for a rectangle.
  *
  * @param rectangle              The rectangle
@@ -347,7 +403,7 @@ ggl_rectangle_set_size(ggl_rectangle *rectangle,
  */
 ggl_status
 ggl_rectangle_set_texture(ggl_rectangle *rectangle,
-                         ggl_texture *texture)
+                          ggl_texture *texture)
 {
     if (rectangle->_info.__texture_id__ != 0) {
         glDeleteTextures(1, &rectangle->_info.__texture_id__);

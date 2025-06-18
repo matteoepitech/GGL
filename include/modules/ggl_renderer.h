@@ -271,6 +271,24 @@ ggl_color ggl_rectangle_get_color(ggl_rectangle *rectangle);
 ggl_vector2f ggl_rectangle_get_size(ggl_rectangle *rectangle);
 
 /**
+ * @brief rectangle get outline_width.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_width.
+ */
+ggl_float ggl_rectangle_get_outline_width(ggl_rectangle *rectangle);
+
+/**
+ * @brief rectangle get outline_color.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_color.
+ */
+ggl_color ggl_rectangle_get_outline_color(ggl_rectangle *rectangle);
+
+/**
  * @brief Is a point in the bounds of the rectangle?
  *
  * @param ctx           The context
@@ -324,6 +342,26 @@ ggl_color ggl_rectangle_set_color(ggl_rectangle *rectangle,
  */
 ggl_vector2f ggl_rectangle_set_size(ggl_rectangle *rectangle,
                                     ggl_vector2f size);
+
+/**
+ * @brief rectangle set outline_width.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_width.
+ */
+ggl_float ggl_rectangle_set_outline_width(ggl_rectangle *rectangle,
+                                          ggl_float outline_width);
+
+/**
+ * @brief rectangle set outline_color.
+ *
+ * @param rectangle              The rectangle
+ *
+ * @return The outline_color.
+ */
+ggl_color ggl_rectangle_set_outline_color(ggl_rectangle *rectangle,
+                                          ggl_color outline_color);
 
 /**
  * @brief Set a texture for a rectangle.
